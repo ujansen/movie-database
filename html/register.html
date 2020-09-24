@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang = "en" dir = "ltr">
+  <head>
+    <meta charset = "utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!--Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+  </head>
+  <title>Register</title>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">MDB</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+          <a class="nav-item nav-link disabled" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link active" href="register.html">Sign Up <span class="sr-only">(current)</span></a>
+        </div>
+      </div>
+    </nav>
+  </header>
+    <main>
+      <div class="container">
+        <form class="sign_up_form" action="">
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-3">Sign Up</legend>
+            <div class="form-group">
+              <label for="email_address">Username</label>
+              <input type="text" class="form-control" id="email_address" required>
+            </div>
+            <div class="form-group">
+              <label for="email_address">Email address</label>
+              <input type="email" class="form-control" id="email_address" placeholder="someone@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Balrog" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Confirm Password</label>
+              <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" id="terms_and_conditions" value="terms_and_conditions">
+              <label for="terms_and_conditions">I agree to the <a href="./tos.html" target="_blank">Terms and Conditions</a></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <div class="border-top mt-3 pt-4">
+              <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="./login.html">Login Now!</a>
+              </small>
+           </div>
+        </form>
+      </main>
+  </body>
+</html>
