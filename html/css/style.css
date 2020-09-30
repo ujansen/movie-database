@@ -11,3 +11,42 @@ body{
   background-color: #36393E;
   color: #ffffff;
 }
+
+.block{
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-right: 50px;
+}
+
+.block h4{
+  font-size: 22px;
+}
+
+.poster img{
+  height: 400px;
+}
+
+.actorImage img{
+  height: 400px;
+}
+
+.details{
+  padding-top: 10px;
+}
+
+.details li{
+  padding-top: 0.25em;
+}
+
+.details a{
+  color: white;
+}
+
+.review .checked{
+  color: orange;
+}
+
+#movieReview{
+  background-color: #36393E;
+  color: #ffffff;
+}
