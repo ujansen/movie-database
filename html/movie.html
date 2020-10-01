@@ -14,7 +14,7 @@
   <title>The Lord of the Rings: The Fellowship of the Ring</title>
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="./index.html">MDB</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,7 +27,7 @@
       </div>
     </nav>
   </header>
-  <main class="block">
+  <main class="block container">
     <div>
     <h4>
       The Lord of the Rings: The Fellowship of the Ring (2001)
@@ -58,34 +58,25 @@
          </ul>
        </ul>
      </div>
-     <div class="similar_movies">
-      <h4 style="padding-top: 0; padding-left: 4px;">
+     <div class="container scrolling similar_movies">
+      <h4>
         Similar Movies
       </h4>
-       <div class="row">
-         <div class="col-md-2">
-           <div class="thumbnail">
-             <a href="#">
-               <img src="https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
-                style="width:100%">
-             </a>
-           </div>
+       <div class="row flex-nowrap">
+         <div class="col-xs-4 cp-1">
+             <div class="card card-block">
+                 <a href="#" target="_blank"><img src="https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" class = "slider-img"> </a>
+             </div>
          </div>
-         <div class="col-md-2">
-           <div class="thumbnail">
-             <a href="#">
-               <img src="https://m.media-amazon.com/images/M/MV5BNzA5ZDNlZWMtM2NhNS00NDJjLTk4NDItYTRmY2EwMWZlMTY3XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
-               style="width:100%">
-             </a>
-           </div>
+         <div class="col-xs-4 cp-1">
+             <div class="card card-block">
+                 <a href="#" target="_blank"><img src="https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" class = "slider-img"> </a>
+             </div>
          </div>
-         <div class="col-md-2">
-           <div class="thumbnail">
-             <a href="#">
-               <img src="https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_SX300.jpg"
-               style="width:100%">
-             </a>
-           </div>
+         <div class="col-xs-4 cp-1">
+             <div class="card card-block">
+                 <a href="#" target="_blank"><img src="https://m.media-amazon.com/images/M/MV5BNGE5MzIyNTAtNWFlMC00NDA2LWJiMjItMjc4Yjg1OWM5NzhhXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" class = "slider-img"> </a>
+             </div>
          </div>
         </div>
       </div>
@@ -104,3 +95,8 @@
         <div><textarea id="movieReview" name="movieReview" rows="4" cols="50">
         </textarea></div>
         <button type="submit" class="btn btn-outline-primary" id="submitReview">Submit</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
