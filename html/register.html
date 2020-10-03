@@ -13,31 +13,35 @@
   <title>Register</title>
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">MDB</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">MDB</a>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchBar">
+            <button class="btn btn-outline-success my-2 my-sm-0 ml-1" type="submit" id="searchButton">Search</button>
+        </form>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
-          <a class="nav-item nav-link disabled" href="#">Home <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link active" href="register.html">Sign Up <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link disabled" href="#" disabled>Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link active" href="./register.html">Sign Up <span class="sr-only">(current)</span></a>
         </div>
       </div>
     </nav>
   </header>
-    <main>
+    <main style="background-color: #243742;">
       <div class="container">
-        <form class="sign_up_form" action="">
+        <form class="sign_up_form" action="index.html"> <!-- add the path for index.html inside action -->
           <fieldset class="form-group">
             <legend class="border-bottom mb-3">Sign Up</legend>
             <div class="form-group">
               <label for="email_address">Username</label>
-              <input type="text" class="form-control" id="email_address" required>
+              <input type="text" class="form-control" id="username" required>
             </div>
             <div class="form-group">
               <label for="email_address">Email address</label>
-              <input type="email" class="form-control" id="email_address" placeholder="someone@example.com" required>
+              <input type="email" class="form-control" id="emailAddress" placeholder="someone@example.com" required>
             </div>
             <div class="form-group">
               <label for="password">Password</label>
@@ -45,13 +49,13 @@
             </div>
             <div class="form-group">
               <label for="password">Confirm Password</label>
-              <input type="password" class="form-control" id="password" required>
+              <input type="password" class="form-control" id="confirmPassword" required>
             </div>
             <div class="form-group">
-              <input type="checkbox" id="terms_and_conditions" value="terms_and_conditions">
+              <input type="checkbox" id="termsAndConditions" value="termsAndConditions">
               <label for="terms_and_conditions">I agree to the <a href="./tos.html" target="_blank">Terms and Conditions</a></label>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="btn btn-outline-primary" id="register">Sign Up</button>
             <div class="border-top mt-3 pt-4">
               <small class="text-muted">
                 Already Have An Account? <a class="ml-2" href="./login.html">Login Now!</a>
@@ -60,4 +64,6 @@
         </form>
       </main>
   </body>
+  <script src="./js/scriptRegister.js"></script>
+  <script src = "./js/navBar.js"></script>
 </html>
