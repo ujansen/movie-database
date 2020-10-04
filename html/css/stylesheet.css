@@ -49,7 +49,16 @@ body {
     border-radius: 2px;
 }
 
-.cp-1 {
+.card a:hover{
+    transform: scale(1.07, 1.07);
+  }
+  
+  .card a{
+    transition: transform .6s;
+  }
+
+.cp-1 { 
+    /* column padding */
     margin: 5px;
     padding: 0.1rem !important;
     border-radius: 2px;
@@ -66,10 +75,90 @@ body {
 }
 
 .flex-nowrap::-webkit-scrollbar {
-    scrollbar-width: 1px !important;
+    scrollbar-width: 1px !important; /* doesn't work (?) */
     background: #243742 !important;
 }
 
 .flex-nowrap::-webkit-scrollbar-thumb {
     background: #d6d6d6d5 !important;
+}
+
+.user-img {
+    height: auto; 
+    width: auto; 
+    max-width: 200px;
+    max-height: 230px;
+    border-radius: 2px;
+}
+
+/* toggle switch css */
+
+.switch {
+    position: relative; 
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #141e24;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #141e24;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 17px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+/* toggle switch css ends */
+
+
+.list-group-item {
+    background-color: #141e24;
+    color: #d6d6d6;
 }
