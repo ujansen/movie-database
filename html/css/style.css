@@ -1,0 +1,116 @@
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+.login_form, .sign_up_form {
+  min-width: 200px;
+  text-align: center;
+  position: absolute;
+  left: 43%;
+  padding-top: 90px;
+  border: 1px black thin;
+}
+
+body{
+  background-color: #141e24;
+  color: #ffffff;
+}
+
+.block{
+  padding-top: 30px !important;
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-bottom: 25px;
+  background-color: #243742;
+  padding: 20px 40px 20px;
+}
+
+.block h4{
+  font-size: 22px;
+}
+
+.poster img{
+  height: 400px;
+}
+
+.actorImage img{
+  height: 400px;
+}
+
+.details{
+  padding-top: 10px;
+}
+
+.details li{
+  padding-top: 0.25em;
+}
+
+.details a{
+  color: white;
+}
+
+.review .checked{
+  color: orange;
+}
+
+.bg-dark{
+  background-color: black !important;
+}
+
+.card a:hover{
+  transform: scale(1.07, 1.07);
+}
+
+.card a{
+  transition: transform .4s;
+}
+
+.card, .card-block{
+  border: none;
+}
+
+#movieReview{
+  background-color: #141e24;
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #141e24;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d6d6d6d5;
+}
+
+.slider-img {
+    height: auto;
+    width: auto;
+    max-width: 250px;
+    max-height: 280px;
+}
+
+.cp-1 {
+    margin: 5px;
+    padding: 0.1rem !important;
+}
+
+.scrolling > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.scrolling > .row > .col-xs-4 {
+    display: inline-block;
+    float: none;
+}
+
+.flex-nowrap::-webkit-scrollbar {
+    scrollbar-width: 1px !important;
+    background: #243742 !important;
+}
+
+.flex-nowrap::-webkit-scrollbar-thumb {
+    background: #d6d6d6d5 !important;
+}
