@@ -1,28 +1,72 @@
 let upcoming;
 let your_list;
 let fan_picks;
-
-
-function init() {
-    upcoming = document.getElementsByClassName("upcoming")[0];
-    console.log(upcoming);
-    //your_list = document.getElementsByClassName("your_list").getChildren[1].innerHTML;
-    //fan_picks = document.getElementsByClassName("your_list").getChildren[1].innerHTML;
-    for(let i = 0 ; i < 8; i++) {
-        let rand_url = generateRandom;
+let moviesOnHomePage = []
+function fillUpcoming(){
+  let i = 0
+  while (i < 8) {
+      let rand_url = generateRandom();
+      if (!moviesOnHomePage.includes(rand_url)){
+        moviesOnHomePage.push(rand_url);
+        //console.log(rand_url);
         let div = document.createElement('div');
         div.setAttribute('class', 'col-xs-4 cp-1 bg-secondary');
         div.innerHTML = `<div class="card card-block">
-                            <a href= ${rand_url} target="_blank"> 
-                                <img src=${rand_url} class = "slider-img"> 
-                            </a> 
+                            <a href= ${rand_url} target="_blank">
+                                <img src=${rand_url} class = "slider-img">
+                            </a>
                         </div>`;
         document.getElementById("upcoming").appendChild(div);
-        //    `<div class="col-xs-4 cp-1 bg-secondary"> <div class="card card-block"><a href= ${rand_url} target="_blank"><img src=${rand_url} class = "slider-img"> </a></div></div>`
-        //);
+        i++;
+      }
     }
-    
-    
+}
+
+function fillYourList(){
+  let i = 0
+  while (i < 8) {
+      let rand_url = generateRandom();
+      if (!moviesOnHomePage.includes(rand_url)){
+        moviesOnHomePage.push(rand_url);
+        //console.log(rand_url);
+        let div = document.createElement('div');
+        div.setAttribute('class', 'col-xs-4 cp-1 bg-secondary');
+        div.innerHTML = `<div class="card card-block">
+                            <a href= ${rand_url} target="_blank">
+                                <img src=${rand_url} class = "slider-img">
+                            </a>
+                        </div>`;
+        document.getElementById("your_list").appendChild(div);
+        i++;
+      }
+    }
+}
+
+function fillFanPicks(){
+  let i = 0
+  while (i < 8) {
+      let rand_url = generateRandom();
+      if (!moviesOnHomePage.includes(rand_url)){
+        moviesOnHomePage.push(rand_url);
+        //console.log(rand_url);
+        let div = document.createElement('div');
+        div.setAttribute('class', 'col-xs-4 cp-1 bg-secondary');
+        div.innerHTML = `<div class="card card-block">
+                            <a href= ${rand_url} target="_blank">
+                                <img src=${rand_url} class = "slider-img">
+                            </a>
+                        </div>`;
+        document.getElementById("fan_picks").appendChild(div);
+        i++;
+      }
+    }
+}
+
+
+function init() {
+    fillUpcoming();
+    fillYourList();
+    fillFanPicks();
 }
 
 
@@ -377,7 +421,619 @@ let movies = [{
     "Production": "MGM/UA",
     "Website": "N/A",
     "Response": "True"
-}]
+},
+{
+    "Title": "The American President",
+    "Year": "1995",
+    "Rated": "PG-13",
+    "Released": "17 Nov 1995",
+    "Runtime": "114 min",
+    "Genre": "Comedy, Drama, Romance",
+    "Director": "Rob Reiner",
+    "Writer": "Aaron Sorkin",
+    "Actors": "Michael Douglas, Annette Bening, Martin Sheen, Michael J. Fox",
+    "Plot": "A widowed U.S. President running for reelection and an environmental lobbyist fall in love. It's all above-board, but \"politics is perception,\" and sparks fly anyway.",
+    "Language": "English, French, Spanish",
+    "Country": "USA",
+    "Awards": "Nominated for 1 Oscar. Another 1 win & 9 nominations.",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BNjhkMmU0M2YtZDUwYi00OWE0LWI5NTktODBjNDc1M2ZlMjI4XkEyXkFqcGdeQXVyNDAxNjkxNjQ@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "6.8/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "91%"
+      },
+      {
+        "Source": "Metacritic",
+        "Value": "67/100"
+      }
+    ],
+    "Metascore": "67",
+    "imdbRating": "6.8",
+    "imdbVotes": "50,775",
+    "imdbID": "tt0112346",
+    "Type": "movie",
+    "DVD": "31 Aug 1999",
+    "BoxOffice": "N/A",
+    "Production": "Columbia Pictures",
+    "Website": "N/A",
+    "Response": "True"
+  },
+  {
+    "Title": "Dracula: Dead and Loving It",
+    "Year": "1995",
+    "Rated": "PG-13",
+    "Released": "22 Dec 1995",
+    "Runtime": "88 min",
+    "Genre": "Comedy, Fantasy, Horror",
+    "Director": "Mel Brooks",
+    "Writer": "Mel Brooks (screenplay), Rudy De Luca (screenplay), Steve Haberman (screenplay), Rudy De Luca (story), Steve Haberman (story), Bram Stoker (characters)",
+    "Actors": "Leslie Nielsen, Peter MacNicol, Steven Weber, Amy Yasbeck",
+    "Plot": "Mel Brooks ' parody of the classic vampire story and its famous film adaptations.",
+    "Language": "English, German",
+    "Country": "France, USA",
+    "Awards": "N/A",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BZWQ0ZDFmYzMtZGMyMi00NmYxLWE0MGYtYzM2ZGNhMTE1NTczL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjM5ODMxODc@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "5.9/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "11%"
+      }
+    ],
+    "Metascore": "N/A",
+    "imdbRating": "5.9",
+    "imdbVotes": "38,129",
+    "imdbID": "tt0112896",
+    "Type": "movie",
+    "DVD": "29 Jun 2004",
+    "BoxOffice": "N/A",
+    "Production": "WARNER BROTHERS PICTURES",
+    "Website": "N/A",
+    "Response": "True"
+  },
+  {
+    "Title": "Balto",
+    "Year": "1995",
+    "Rated": "G",
+    "Released": "22 Dec 1995",
+    "Runtime": "78 min",
+    "Genre": "Animation, Adventure, Drama, Family, History",
+    "Director": "Simon Wells",
+    "Writer": "Cliff Ruby (screenplay), Elana Lesser (screenplay), David Steven Cohen (screenplay), Roger S.H. Schulman (screenplay)",
+    "Actors": "Kevin Bacon, Bob Hoskins, Bridget Fonda, Jim Cummings",
+    "Plot": "An outcast Husky risks his life with other sled dogs to prevent a deadly epidemic from ravaging Nome, Alaska.",
+    "Language": "English",
+    "Country": "USA",
+    "Awards": "1 nomination.",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjBhNmFlZjMtMzhlYy00NDBlLWFiMjctMmE0ZjgwOGM2MTNmXkEyXkFqcGdeQXVyNjExODE1MDc@._V1_SX300.jpg",
+    "Ratings": [
+      {
+        "Source": "Internet Movie Database",
+        "Value": "7.1/10"
+      },
+      {
+        "Source": "Rotten Tomatoes",
+        "Value": "54%"
+      }
+    ],
+    "Metascore": "N/A",
+    "imdbRating": "7.1",
+    "imdbVotes": "38,665",
+    "imdbID": "tt0112453",
+    "Type": "movie",
+    "DVD": "19 Feb 2002",
+    "BoxOffice": "N/A",
+    "Production": "MCA Universal Home Video",
+    "Website": "N/A",
+    "Response": "True"
+  },
+  {
+      "Title": "Nixon",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "05 Jan 1996",
+      "Runtime": "192 min",
+      "Genre": "Biography, Drama, History",
+      "Director": "Oliver Stone",
+      "Writer": "Stephen J. Rivele, Christopher Wilkinson, Oliver Stone",
+      "Actors": "Anthony Hopkins, Joan Allen, Powers Boothe, Ed Harris",
+      "Plot": "A biographical story of former U.S. President Richard Nixon, from his days as a young boy, to his eventual Presidency, which ended in shame.",
+      "Language": "English, Mandarin, Russian",
+      "Country": "USA",
+      "Awards": "Nominated for 4 Oscars. Another 11 wins & 14 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNzBlOWY0ZmEtZjdkYS00ZGU0LWEwN2YtYzBkNDM5ZDBjMmI1XkEyXkFqcGdeQXVyMTAwMzUyOTc@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "7.1/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "74%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "66/100"
+        }
+      ],
+      "Metascore": "66",
+      "imdbRating": "7.1",
+      "imdbVotes": "28,272",
+      "imdbID": "tt0113987",
+      "Type": "movie",
+      "DVD": "15 Jun 1999",
+      "BoxOffice": "N/A",
+      "Production": "Buena Vista Pictures",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Cutthroat Island",
+      "Year": "1995",
+      "Rated": "PG-13",
+      "Released": "22 Dec 1995",
+      "Runtime": "124 min",
+      "Genre": "Action, Adventure, Comedy",
+      "Director": "Renny Harlin",
+      "Writer": "Michael Frost Beckner (story), James Gorman (story), Bruce A. Evans (story), Raynold Gideon (story), Robert King (screenplay), Marc Norman (screenplay)",
+      "Actors": "Geena Davis, Matthew Modine, Frank Langella, Maury Chaykin",
+      "Plot": "A female pirate and her companion race against their rivals to find a hidden island that contains a fabulous treasure.",
+      "Language": "English",
+      "Country": "France, Italy, Germany, USA",
+      "Awards": "1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMDg2YTI0YmQtYzgwMi00Zjk4LWJkZjgtYjg0ZDE2ODUzY2RlL2ltYWdlXkEyXkFqcGdeQXVyNjQzNDI3NzY@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "5.7/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "38%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "37/100"
+        }
+      ],
+      "Metascore": "37",
+      "imdbRating": "5.7",
+      "imdbVotes": "25,438",
+      "imdbID": "tt0112760",
+      "Type": "movie",
+      "DVD": "25 Jul 2000",
+      "BoxOffice": "N/A",
+      "Production": "Live Home Video",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Casino",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "22 Nov 1995",
+      "Runtime": "178 min",
+      "Genre": "Crime, Drama",
+      "Director": "Martin Scorsese",
+      "Writer": "Nicholas Pileggi (book), Nicholas Pileggi (screenplay), Martin Scorsese (screenplay)",
+      "Actors": "Robert De Niro, Sharon Stone, Joe Pesci, James Woods",
+      "Plot": "A tale of greed, deception, money, power, and murder occur between two best friends: a mafia enforcer and a casino executive, compete against each other over a gambling empire, and over a fast living and fast loving socialite.",
+      "Language": "English",
+      "Country": "France, USA",
+      "Awards": "Nominated for 1 Oscar. Another 4 wins & 10 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOThkYjU3OWQtN2Y3OC00ZDk1LWI1MDQtZTkxZjZiZGU5N2Q0XkEyXkFqcGdeQXVyMTA3MzQ4MTc0._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "8.2/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "80%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "73/100"
+        }
+      ],
+      "Metascore": "73",
+      "imdbRating": "8.2",
+      "imdbVotes": "450,651",
+      "imdbID": "tt0112641",
+      "Type": "movie",
+      "DVD": "24 Feb 1998",
+      "BoxOffice": "N/A",
+      "Production": "Universal Pictures",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Sense and Sensibility",
+      "Year": "1995",
+      "Rated": "PG",
+      "Released": "26 Jan 1996",
+      "Runtime": "136 min",
+      "Genre": "Drama, Romance",
+      "Director": "Ang Lee",
+      "Writer": "Jane Austen (novel), Emma Thompson (screenplay)",
+      "Actors": "James Fleet, Tom Wilkinson, Harriet Walter, Kate Winslet",
+      "Plot": "Rich Mr. Dashwood dies, leaving his second wife and her three daughters poor by the rules of inheritance. The two eldest daughters are the title opposites.",
+      "Language": "English, French",
+      "Country": "USA, UK",
+      "Awards": "Won 1 Oscar. Another 32 wins & 49 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNzk1MjU3MDQyMl5BMl5BanBnXkFtZTcwNjc1OTM2MQ@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "7.6/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "98%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "84/100"
+        }
+      ],
+      "Metascore": "84",
+      "imdbRating": "7.6",
+      "imdbVotes": "99,207",
+      "imdbID": "tt0114388",
+      "Type": "movie",
+      "DVD": "01 Jan 1998",
+      "BoxOffice": "N/A",
+      "Production": "Columbia Pictures",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Four Rooms",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "25 Dec 1995",
+      "Runtime": "98 min",
+      "Genre": "Comedy",
+      "Director": "Allison Anders, Alexandre Rockwell, Robert Rodriguez, Quentin Tarantino, Chuck Jones",
+      "Writer": "Allison Anders, Alexandre Rockwell, Robert Rodriguez, Quentin Tarantino",
+      "Actors": "Sammi Davis, Amanda De Cadenet, Valeria Golino, Madonna",
+      "Plot": "Four interlocking tales that take place in a fading hotel on New Year's Eve.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "1 win & 1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNDc3Y2YwMjUtYzlkMi00MTljLTg1ZGMtYzUwODljZTI1OTZjXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.8/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "13%"
+        }
+      ],
+      "Metascore": "N/A",
+      "imdbRating": "6.8",
+      "imdbVotes": "96,547",
+      "imdbID": "tt0113101",
+      "Type": "movie",
+      "DVD": "20 Apr 1999",
+      "BoxOffice": "N/A",
+      "Production": "Miramax Films",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Ace Ventura: When Nature Calls",
+      "Year": "1995",
+      "Rated": "PG-13",
+      "Released": "10 Nov 1995",
+      "Runtime": "90 min",
+      "Genre": "Adventure, Comedy, Crime",
+      "Director": "Steve Oedekerk",
+      "Writer": "Jack Bernstein (characters), Steve Oedekerk",
+      "Actors": "Jim Carrey, Ian McNeice, Simon Callow, Maynard Eziashi",
+      "Plot": "Ace Ventura, Pet Detective, returns from a spiritual quest to investigate the disappearance of a rare white bat, the sacred animal of a tribe in Africa.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "7 wins & 6 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNGFiYTgxZDctNGI4OS00MWU1LWIwOGUtZmMyNGQxYjVkZjQ3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.4/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "31%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "45/100"
+        }
+      ],
+      "Metascore": "45",
+      "imdbRating": "6.4",
+      "imdbVotes": "198,511",
+      "imdbID": "tt0112281",
+      "Type": "movie",
+      "DVD": "30 Oct 1997",
+      "BoxOffice": "N/A",
+      "Production": "Warner Home Video",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Money Train",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "22 Nov 1995",
+      "Runtime": "110 min",
+      "Genre": "Action, Comedy, Crime, Drama, Thriller",
+      "Director": "Joseph Ruben",
+      "Writer": "Doug Richardson (story), Doug Richardson (screenplay), David Loughery (screenplay)",
+      "Actors": "Wesley Snipes, Woody Harrelson, Jennifer Lopez, Robert Blake",
+      "Plot": "A vengeful New York City transit cop decides to steal a trainload of subway fares. His foster brother, a fellow cop, tries to protect him.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BYWZlMzIwYzYtOWZiMi00ZGEzLWFhYmQtNmEzYzJlNDg1NjhjXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "5.7/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "22%"
+        }
+      ],
+      "Metascore": "N/A",
+      "imdbRating": "5.7",
+      "imdbVotes": "38,215",
+      "imdbID": "tt0113845",
+      "Type": "movie",
+      "DVD": "22 May 2001",
+      "BoxOffice": "N/A",
+      "Production": "Sony Pictures Home Entertainment",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Get Shorty",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "20 Oct 1995",
+      "Runtime": "105 min",
+      "Genre": "Comedy, Crime, Thriller",
+      "Director": "Barry Sonnenfeld",
+      "Writer": "Elmore Leonard (novel), Scott Frank (screenplay)",
+      "Actors": "John Travolta, Gene Hackman, Rene Russo, Danny DeVito",
+      "Plot": "A mobster travels to Hollywood to collect a debt, and discovers that the movie business is much the same as his current job.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "Won 1 Golden Globe. Another 5 wins & 16 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BMjAwODYzNDY4Ml5BMl5BanBnXkFtZTcwODkwNTgzNA@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.9/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "87%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "82/100"
+        }
+      ],
+      "Metascore": "82",
+      "imdbRating": "6.9",
+      "imdbVotes": "74,125",
+      "imdbID": "tt0113161",
+      "Type": "movie",
+      "DVD": "27 Aug 1997",
+      "BoxOffice": "N/A",
+      "Production": "MGM",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Copycat",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "27 Oct 1995",
+      "Runtime": "123 min",
+      "Genre": "Drama, Mystery, Thriller",
+      "Director": "Jon Amiel",
+      "Writer": "Ann Biderman, David Madsen",
+      "Actors": "Sigourney Weaver, Holly Hunter, Dermot Mulroney, William McNamara",
+      "Plot": "An agoraphobic psychologist and a female detective must work together to take down a serial killer who copies serial killers from the past.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "2 wins & 1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BYWUwNDk2ZDYtNmFkMi00NjE5LWE1M2ItYTRkNTFjZDU3ZDU4L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTYxNjkxOQ@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.6/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "78%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "54/100"
+        }
+      ],
+      "Metascore": "54",
+      "imdbRating": "6.6",
+      "imdbVotes": "52,730",
+      "imdbID": "tt0112722",
+      "Type": "movie",
+      "DVD": "28 Apr 1998",
+      "BoxOffice": "N/A",
+      "Production": "Warner Home Video",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Assassins",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "06 Oct 1995",
+      "Runtime": "132 min",
+      "Genre": "Action, Crime, Thriller",
+      "Director": "Richard Donner",
+      "Writer": "Lilly Wachowski (story), Lana Wachowski (story), Lilly Wachowski (screenplay), Lana Wachowski (screenplay), Brian Helgeland (screenplay)",
+      "Actors": "Sylvester Stallone, Antonio Banderas, Julianne Moore, Anatoli Davydov",
+      "Plot": "Professional hit-man Robert Rath wants to fulfill a few more contracts before retiring but unscrupulous ambitious newcomer hit-man Miguel Bain keeps killing Rath's targets.",
+      "Language": "English, Dutch, Spanish",
+      "Country": "France, USA",
+      "Awards": "1 win & 1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BZGI1NDA4ZDItNTRjMi00YTU3LTkwZDEtYjdlNTI1ZjQxZDM1XkEyXkFqcGdeQXVyNDc2NjEyMw@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.3/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "14%"
+        }
+      ],
+      "Metascore": "N/A",
+      "imdbRating": "6.3",
+      "imdbVotes": "76,268",
+      "imdbID": "tt0112401",
+      "Type": "movie",
+      "DVD": "30 Sep 1997",
+      "BoxOffice": "N/A",
+      "Production": "Warner Home Video",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Powder",
+      "Year": "1995",
+      "Rated": "PG-13",
+      "Released": "27 Oct 1995",
+      "Runtime": "111 min",
+      "Genre": "Drama, Fantasy, Mystery, Sci-Fi, Thriller",
+      "Director": "Victor Salva",
+      "Writer": "Victor Salva",
+      "Actors": "Mary Steenburgen, Sean Patrick Flanery, Lance Henriksen, Jeff Goldblum",
+      "Plot": "An off the charts genius who is home schooled and shunned after his last relative dies shows the unconscious residents of his town about connection awareness and the generosity of the spirit.",
+      "Language": "English",
+      "Country": "USA",
+      "Awards": "1 win & 1 nomination.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BOGUzYzNiZTItYmZlNi00ODI1LThjNTMtNjI1MTNlZDQ0OGY2XkEyXkFqcGdeQXVyNjExODE1MDc@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.6/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "50%"
+        }
+      ],
+      "Metascore": "N/A",
+      "imdbRating": "6.6",
+      "imdbVotes": "28,081",
+      "imdbID": "tt0114168",
+      "Type": "movie",
+      "DVD": "10 Aug 1999",
+      "BoxOffice": "N/A",
+      "Production": "Hollywood Pictures",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Leaving Las Vegas",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "09 Feb 1996",
+      "Runtime": "111 min",
+      "Genre": "Drama, Romance",
+      "Director": "Mike Figgis",
+      "Writer": "John O'Brien (based upon the novel by), Mike Figgis (screenplay by)",
+      "Actors": "Nicolas Cage, Elisabeth Shue, Julian Sands, Richard Lewis",
+      "Plot": "Ben Sanderson, a Hollywood screenwriter who lost everything because of his alcoholism, arrives in Las Vegas to drink himself to death. There, he meets and forms an uneasy friendship and non-interference pact with prostitute Sera.",
+      "Language": "English, Russian",
+      "Country": "France, UK, USA",
+      "Awards": "Won 1 Oscar. Another 31 wins & 28 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNDg3MDM5NTI0MF5BMl5BanBnXkFtZTcwNDY0NDk0NA@@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "7.5/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "91%"
+        },
+        {
+          "Source": "Metacritic",
+          "Value": "82/100"
+        }
+      ],
+      "Metascore": "82",
+      "imdbRating": "7.5",
+      "imdbVotes": "112,534",
+      "imdbID": "tt0113627",
+      "Type": "movie",
+      "DVD": "24 Feb 1998",
+      "BoxOffice": "N/A",
+      "Production": "United Artists",
+      "Website": "N/A",
+      "Response": "True"
+    },
+    {
+      "Title": "Othello",
+      "Year": "1995",
+      "Rated": "R",
+      "Released": "19 Jan 1996",
+      "Runtime": "123 min",
+      "Genre": "Drama, Romance",
+      "Director": "Oliver Parker",
+      "Writer": "Oliver Parker (adaptation), William Shakespeare (play)",
+      "Actors": "Laurence Fishburne, Irène Jacob, Kenneth Branagh, Nathaniel Parker",
+      "Plot": "The Moorish General Othello is manipulated into thinking that his new wife Desdemona has been carrying on an affair with his Lieutenant Michael Cassio, when in reality, it is all part of the scheme of a bitter Ensign named Iago.",
+      "Language": "English",
+      "Country": "USA, UK",
+      "Awards": "3 nominations.",
+      "Poster": "https://m.media-amazon.com/images/M/MV5BNzVlMjhjYzctNjQ4My00OGMwLThmZTktODE4MWI3NzNkOWYyXkEyXkFqcGdeQXVyNjMwMjk0MTQ@._V1_SX300.jpg",
+      "Ratings": [
+        {
+          "Source": "Internet Movie Database",
+          "Value": "6.9/10"
+        },
+        {
+          "Source": "Rotten Tomatoes",
+          "Value": "67%"
+        }
+      ],
+      "Metascore": "N/A",
+      "imdbRating": "6.9",
+      "imdbVotes": "8,897",
+      "imdbID": "tt0114057",
+      "Type": "movie",
+      "DVD": "18 Jan 2000",
+      "BoxOffice": "N/A",
+      "Production": "Columbia Pictures",
+      "Website": "N/A",
+      "Response": "True"
+    }]
 
-console.log("Random = %s", generateRandom());
+//console.log("Random = %s", generateRandom());
 init()
