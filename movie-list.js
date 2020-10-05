@@ -2,9 +2,9 @@ let upcoming;
 let your_list;
 let fan_picks;
 
-/*
+
 function init() {
-    upcoming = document.getElementsByClassName("upcoming");
+    upcoming = document.getElementsByClassName("upcoming")[0];
     console.log(upcoming);
     //your_list = document.getElementsByClassName("your_list").getChildren[1].innerHTML;
     //fan_picks = document.getElementsByClassName("your_list").getChildren[1].innerHTML;
@@ -24,7 +24,7 @@ function init() {
     
     
 }
-*/
+
 
 
 function generateRandom() {
