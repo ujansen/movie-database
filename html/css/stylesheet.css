@@ -1,0 +1,177 @@
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+body {
+    background-color: #141e24;
+}
+
+.navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 5;
+    top: 0;
+}
+
+.navbar-dark {
+    background-color: black !important;
+}
+
+.body_content {
+    padding-top: 30px !important;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-bottom: 25px;
+    background-color: #243742;
+    color: #d6d6d6;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 20px 40px 20px;
+
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background: #141e24;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d6d6d6d5;
+}
+
+a, a:visited {
+  color: #66c6ff;
+}
+
+a:hover {
+  color: #ade0ff;
+}
+
+.slider-img {
+    height: auto; 
+    width: auto; 
+    max-width: 250px;
+    max-height: 280px;
+    border-radius: 2px;
+}
+
+.card a:hover{
+    transform: scale(1.07, 1.07);
+  }
+  
+  .card a{
+    transition: transform .6s;
+  }
+
+.cp-1 { 
+    /* column padding */
+    margin: 5px;
+    padding: 0.1rem !important;
+    border-radius: 2px;
+}
+
+.scrolling > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.scrolling > .row > .col-xs-4 {
+    display: inline-block;
+    float: none;
+}
+
+.flex-nowrap::-webkit-scrollbar {
+    scrollbar-width: 1px !important; /* doesn't work (?) */
+    background: #243742 !important;
+}
+
+.flex-nowrap::-webkit-scrollbar-thumb {
+    background: #d6d6d6d5 !important;
+}
+
+.user-img {
+    height: auto; 
+    width: auto; 
+    max-width: 200px;
+    max-height: 230px;
+    border-radius: 2px;
+}
+
+#username {
+  font-weight: bold;
+  text-shadow: 1px 1px black;
+}
+
+/* toggle switch css */
+
+.switch {
+    position: relative; 
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: green;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px green;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 17px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+/* toggle switch css ends */
+
+
+.list-group-item {
+    background-color: #141e24;
+    color: #d6d6d6;
+}
