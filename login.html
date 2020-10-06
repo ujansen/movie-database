@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang = "en" dir = "ltr">
+  <head>
+    <meta charset = "utf-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!--Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg" type="image/x-icon">
+  </head>
+  <title>Login</title>
+  <body>
+    <header>
+      <!-- NAVBAR -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a class="navbar-brand ml-2" href="./index.html"><img style="height: 40px; width: 40px;"src= "https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg"></a>
+        <!-- crediting creator:
+            Icon made by Freepik from www.flaticon.com
+         -->
+        <a class="navbar-brand" href="./index.html">MDB</a>
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searchBar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="searchButton">Search</button>
+        </form>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link active" href="./index.html">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="./login.html">Log In <span class="sr-only">(current)</span></a>
+          </div>
+        </div>
+    </nav>
+
+  </header>
+    <main style="background-color: #243742;">
+      <div class="container">
+        <form class="login_form" action="index.html"> <!-- add the path for the index.html file inside action -->
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-3">Login</legend>
+            <div class="form-group">
+              <label for="email_address">Email address</label>
+              <input type="email" class="form-control" id="emailAddress" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" id="login">Login</button>
+            <div class="border-top mt-3 pt-4">
+              <small class="text-muted">
+                Need An Account? <a class="ml-2" href="./register.html">Sign Up Now!</a>
+              </small>
+           </div>
+        </form>
+      </div>
+    </main>
+  </body>
+  <script src = "./js/scriptLogin.js"></script>
+  <script src = "./js/navBar.js"></script>
+</html>
