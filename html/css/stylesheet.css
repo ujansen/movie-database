@@ -41,6 +41,14 @@ body {
     background: #d6d6d6d5;
 }
 
+a, a:visited {
+  color: #66c6ff;
+}
+
+a:hover {
+  color: #ade0ff;
+}
+
 .slider-img {
     height: auto; 
     width: auto; 
@@ -91,6 +99,11 @@ body {
     border-radius: 2px;
 }
 
+#username {
+  font-weight: bold;
+  text-shadow: 1px 1px black;
+}
+
 /* toggle switch css */
 
 .switch {
@@ -133,11 +146,11 @@ body {
   }
   
   input:checked + .slider {
-    background-color: #141e24;
+    background-color: green;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #141e24;
+    box-shadow: 0 0 1px green;
   }
   
   input:checked + .slider:before {
