@@ -1,0 +1,49 @@
+{
+    "0": {
+        "id": "0",
+        "title": "Toy Story",
+        "runtime": "81 min",
+        "releaseYear": "1995",
+        "averageRating": 4.5,
+        "noOfRatings": 3,
+        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
+        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
+        "actors": [1, 7, 8, 12],
+        "director": 5,
+        "writers": [5, 6, 12, 1],
+        "reviews": [124, 534, 12],
+        "trailer": ""
+    },
+    "1": {
+        "id": "1",
+        "title": "Jumanji",
+        "runtime": "104 min",
+        "releaseYear": "1995",
+        "averageRating": 4.2,
+        "noOfRatings": 5,
+        "genre": ["adventure", "comedy", "family", "fantasy"],
+        "plot": "When two kids find and play a magical board game, they release a man trapped in it for decades - and a host of dangers that can only be stopped by finishing the game.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BZTk2ZmUwYmEtNTcwZS00YmMyLWFkYjMtNTRmZDA3YWExMjc2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+        "actors": [3, 2, 8],
+        "director": 9,
+        "writers": [66, 76, 21, 1],
+        "reviews": [69, 420, 111, 20, 77]
+    },
+    "2": {
+        "id": "2",
+        "title": "Grumpier Old Men",
+        "runtime": "101 min",
+        "releaseYear": "1995",
+        "averageRating": 4.2,
+        "noOfRatings": 5,
+        "genre": ["adventure", "comedy", "family", "fantasy"],
+        "plot": "When two kids find and play a magical board game, they release a man trapped in it for decades - and a host of dangers that can only be stopped by finishing the game.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BZTk2ZmUwYmEtNTcwZS00YmMyLWFkYjMtNTRmZDA3YWExMjc2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+        "actors": [3, 2, 8],
+        "director": 9,
+        "writers": [66, 76, 21, 1],
+        "reviews": [69, 420, 111, 20, 77]
+    }
+
+}
