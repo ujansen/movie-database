@@ -220,6 +220,7 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
 }
 
 // add movie
+// need to parse genre from string(?) to list
 function addMovie(requestingUser, title, runtime, releaseYear, genre, plot, poster, actors, director, writers, trailer) {
   // check if user contributing
   if(requestingUser["userType"]) {
@@ -268,6 +269,7 @@ function searchMovie(keyWord) {
 }
 
 // edit movie - if exists
+// need to parse genre from string(?) to list
 function editMovie(requestingUser, movieID, runtime, releaseYear, genre, plot, poster, actors, director, writers, trailer) {
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
@@ -301,7 +303,7 @@ function removeMovie(requestingUser, movieID) {
 
 // similar movies - based on similar genre, cast
 function similarMovies() {
-  // how to implement this... -think thonk-
+  // implementation pending
 }
 
 // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
