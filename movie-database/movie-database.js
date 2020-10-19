@@ -230,11 +230,11 @@ function addMovie(requestingUser, title, runtime, releaseYear, genre, plot, post
         return false;
       }
     }
-
+    let lastID = movies[(movies.length).toString()]["id"]
     // add movie
     movies.push(
       {
-        "id": (movies.length).toString(),
+        "id": (lastID+1).toString(),
         "title": title,
         "runtime": runtime,
         "releaseYear": releaseYear,
@@ -250,7 +250,7 @@ function addMovie(requestingUser, title, runtime, releaseYear, genre, plot, post
         "trailer": trailer
       }
     );
-    return true;
+    return true;  // if addition is successful
   }
   return false;
 }
@@ -267,10 +267,10 @@ function searchMovie(keyWord) {
   return results;
 }
 
-// edit / remove movie - if exists
+// edit movie - if exists
 function editMovie(requestingUser, movieID, runtime, releaseYear, genre, plot, poster, actors, director, writers, trailer) {
   // check if user contributing
-  if(requestingUser["userType"]) {
+  if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
     // get movie via movieID
     movie = movies[movieID];
     movie["runtime"] = runtime,
@@ -283,7 +283,18 @@ function editMovie(requestingUser, movieID, runtime, releaseYear, genre, plot, p
     movie["writers"] = writers,
     movie["trailer"] = trailer
     
-    return true;
+    return true;  // if edit is successful
+  }
+  return false;
+}
+
+// deletes movies from database - if exists
+function removeMovie(requestingUser, movieID) {
+  // check if user contributing
+  if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
+    // remove the key movieID from movies list
+    delete movies[movieID];
+    return true; // if deletion is successful
   }
   return false;
 }
@@ -333,7 +344,8 @@ console.log(users);
     // get movie
     // search movie
     // add movie
-    // edit / remove movie - if exists
+    // edit movie - if exists
+    // remove movie - if exists
     // similar movies - based on similar genre, cast --> pending
     // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
 
