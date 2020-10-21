@@ -1,5 +1,11 @@
 let users = require("./users.json");
 let movies = require("./movies.json");
+let moviesCopy = Object.keys(movies).map(key => {
+    return movies[key];
+});
+let reviews = require("./reviews.json");
+
+
 //console.log(users);
 
 let nextUserID = -1;
@@ -9,7 +15,7 @@ for(uid in users){
   }
 }
 
-// USER
+// -------------------------------------------------USER----------------------------------------------
 
 function isValidUser(userObj){    // checks if the user exists
   if(!userObj){
@@ -41,17 +47,17 @@ function registerUser(newUser){
   return users[newUser.username];
 }
 
-function login(username, password){
-  if (!users.hasOwnProperty(username)){
+function login(loginObject){
+  if (!users.hasOwnProperty(loginObject.username)){
     return false;
   }
-  if (users[username].password !== password){
+  if (users[loginObject.username].password !== loginObject.password){
     return false;
   }
   return true;
 }
 
-function showReviews(requestedUser){    // displays requested user's reviews 
+function showReviews(requestedUser){    // displays requested user's reviews
   let reviewList = [];
   for (reviewID in users[requestedUser].reviews){
     reviewList.push(reviews[reviewID]);
@@ -98,7 +104,7 @@ function viewRecommendedMovies(requesting){     // lists recommended movies for 
 }
 
 
-// OTHER USER 
+// --------------------------------------OTHER USER--------------------------------------------------------
 
 function canAccessUser(requesting, requested){    // checks if user can access other user's profile
   if (users.hasOwnProperty(requested)){
@@ -210,7 +216,7 @@ function viewFollowingOtherUser(requesting, requested){   // requesting user vie
   }
 }
 
-// MOVIES
+// --------------------------------------MOVIES--------------------------------------------------------
 
 function getMovie(movieID){    // gets the movie object when supplied with movieID
   if (movies.hasOwnProperty(movieID)){
@@ -221,44 +227,33 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
 
 // add movie
 // need to parse genre from string(?) to list
-function addMovie(requestingUser, title, runtime, releaseYear, genre, plot, poster, actors, director, writers, trailer) {
+function addMovie(requestingUser, movieObject) {
   // check if user contributing
   if(requestingUser["userType"]) {
     // search if same title exists
     for(movieID in movies) {
       let movie = movies[movieID];
-      if(movie["title"].toLowercase() === title.toLowerCase) {
+      if(movie["title"].toLowercase() === movieObject.title.toLowerCase()) {
         return false;
       }
     }
     let lastID = movies[(movies.length).toString()]["id"]
     // add movie
-    movies.push(
-      {
-        "id": (lastID+1).toString(),
-        "title": title,
-        "runtime": runtime,
-        "releaseYear": releaseYear,
-        "averageRating": 0,
-        "noOfRatings": 0,
-        "genre": genre,
-        "plot": plot,
-        "poster": poster,
-        "actors": actors,
-        "director": director,
-        "writers": writers,
-        "reviews": [],
-        "trailer": trailer
-      }
-    );
+    movies.push(movieObject);
+    moviesCopy.push(movieObject);
+    moviesCopy = sortMovieYear();
+    moviesCopy = sortMovieRating();
     return true;  // if addition is successful
   }
   return false;
 }
 
 // search movie
-function searchMovie(keyWord) {
+function searchMovie(requestingUser, keyWord) {
   let results = [];
+  if (!users.hasOwnProperty(requestingUser)){
+    return results;
+  }
   for (movieID in movies){
     let movie = movies[movieID];
     if (movie.title.toLowerCase().indexOf(keyWord) >= 0){
@@ -270,21 +265,13 @@ function searchMovie(keyWord) {
 
 // edit movie - if exists
 // need to parse genre from string(?) to list
-function editMovie(requestingUser, movieID, runtime, releaseYear, genre, plot, poster, actors, director, writers, trailer) {
+function editMovie(requestingUser, movieObject) {
   // check if user contributing
-  if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
+  if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id)) {
     // get movie via movieID
-    movie = movies[movieID];
-    movie["runtime"] = runtime,
-    movie["releaseYear"] = releaseYear,
-    movie["genre"] = genre,
-    movie["plot"] = plot,
-    movie["poster"] = poster,
-    movie["actors"] = actors,
-    movie["director"] = director,
-    movie["writers"] = writers,
-    movie["trailer"] = trailer
-    
+    movies[movieObject.id] = movieObject;
+    moviesCopy = sortMovieYear();
+    moviesCopy = sortMovieRating();
     return true;  // if edit is successful
   }
   return false;
@@ -296,39 +283,168 @@ function removeMovie(requestingUser, movieID) {
   if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
     // remove the key movieID from movies list
     delete movies[movieID];
+    moviesCopy = moviesCopy.filter(movie => movie.id !== movieID);
+    moviesCopy = sortMovieYear();
+    moviesCopy = sortMovieRating();
     return true; // if deletion is successful
   }
   return false;
 }
 
+// returns the number of common elements between two arrays
+function commonElements(array1, array2){
+  let common = 0;
+  for (let i = 0; i < array1.length; i++){
+    for (let j = 0; j < array2.length; j++){
+      if (array1[i] === array2[j]){
+        common++;
+      }
+    }
+  }
+  return common;
+}
+
 // similar movies - based on similar genre, cast
-function similarMovies() {
-  // implementation pending
+function similarMovies(requesting, movieID) {
+  // implementation pending for cast
+  // currently works if more than 2 genres match
+  if (!users.hasOwnProperty(requesting) || !movies.hasOwnProperty(movieID)){
+    return [];
+  }
+  let similar = [];
+  let movie = movies[movieID];
+  for (movieid in movies){
+    if (movieid === movieID){
+      continue;
+    }
+    else{
+      if (commonElements(movies[movieid].genre, movie.genre) > 2){
+        similar.push(movies[movieid]);
+        if (similar.length > 2){
+          break;
+        }
+      }
+    }
+  }
+  return similar;
 }
 
 // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
-function movieRating(movieID) {
-  let movie = movies[movieID];
-  let ratingSum = 0;
-  for(reviewID in movie["reviews"]) {
-    let review = reviews["reviewID"];
-    let rating = Number(review["rating"]);
-    ratingSum += rating;
+function updateMovieRating(movieID, rating) {
+  if (!movies.hasOwnProperty(movieID)){
+    return false;
   }
-  let newRating = ratingSum/Number(movie["noOfRatings"]); //Number(movie["averageRating"])
-  movie["averageRating"] = newRating;
+  let movie = movies[movieID];
+  let currentRatingSum = Number(movie.averageRating) * Number(movie.noOfRatings);
+  currentRatingSum += rating;
+  movie.noOfRatings += 1;
+  movie.averageRating = currentRatingSum/movie.noOfRatings;
+  return true;
 }
 
+// sort movies according to releaseYear (descending order)
+function sortMovieYear(){
+  let sortedMovies = [];
+  sortedMovies =   moviesCopy.sort(function(a, b){
+                     return Number(b.releaseYear) - Number(a.releaseYear);
+                     });
+  return sortedMovies;
+}
+
+// sort movies according to averageRating (descending order)
+function sortMovieRating(){
+  let sortedMovies = [];
+  sortedMovies = moviesCopy.sort(function(a, b){
+                  return Number(b.averageRating) - Number(a.averageRating);
+                  });
+  return sortedMovies;
+}
+
+// get the 8 most recently released movies
+function upcoming(requesting){
+  if (!users.hasOwnProperty(requesting)){
+    return null;
+  }
+  return sortMovieYear().slice(0, 8);
+}
+
+// get the top 8 movies with highest averageRating
+function fanPicks(requesting){
+  if (!users.hasOwnProperty(requesting)){
+    return null;
+  }
+  return sortMovieRating().slice(0, 8);
+}
+
+// get the movies you have reviewed
+function yourList(requesting){
+  if (!users.hasOwnProperty(requesting)){
+    return [];
+  }
+  let moviesList = [];
+  let reviews = users[requesting].reviews;
+
+  for (reviewID in reviews){
+    moviesList.push(movies[reviews[reviewID].movieID]);
+  }
+  return moviesList;
+}
+// -------------------------------------------------REVIEWS-------------------------------------------------
+
+// get a particular review
+function getReview(requestingUser, reviewID){
+  if(!users.hasOwnProperty(requestingUser) || !reviews.hasOwnProperty(reviewID)){
+    return false;
+  }
+  return reviews[reviewID];
+}
+
+// add a full review by specifying title, content, and rating out of 10
+function addFullReview(requestingUser, reviewObject){
+  if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(reviewObject.movieID)){
+    return false; // could not add review
+  }
+  let lastID = reviews[(reviews.length).toString()].id;
+  reviews.push(reviewObject);
+  movies[reviewObject.movieID].reviews.push(lastID+1);
+  updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
+  users[requestingUser].reviews.push(lastID+1);
+  return true; // review added successfully
+}
+
+// add a basic review by only specifying a score out of 10
+function addBasicReview(requestingUser, movieID, rating){
+  if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
+    return false; // could not add review
+  }
+  updateMovieRating(movieID, rating); // movie rating is updated
+  return true; // review added successfully
+}
+
+// get reviews for a particular movie
+function getReviewMovie(requestingUser, movieID){
+  if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
+    return [];
+  }
+  let movie = movies[movieID];
+  let reviewList = [];
+  for (reviewID in movie.reviews){
+    reviewList.push(reviews[reviewID]); // add every review object for that movie to the list
+  }
+  return reviewList; // return list of reviews for that movie
+}
 
 let userA = registerUser({username: "user4", password: "password"});
 let userB = registerUser({username: "user5", password: "password"});
+//console.log(similarMovies("user2", "5"))
+//console.log(fanPicks("user0"));
 //console.log(users);
 //console.log(searchUsers("user0", "user"));
 //console.log(getUser("user0", "user1"));
-followUser("user0", "user4");
-console.log(users);
-unfollowUser("user0", "user4");
-console.log(users);
+//followUser("user0", "user4");
+//console.log(users);
+//unfollowUser("user0", "user4");
+//console.log(users);
 
 // recommended movies - user --> implement the function
 
@@ -360,4 +476,4 @@ console.log(users);
 // INDEX
 // new and upcoming - list of recent 8 movies - edited only when movies added or removed
 // your list - reviewed movies sorted by which you have rated highest - updated when user adds or removes a movie
-// fan picks - sort according to rating - top 8 - edited only when movies added or removed, when review is added / deleted 
+// fan picks - sort according to rating - top 8 - edited only when movies added or removed, when review is added / deleted
