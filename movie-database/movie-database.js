@@ -569,7 +569,7 @@ function removePerson(requesting, requested) {
       }
 
       // director
-      if(movie.director.valueOf() === requestedPerson.id.valueOf()) { // if movie director id string is the same as requested person's id
+      if(movie.director === requestedPerson.id) { // if movie director id string is the same as requested person's id (valueOf)
         movies.director = "N/A"; 
       } 
       
