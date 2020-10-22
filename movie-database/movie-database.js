@@ -101,9 +101,38 @@ function viewRecommendedMovies(requesting){     // lists recommended movies for 
   if (!users.hasOwnProperty(requesting)){
     return null;
   }
+  if (users[requesting].reviews.length === 0){
+    return [];
+  }
+  getRecommendedMovies(requesting);
   return users[requesting].recommendedMovies;
 }
 
+function getRecommendedMovies(requesting){
+  if (!users.hasOwnProperty(requesting)){
+    return false;
+  }
+
+  let requestingUser = users[requesting];
+  let count = 0;
+
+  while (requestingUser.recommendedMovies.length < 6){
+    for (reviewID in requestingUser.reviews){
+      count = 0;
+      let movie = movies[reviews[reviewID].movieID];
+      for (movieID in movies){
+        if (commonElements(movie.genre, movieID.genre) > 2 && !requestingUser.recommendedMovies.includes(movies[movieID])){
+            count++;
+            requestingUser.recommendedMovies.push(movies[movieID]);
+            if (count > 1){
+              break;
+            }
+        }
+      }
+    }
+  }
+  return true;
+}
 
 // --------------------------------------OTHER USER--------------------------------------------------------
 
