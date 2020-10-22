@@ -1,0 +1,91 @@
+{
+    "0": {
+        "id": "0",
+        "name": "Martin Freeman",
+        "personType": 0,
+        "about": "",
+        "followers": ["user1", "user2", "user3", "user4"],
+        "collaborators": ["1"],
+        "works": ["1", "2", "4"]
+      },
+    "1":{
+        "id": "1",
+        "name": "Tom Hanks",
+        "about": "",
+        "personType": 0,
+        "followers": ["user1", "user2", "user3"],
+        "collaborators": ["2"],
+        "works": ["0", "2"]
+      },
+    "2":
+      {
+        "id": "2",
+        "name": "Brad Pitt",
+        "personType": 0,
+        "about": "",
+        "followers": ["user1", "user2", "user4"],
+        "collaborators": [],
+        "works": ["0", "3", "4"]
+      },
+    "3":
+      {
+        "id": "3",
+        "name": "Quentin Tarantino",
+        "personType": 1,
+        "about": "",
+        "followers": ["user1", "user3", "user4"],
+        "collaborators": [],
+        "works": ["0", "3"]
+      },
+    "4":
+      {
+        "id": "4",
+        "name": "Christopher Nolan",
+        "personType": 1,
+        "about": "",
+        "followers": ["user1"],
+        "collaborators": [],
+        "works": ["1", "4"]
+      },
+    "5":
+      {
+        "id": "5",
+        "name": "Steven Spielberg",
+        "personType": 1,
+        "about": "",
+        "followers": ["user4"],
+        "collaborators": [],
+        "works": ["2"]
+      },
+    "6":
+      {
+        "id": "6",
+        "name": "Charlie Kaufman",
+        "personType": 2,
+        "about": "",
+        "followers": ["user2", "user3"],
+        "collaborators": [],
+        "works": ["0", "2", "4"]
+      },
+    "7":
+      {
+        "id": "7",
+        "name": "Woody Allen",
+        "personType": 2,
+        "about": "",
+        "followers": ["user1", "user2", "user3", "user4"],
+        "collaborators": [],
+        "works": ["1", "2", "3", "4"]
+      },
+    "8":
+      {
+        "id": "8",
+        "name": "Ethan Coen",
+        "personType": 2,
+        "about": "",
+        "followers": ["user1", "user2", "user4"],
+        "collaborators": [],
+        "works": ["0", "3", "4"]
+      }
+  }
+  

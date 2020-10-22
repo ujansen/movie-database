@@ -237,8 +237,22 @@ function addMovie(requestingUser, movieObject) {
         return false;
       }
     }
-    let lastID = movies[(movies.length).toString()]["id"]
+    let lastID = movies[(movies.length-1).toString()]["id"]
     // add movie
+    /*
+    movies.push(
+      {
+        "id": (lastID+1).toString(),
+        "title": title,
+        "runtime": runtime,
+        "releaseYear": releaseYear,
+        "trailer": trailer	        "trailer": trailer
+      }
+    ); 
+    */
+
+    // probably won't work (?) - the new movie's id is not being set by the movieObject since it is 
+    // NOT set via user input - need to use lastID to create the new id
     movies.push(movieObject);
     moviesCopy.push(movieObject);
     moviesCopy = sortMovieYear();
@@ -434,6 +448,111 @@ function getReviewMovie(requestingUser, movieID){
   return reviewList; // return list of reviews for that movie
 }
 
+// -------------------------------------------------PERSON-------------------------------------------------
+
+// follows person
+function followPerson(requesting, requested){   // requesting user follows requested person
+  if (!people.hasOwnProperty(requested)){
+    return null;
+  }
+
+  let requestingUser = users[requesting];
+  let requestingID = requestingUser.id;
+  let requestedPerson = people[requested];
+  
+  if(!requestingUser.followingPeople.includes(requested) && !requestedPerson.followers.includes(requestingID)) {
+    requestingUser.followingPeople.push(requested);
+    requestedPerson.followers.push(requesting);
+  }
+  else return null;
+}
+
+// unfollow person
+function unfollowUser(requesting, requested){   // requesting user unfollows requested person
+  if (!people.hasOwnProperty(requested)){
+    return null;
+  }
+
+  let requestingUser = users[requesting];
+  let requestingID = requestingUser.id;
+  let requestedPerson = people[requested];
+
+  if(!requestingUser.followingPeople.includes(requested) && !requestedPerson.followers.includes(requestingID)) {
+    return null;
+  }
+
+  // user stores followingPerson list as an array of id strings
+  requestingUser.followingPeople = requestingUser.followingPeople.filter(person => person !== requestedPerson.id); // removes follower (requested person) from requesting user's followingPeople
+  requestedPerson.followers = requestedPerson.followers.filter(user => user !== requestingUser.username); // removes requesting user from requested person's followers list
+}
+
+// add a new person
+function addPerson(requestingUser, personObject) {
+  // check if user contributing
+  if(requestingUser["userType"]) {
+    // search if same user exists
+    for(personID in people) {
+      let person = people[personID];
+      if(person["name"].toLowercase() === personObject.name.toLowerCase()) {
+        return false;
+      }
+    }
+    let lastID = people[(people.length-1).toString()]["id"]
+    // add person
+    people.push(personObject); //
+    return true;  // if addition is successful
+  }
+  return false;
+}
+
+// remove person - if exists
+function removePerson(requestingUser, requested) {
+  // check if user contributing
+  if(requestingUser["userType"] && people.hasOwnProperty(requested)) {
+    // remove the key movieID from movies list
+    delete people[requested];
+    // remove from corresponding collaborators, followers, movies
+    return true; // if deletion is successful
+  }
+  return false;
+}
+
+// get person - specific person
+function getPerson(personID) { // gets the movie object when supplied with personID
+  if (people.hasOwnProperty(personID)){
+    return people[personID];
+  }
+  return null;
+}
+
+// search for a person - returns a list
+function searchPerson(requestingUser, keyWord) {
+  let results = [];
+  if (!users.hasOwnProperty(requestingUser)){
+    return results;
+  }
+  for (personID in people){
+    let person = people[personID];
+    if (person.name.toLowerCase().indexOf(keyWord) >= 0){
+      results.push(person);
+    }
+  }
+  return results;
+}
+
+// get frequent collaborator - returns list of person objects
+function getFrequentCollaborator(personID) {
+  let collaborators = [];
+  if (people.hasOwnProperty(personID)){
+    let collabIDList = people[personID].collaborators;
+    for(let i=0; i<collabIDList.length; i++) {
+      let collabID = collabIDList[i];
+      collaborators.push(people[collabID]);
+    }
+  }
+  return collaborators;
+}
+
 let userA = registerUser({username: "user4", password: "password"});
 let userB = registerUser({username: "user5", password: "password"});
 //console.log(similarMovies("user2", "5"))
@@ -458,14 +577,14 @@ let userB = registerUser({username: "user5", password: "password"});
 // search person - list
 // get frequent collaborator
 
-    // MOVIES
-    // get movie
-    // search movie
-    // add movie
-    // edit movie - if exists
-    // remove movie - if exists
-    // similar movies - based on similar genre, cast --> pending
-    // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
+// MOVIES
+// get movie
+// search movie
+// add movie
+// edit movie - if exists
+// remove movie - if exists
+// similar movies - based on similar genre, cast --> pending
+// get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
 
 // REVIEWS
 // add review - updates average rating, number of ratings, review id gets added, id added to user review list - limit review characters
