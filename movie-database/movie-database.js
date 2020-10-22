@@ -244,6 +244,19 @@ function addMovie(requesting, movieObject) {
         return false;
       }
     }
+    // check if IDs in actors, director, writers is valid, else weed them out
+    movieObject.actors = movieObject.actors.filter(person => people.hasOwnProperty(person)); // weeds out invalid IDs
+    if(movieObject.actors.length === 0) {
+      movieObject.actors = "N/A";
+    }
+    if(!people.hasOwnProperty(movieObject.director)) { // if directorID does not exist in people
+      movieObject.director = "N/A";
+    }
+    movieObject.writers = movieObject.writers.filter(person => people.hasOwnProperty(person)); // weeds out invalid IDs
+    if(movieObject.writers.length === 0) {
+      movieObject.writers = "N/A";
+    }
+
     let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
     // adding object to movies object
     movieObject.id = (lastID + 1).toString();
@@ -548,18 +561,20 @@ function removePerson(requesting, requested) {
     // removing from movies' cast list
     let movieIDList = requestedPerson.movies;
     for(let i=0; i<movieIDList.length; i++) {
-      
+      let movie = movies[i];
       // actors
-      movies.actors = movies.actors.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
-      if(movies.actors.length === 0) {
-        movies.actors = "N/A";
+      movie.actors = movie.actors.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
+      if(movie.actors.length === 0) {
+        movie.actors = "N/A";
       }
 
       // director
-      movies.director = "N/A"; 
+      if(movie.director.valueOf() === requestedPerson.id.valueOf()) { // if movie director id string is the same as requested person's id
+        movies.director = "N/A"; 
+      } 
       
       // writers
-      movies.writers = movies.writers.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+      movies.writers = movies.writers.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
       if(movies.writers.length === 0) {
         movies.writers = "N/A";
       }
