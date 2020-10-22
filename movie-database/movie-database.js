@@ -4,6 +4,7 @@ let moviesCopy = Object.keys(movies).map(key => {
     return movies[key];
 });
 let reviews = require("./reviews.json");
+let people = require("./people.json");
 
 
 //console.log(users);
