@@ -227,10 +227,14 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
 }
 
 // add movie
-// need to parse genre from string(?) to list
+// need to parse genre from string to list? not required is movieObject is passed
 // movieObject may have the "id" key empty - will be filled in by this function
-// requestingUser is treated as an object
-function addMovie(requestingUser, movieObject) {
+function addMovie(requesting, movieObject) {
+  // check if requesting (userID) exists
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"]) {
     // search if same title exists
@@ -270,8 +274,12 @@ function searchMovie(requestingUser, keyWord) {
 
 // edit movie - if exists
 // need to parse genre from string(?) to list
-// requestingUser is treated as an object
-function editMovie(requestingUser, movieObject) {
+function editMovie(requesting, movieObject) {
+  // check if requesting (userID) exists
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id)) {
     // get movie via movieID
@@ -284,8 +292,12 @@ function editMovie(requestingUser, movieObject) {
 }
 
 // deletes movies from database - if exists
-// requestingUser is treated as an object
-function removeMovie(requestingUser, movieID) {
+function removeMovie(requesting, movieID) {
+  // check if requesting (userID) exists
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
     // remove the key movieID from movies list
@@ -484,8 +496,12 @@ function unfollowUser(requesting, requested){   // requesting user unfollows req
 }
 
 // add a new person
-// requestingUser is treated as an object
-function addPerson(requestingUser, personObject) {
+function addPerson(requesting, personObject) {
+  // check if requesting (userID) exists
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"]) {
     // search if same user exists
@@ -505,8 +521,12 @@ function addPerson(requestingUser, personObject) {
 }
 
 // remove person - if exists
-// requestingUser is treated as an object
-function removePerson(requestingUser, requested) {
+function removePerson(requesting, requested) {
+  // check if requesting (userID) exists
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"] && people.hasOwnProperty(requested)) {
     let requestedPerson = people[requested];
@@ -527,18 +547,21 @@ function removePerson(requestingUser, requested) {
 
     // removing from movies' cast list
     let movieIDList = requestedPerson.movies;
-    for(let i=0; i<followerIDList.length; i++) {
-      if(requestingUser.personType === 0) {
-        // actors
-        movies.actors = movies.actors.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+    for(let i=0; i<movieIDList.length; i++) {
+      
+      // actors
+      movies.actors = movies.actors.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+      if(movies.actors.length === 0) {
+        movies.actors = "N/A";
       }
-      else if(requestingUser.personType === 1) {
-        // director
-        movies.director = null; // what if a director gets deleted?
-      }
-      else if(requestingUser.personType === 2){
-        // writers
-        movies.writers = movies.writers.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+
+      // director
+      movies.director = "N/A"; 
+      
+      // writers
+      movies.writers = movies.writers.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+      if(movies.writers.length === 0) {
+        movies.writers = "N/A";
       }
     }
 

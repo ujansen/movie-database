@@ -2,7 +2,6 @@
     "0": {
         "id": "0",
         "name": "Martin Freeman",
-        "personType": 0,
         "about": "",
         "followers": ["user1", "user2", "user3", "user4"],
         "collaborators": ["1"],
@@ -12,7 +11,6 @@
         "id": "1",
         "name": "Tom Hanks",
         "about": "",
-        "personType": 0,
         "followers": ["user1", "user2", "user3"],
         "collaborators": ["2"],
         "movies": ["0", "2"]
@@ -21,7 +19,6 @@
       {
         "id": "2",
         "name": "Brad Pitt",
-        "personType": 0,
         "about": "",
         "followers": ["user1", "user2", "user4"],
         "collaborators": [],
@@ -31,7 +28,6 @@
       {
         "id": "3",
         "name": "Quentin Tarantino",
-        "personType": 1,
         "about": "",
         "followers": ["user1", "user3", "user4"],
         "collaborators": [],
@@ -41,7 +37,6 @@
       {
         "id": "4",
         "name": "Christopher Nolan",
-        "personType": 1,
         "about": "",
         "followers": ["user1"],
         "collaborators": [],
@@ -51,7 +46,6 @@
       {
         "id": "5",
         "name": "Steven Spielberg",
-        "personType": 1,
         "about": "",
         "followers": ["user4"],
         "collaborators": [],
@@ -61,7 +55,6 @@
       {
         "id": "6",
         "name": "Charlie Kaufman",
-        "personType": 2,
         "about": "",
         "followers": ["user2", "user3"],
         "collaborators": [],
@@ -71,7 +64,6 @@
       {
         "id": "7",
         "name": "Woody Allen",
-        "personType": 2,
         "about": "",
         "followers": ["user1", "user2", "user3", "user4"],
         "collaborators": [],
@@ -81,7 +73,6 @@
       {
         "id": "8",
         "name": "Ethan Coen",
-        "personType": 2,
         "about": "",
         "followers": ["user1", "user2", "user4"],
         "collaborators": [],
