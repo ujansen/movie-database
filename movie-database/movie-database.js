@@ -228,6 +228,8 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
 
 // add movie
 // need to parse genre from string(?) to list
+// movieObject may have the "id" key empty - will be filled in by this function
+// requestingUser is treated as an object
 function addMovie(requestingUser, movieObject) {
   // check if user contributing
   if(requestingUser["userType"]) {
@@ -238,23 +240,11 @@ function addMovie(requestingUser, movieObject) {
         return false;
       }
     }
-    let lastID = movies[(movies.length-1).toString()]["id"]
-    // add movie
-    /*
-    movies.push(
-      {
-        "id": (lastID+1).toString(),
-        "title": title,
-        "runtime": runtime,
-        "releaseYear": releaseYear,
-        "trailer": trailer	        "trailer": trailer
-      }
-    ); 
-    */
-
-    // probably won't work (?) - the new movie's id is not being set by the movieObject since it is 
-    // NOT set via user input - need to use lastID to create the new id
-    movies.push(movieObject);
+    let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
+    // adding object to movies object
+    movieObject.id = (lastID + 1).toString();
+    movies[movieObject.id] = movieObject;
+    // adding object to moviesCopy array
     moviesCopy.push(movieObject);
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
@@ -280,6 +270,7 @@ function searchMovie(requestingUser, keyWord) {
 
 // edit movie - if exists
 // need to parse genre from string(?) to list
+// requestingUser is treated as an object
 function editMovie(requestingUser, movieObject) {
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id)) {
@@ -293,6 +284,7 @@ function editMovie(requestingUser, movieObject) {
 }
 
 // deletes movies from database - if exists
+// requestingUser is treated as an object
 function removeMovie(requestingUser, movieID) {
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
@@ -419,8 +411,12 @@ function addFullReview(requestingUser, reviewObject){
   if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(reviewObject.movieID)){
     return false; // could not add review
   }
-  let lastID = reviews[(reviews.length).toString()].id;
-  reviews.push(reviewObject);
+  //let lastID = reviews[(reviews.length).toString()].id;
+  let lastID = reviews[(Object.keys(reviews).length-1).toString].id;
+  //reviews.push(reviewObject);
+  reviewObject.id = (lastID + 1).toString();
+  reviews[reviewObject.id] = reviewObject;
+
   movies[reviewObject.movieID].reviews.push(lastID+1);
   updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
   users[requestingUser].reviews.push(lastID+1);
@@ -488,6 +484,7 @@ function unfollowUser(requesting, requested){   // requesting user unfollows req
 }
 
 // add a new person
+// requestingUser is treated as an object
 function addPerson(requestingUser, personObject) {
   // check if user contributing
   if(requestingUser["userType"]) {
@@ -498,21 +495,55 @@ function addPerson(requestingUser, personObject) {
         return false;
       }
     }
-    let lastID = people[(people.length-1).toString()]["id"]
-    // add person
-    people.push(personObject); //
+    let lastID = people[(Object.keys(people).length-1).toString()]["id"]
+    // adding object to movies object
+    personObject.id = (lastID + 1).toString();
+    people[personObject.id] = personObject;
     return true;  // if addition is successful
   }
   return false;
 }
 
 // remove person - if exists
+// requestingUser is treated as an object
 function removePerson(requestingUser, requested) {
   // check if user contributing
   if(requestingUser["userType"] && people.hasOwnProperty(requested)) {
-    // remove the key movieID from movies list
-    delete people[requested];
+    let requestedPerson = people[requested];
     // remove from corresponding collaborators, followers, movies
+
+    // removing from collaborator's collaborator list
+    let collabIDList = requestedPerson.collaborators;
+    for(let i=0; i<collabIDList.length; i++) {
+      let collaborator = people[collabIDList[i]];
+      collaborator.contributors = collaborator.collaborators.filter(personID => personID !== requestedPerson.id);      
+    }
+
+    // removing from followers' followingPeople list
+    let followerIDList = requestedPerson.followers;
+    for(let i=0; i<followerIDList.length; i++) {
+      requestingUser.followingPeople = requestingUser.followingPeople.filter(personID => personID !== requestedPerson.id);
+    }
+
+    // removing from movies' cast list
+    let movieIDList = requestedPerson.movies;
+    for(let i=0; i<followerIDList.length; i++) {
+      if(requestingUser.personType === 0) {
+        // actors
+        movies.actors = movies.actors.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+      }
+      else if(requestingUser.personType === 1) {
+        // director
+        movies.director = null; // what if a director gets deleted?
+      }
+      else if(requestingUser.personType === 2){
+        // writers
+        movies.writers = movies.writers.filter(personID => personID !== Number(requestedPerson.id));  // person id saved as number in movies.json
+      }
+    }
+
+    // remove the key requested from people list
+    delete people[requested];
     return true; // if deletion is successful
   }
   return false;

@@ -6,7 +6,7 @@
         "about": "",
         "followers": ["user1", "user2", "user3", "user4"],
         "collaborators": ["1"],
-        "works": ["1", "2", "4"]
+        "movies": ["1", "2", "4"]
       },
     "1":{
         "id": "1",
@@ -15,7 +15,7 @@
         "personType": 0,
         "followers": ["user1", "user2", "user3"],
         "collaborators": ["2"],
-        "works": ["0", "2"]
+        "movies": ["0", "2"]
       },
     "2":
       {
@@ -25,7 +25,7 @@
         "about": "",
         "followers": ["user1", "user2", "user4"],
         "collaborators": [],
-        "works": ["0", "3", "4"]
+        "movies": ["0", "3", "4"]
       },
     "3":
       {
@@ -35,7 +35,7 @@
         "about": "",
         "followers": ["user1", "user3", "user4"],
         "collaborators": [],
-        "works": ["0", "3"]
+        "movies": ["0", "3"]
       },
     "4":
       {
@@ -45,7 +45,7 @@
         "about": "",
         "followers": ["user1"],
         "collaborators": [],
-        "works": ["1", "4"]
+        "movies": ["1", "4"]
       },
     "5":
       {
@@ -55,7 +55,7 @@
         "about": "",
         "followers": ["user4"],
         "collaborators": [],
-        "works": ["2"]
+        "movies": ["2"]
       },
     "6":
       {
@@ -65,7 +65,7 @@
         "about": "",
         "followers": ["user2", "user3"],
         "collaborators": [],
-        "works": ["0", "2", "4"]
+        "movies": ["0", "2", "4"]
       },
     "7":
       {
@@ -75,7 +75,7 @@
         "about": "",
         "followers": ["user1", "user2", "user3", "user4"],
         "collaborators": [],
-        "works": ["1", "2", "3", "4"]
+        "movies": ["1", "2", "3", "4"]
       },
     "8":
       {
@@ -85,7 +85,7 @@
         "about": "",
         "followers": ["user1", "user2", "user4"],
         "collaborators": [],
-        "works": ["0", "3", "4"]
+        "movies": ["0", "3", "4"]
       }
   }
   
