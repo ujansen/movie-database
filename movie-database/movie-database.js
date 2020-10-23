@@ -394,7 +394,7 @@ function editMovie(requesting, movieObject) {
   return false;
 }
 
-// tested
+// needs changes
 // deletes movies from database - if exists
 function removeMovie(requesting, movieID) {
   // check if requesting (userID) exists
@@ -412,23 +412,30 @@ function removeMovie(requesting, movieID) {
     }
 
     /*
-    // remove movieID from person's movie list
-    for(let i=0; i<movies[movieID].actors; i++) {
-      actor = people[i.toString];
+    // remove movieID from person's movie list --------------------- doesn't work (?)
+    // need similar changes to addMovie, editMovie - what if there are changes in cast?
+    let actorsList = movies[movieID].actors;
+    for(let i=0; i<actorsList.length; i++) {
+
+      let actor = people[actorsList[i]];
       if(actor) {
-        actor.movies = actor.movies.filter(movie => movie.id !== movieID);
+        console.log(actor);
+        console.log(movieID);
+        actor.movies = actor.movies.filter(movie => movie.id !== movieID.toString());
+        console.log(actor.movies);
       }
     }
 
-    director = people[movies[movieID].director];
+    let director = people[movies[movieID].director];
     if(director !== "N/A") {
-      director.movies = director.movies.filter(movie => movie.id !== movieID);
+      director.movies = director.movies.filter(movie => movie.id !== movieID.toString());
     }
 
-    for(let i=0; i<movies[movieID].writers; i++) {
-      writer = people[i.toString];
+    let writersList = movies[movieID].writers;
+    for(let i=0; i<writersList.length; i++) {
+      writer = people[writersList[i]];
       if(writer) {
-        writer.movies = writer.movies.filter(movie => movie.id !== movieID);
+        writer.movies = writer.movies.filter(movie => movie.id !== movieID.toString());
       }
     }
     */
@@ -687,25 +694,28 @@ function removePerson(requesting, requested) {
 
     // removing from movies' cast list
     let movieIDList = requestedPerson.movies;
-    console.log(movieIDList);
     for(let i=0; i<movieIDList.length; i++) {
-      let movie = movies[i.toString];
-      // actors
-      movie.actors = movie.actors.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
-      if(movie.actors.length === 0) {
-        movie.actors = "N/A";
-      }
+      let movie = movies[movieIDList[i].toString()];
+      if(movie) {
+        
+        // actors
+        movie.actors = movie.actors.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
+        if(movie.actors.length === 0) {
+          movie.actors = "N/A";
+        }
 
-      // director
-      if(movie.director === requestedPerson.id) { // if movie director id string is the same as requested person's id (valueOf)
-        movies.director = "N/A"; 
-      } 
-      
-      // writers
-      movies.writers = movies.writers.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
-      if(movies.writers.length === 0) {
-        movies.writers = "N/A";
+        // director
+        if(movie.director === requestedPerson.id) { // if movie director id string is the same as requested person's id (valueOf)
+          movie.director = "N/A"; 
+        } 
+        
+        // writers
+        movie.writers = movie.writers.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
+        if(movie.writers.length === 0) {
+          movie.writers = "N/A";
+        }
       }
+      
     }
 
     // remove the key requested from people list
@@ -748,7 +758,9 @@ function getFrequentCollaborator(personID) {
     let collabIDList = people[personID].collaborators;
     for(let i=0; i<collabIDList.length; i++) {
       let collabID = collabIDList[i];
-      collaborators.push(people[collabID]);
+      if(people[collabID]) {
+        collaborators.push(people[collabID]);
+      }
     }
   }
   return collaborators;
@@ -805,6 +817,7 @@ console.log(removeMovie("user2", "0"));
 console.log();
 // remove movie should remove all the reviews associated with it 
 // removing reviews should remove it in all the places where it is stored (users)
+// similarly addMovie and editMovie should update all of its cast members
 console.log('getUser("user2", "user2")');
 console.log(getUser("user2", "user2"));
 console.log();
@@ -886,8 +899,12 @@ console.log('removePerson("user2", "1")');
 console.log(removePerson("user2", "1"));
 console.log();
 
-console.log('searchPerson("user2", "")');
-console.log(searchPerson("user2", ""));
+console.log('getMovie("2")');
+console.log(getMovie("2"));
+console.log();
+
+console.log('getFrequentCollaborator("0")');
+console.log(getFrequentCollaborator("0"));
 console.log();
 
 // recommended movies - user --> implement the function

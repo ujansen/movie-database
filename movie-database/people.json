@@ -4,7 +4,7 @@
         "name": "Martin Freeman",
         "about": "",
         "followers": ["user1", "user2", "user3", "user4"],
-        "collaborators": ["1"],
+        "collaborators": ["1", "2"],
         "movies": ["1", "2", "4"]
       },
     "1":{
@@ -38,7 +38,7 @@
         "id": "4",
         "name": "Christopher Nolan",
         "about": "",
-        "followers": ["user1"],
+        "followers": ["user2"],
         "collaborators": [],
         "movies": ["1", "4"]
       },
