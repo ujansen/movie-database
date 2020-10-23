@@ -30,6 +30,13 @@ for(pid in people) {
   }
 }
 
+let nextReviewID = -1;
+for (rid in reviews){
+  if (Number(rid) >= nextReviewID){
+    nextReviewID = Number(rid) + 1;
+  }
+}
+
 // -------------------------------------------------USER----------------------------------------------
 
 function isValidUser(userObj){    // checks if the user exists
@@ -47,9 +54,9 @@ function registerUser(newUser){
   if (!newUser.username || !newUser.password){
     return null;
   }
-  // if (users.hasOwnProperty(newUser.username)){
-  //   return null;
-  // }
+  if (users.hasOwnProperty(newUser.username)){
+    return null;
+  }
 
   newUser.id = String(nextUserID);
   newUser.userType = false;
@@ -77,7 +84,7 @@ function login(loginObject){
 // tested
 function showReviews(requestedUser){    // displays requested user's reviews
   let reviewList = [];
-  for (reviewID in users[requestedUser].reviews){
+  for (reviewID of users[requestedUser].reviews){
     reviewList.push(reviews[reviewID]);
   }
   return reviewList;
@@ -85,7 +92,7 @@ function showReviews(requestedUser){    // displays requested user's reviews
 
 function showPeople(requestedUser){   // displays the people the user follows
   let peopleList = [];
-  for (peopleID in users[requestedUser].followingPeople){
+  for (peopleID of users[requestedUser].followingPeople){
     peopleList.push(people[peopleID]);
   }
   return peopleList;
@@ -93,7 +100,7 @@ function showPeople(requestedUser){   // displays the people the user follows
 
 function showFollowers(requestedUser){    // lists all of user's followers
   let followerList = [];
-  for (userID in users[requestedUser].followers){
+  for (userID of users[requestedUser].followers){
     followerList.push(users[userID]);
   }
   return followerList;
@@ -101,7 +108,7 @@ function showFollowers(requestedUser){    // lists all of user's followers
 
 function showFollowing(requestedUser){    // displays the list of users the user follows
   let followingList = [];
-  for (userID in users[requestedUser].followingUsers){
+  for (userID of users[requestedUser].followingUsers){
     followingList.push(users[userID]);
   }
   return followingList;
@@ -122,12 +129,15 @@ function viewRecommendedMovies(requesting){     // lists recommended movies for 
   if (users[requesting].reviews.length === 0){
     return [];
   }
+  let movieObjectList = [];
   getRecommendedMovies(requesting);
-  return users[requesting].recommendedMovies;
+  for (let i = 0; i < users[requesting].recommendedMovies.length; i++){
+    movieObjectList.push(movies[users[requesting].recommendedMovies[i]]);
+  }
+  return movieObjectList;
 }
 
-// could use similarMovies
-// tested, fixed
+// tested
 function getRecommendedMovies(requesting){
   if (!users.hasOwnProperty(requesting)){
     return false;
@@ -142,39 +152,22 @@ function getRecommendedMovies(requesting){
     reviewedMovieIDs.push(movieID);
   }
 
-  //while (requestingUser.recommendedMovies.length < 6){ - solved
-    for(let i=0; i<requestingUser.reviews.length; i++) {      //for (reviewID in requestingUser.reviews){   
-      // reviewID is getting index of array requestingUser.reviews(why?) - solved
-      // https://stackoverflow.com/questions/3010840/loop-through-an-array-in-javascript
-      let reviewID = requestingUser.reviews[i];
-      // count = 0;
-      // console.log("review id");
-      // console.log(reviewID);
-      let movie = movies[reviews[reviewID].movieID]; // 4-0, 1-2
-      // console.log(movie);
-      for (movieID in movies){
-        // console.log("movie ids");
-        // console.log(movie.id);
-        // console.log(movieID);
-        // console.log("--")
-        if(movie.id === movieID) {
-          // console.log("continuing");
-          continue;
-        }
-        // only getting string keys, not object
-        // loops from 0 to 5 and again from 0 to 5 infinitely - solved
-        //console.log(movieID); //string, "0"
-        if (commonElements(movie.genre, movies[movieID].genre) > 2 && !requestingUser.recommendedMovies.includes(movieID) && !reviewedMovieIDs.includes(movieID)){
-            count++;
-            requestingUser.recommendedMovies.push(movieID);
-            if (count > 1){
-              break;
-            }
-        }
+  for(let i=0; i<requestingUser.reviews.length; i++) {
+    let reviewID = requestingUser.reviews[i];
+    let movie = movies[reviews[reviewID].movieID]; 
+    for (movieID in movies){
+      if(movie.id === movieID) {
+        continue;
+      }
+      if (commonElements(movie.genre, movies[movieID].genre).length > 2 && !requestingUser.recommendedMovies.includes(movieID) && !reviewedMovieIDs.includes(movieID)){
+          count++;
+          requestingUser.recommendedMovies.push(movieID);
+          if (count > 1){
+            break;
+          }
       }
     }
-    //break;
-  //}
+  }
   return true;
 }
 
@@ -314,7 +307,6 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
 
 // tested
 // add movie
-// need to parse genre from string to list? not required is movieObject is passed
 // movieObject may have the "id" key empty - will be filled in by this function
 function addMovie(requesting, movieObject) {
   // check if requesting (userID) exists
@@ -344,12 +336,30 @@ function addMovie(requesting, movieObject) {
       movieObject.writers = "N/A";
     }
 
-    //let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
     // adding object to movies object
     movieObject.id = (nextMovieID).toString();
     movies[movieObject.id] = movieObject;
     // adding object to moviesCopy array
     moviesCopy.push(movieObject);
+
+    // pushes movie to each of new actor's movie list
+    for (actorID of movies[movieObject.id].actors){
+      if (!people[actorID].movies.includes(movieObject.id)){
+        people[actorID].movies.push(movieObject.id);
+      }
+    }
+
+    // pushes movie to each of new writer's movie list
+    for (writerID of movies[movieObject.id].writers){
+      if (!people[writerID].movies.includes(movieObject.id)){
+        people[writerID].movies.push(movieObject.id);
+      }
+    }
+
+    // pushes movie to new director's movie list
+    if(!people[movies[movieObject.id].director].movies.includes(movieObject.id)){
+      people[movies[movieObject.id].director].movies.push(movieObject.id);
+    }
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     nextMovieID++;
@@ -376,7 +386,6 @@ function searchMovie(requestingUser, keyWord) {
 
 // tested
 // edit movie - if exists
-// need to parse genre from string(?) to list
 function editMovie(requesting, movieObject) {
   // check if requesting (userID) exists
   if (!users.hasOwnProperty(requesting)){
@@ -386,7 +395,49 @@ function editMovie(requesting, movieObject) {
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id) && movieObject.title === movies[movieObject.id].title) {
     // get movie via movieID
-    movies[movieObject.id] = movieObject;
+    let oldActors = movies[movieObject.id].actors; // stores current actors
+    let oldWriters = movies[movieObject.id].writers; // stores current writers
+    let oldDirector = movies[movieObject.id].director; // stores current director
+    movies[movieObject.id] = movieObject; // stores new object
+
+    // finds actors and writers that were part of the movie before but are not present now
+    let uniqueActors = oldActors.filter(function(actorID) { return movies[movieObject.id].actors.indexOf(actorID) == -1; });
+    let uniqueWriters = oldWriters.filter(function(writerID){ return movies[movieObject.id].writers.indexOf(writerID) == -1; });
+
+    // removes movie from old actors' movie list
+    for (uniqueActorID of uniqueActors){
+      people[uniqueActorID].movies = people[uniqueActorID].movies.filter(movie => movie !== movieObject.id);
+    }
+
+    // removes movie from old writers' movie list
+    for (uniqueWriterID of uniqueWriters){
+      people[uniqueWriterID].movies = people[uniqueWriterID].movies.filter(movie => movie !== movieObject.id);
+    }
+
+    // removes movie from old director's movie list
+    if (oldDirector !== movies[movieObject.id].director && people[oldDirector]){
+      people[oldDirector].movies = people[oldDirector].movies.filter(movie => movie !== movieObject.id);
+
+      // pushes movie to new director's movie list
+      if (!people[movies[movieObject.id].director].movies.includes(movieObject.id)){
+        people[movies[movieObject.id].director].movies.push(movieObject.id);
+      }
+    }
+
+    // pushes movie to each of new actor's movie list
+    for (actorID of movies[movieObject.id].actors){
+      if (people[actorID] && !people[actorID].movies.includes(movieObject.id)){
+        people[actorID].movies.push(movieObject.id);
+      }
+    }
+
+    // pushes movie to each of new writer's movie list
+    for (writerID of movies[movieObject.id].writers){
+      if (people[writerID] && !people[writerID].movies.includes(movieObject.id)){
+        people[writerID].movies.push(movieObject.id);
+      }
+    }
+
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     return true;  // if edit is successful
@@ -394,7 +445,6 @@ function editMovie(requesting, movieObject) {
   return false;
 }
 
-// needs changes
 // deletes movies from database - if exists
 function removeMovie(requesting, movieID) {
   // check if requesting (userID) exists
@@ -411,34 +461,32 @@ function removeMovie(requesting, movieID) {
       nextMovieID--;
     }
 
-    /*
-    // remove movieID from person's movie list --------------------- doesn't work (?)
-    // need similar changes to addMovie, editMovie - what if there are changes in cast?
+
+    // tested - works
     let actorsList = movies[movieID].actors;
     for(let i=0; i<actorsList.length; i++) {
-
       let actor = people[actorsList[i]];
       if(actor) {
-        console.log(actor);
-        console.log(movieID);
-        actor.movies = actor.movies.filter(movie => movie.id !== movieID.toString());
-        console.log(actor.movies);
+        actor.movies = actor.movies.filter(movie => movie !== movieID.toString()); // removes movie from actors
       }
     }
-
     let director = people[movies[movieID].director];
     if(director !== "N/A") {
-      director.movies = director.movies.filter(movie => movie.id !== movieID.toString());
+      director.movies = director.movies.filter(movie => movie !== movieID.toString()); // removes movie from director
     }
-
     let writersList = movies[movieID].writers;
     for(let i=0; i<writersList.length; i++) {
       writer = people[writersList[i]];
       if(writer) {
-        writer.movies = writer.movies.filter(movie => movie.id !== movieID.toString());
+        writer.movies = writer.movies.filter(movie => movie !== movieID.toString()); // removes movie from writer
       }
     }
-    */
+
+    let reviewList = movies[movieID].reviews;
+    for (reviewID of reviewList){ // removes reviews associated with movie and removes reviews from users
+      users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+      delete reviews[reviewID]; // remove the key reviewID from reviews list
+    }
 
     // remove the key movieID from movies list
     delete movies[movieID];
@@ -450,11 +498,11 @@ function removeMovie(requesting, movieID) {
 
 // returns the number of common elements between two arrays
 function commonElements(array1, array2){
-  let common = 0;
+  let common =[];
   for (let i = 0; i < array1.length; i++){
     for (let j = 0; j < array2.length; j++){
       if (array1[i] === array2[j]){
-        common++;
+        common.push(i);
       }
     }
   }
@@ -465,7 +513,6 @@ function commonElements(array1, array2){
 // tested
 // similar movies - based on similar genre, cast
 function similarMovies(requesting, movieID) {
-  // implementation pending for cast
   // currently works if more than 2 genres match
   if (!users.hasOwnProperty(requesting) || !movies.hasOwnProperty(movieID)){
     return [];
@@ -477,19 +524,18 @@ function similarMovies(requesting, movieID) {
       continue;
     }
     else{
-      if (commonElements(movies[movieid].genre, movie.genre) > 2){
+      if (commonElements(movies[movieid].genre, movie.genre).length > 2){
         similar.push(movies[movieid]);
         if (similar.length > 2){
           break;
         }
       }
     }
-    // console.log("movieid");
-    // console.log(movieid);
   }
   return similar;
 }
 
+// tested
 // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
 function updateMovieRating(movieID, rating) {
   if (!movies.hasOwnProperty(movieID)){
@@ -499,10 +545,11 @@ function updateMovieRating(movieID, rating) {
   let currentRatingSum = Number(movie.averageRating) * Number(movie.noOfRatings);
   currentRatingSum += rating;
   movie.noOfRatings += 1;
-  movie.averageRating = currentRatingSum/movie.noOfRatings;
+  movie.averageRating = (currentRatingSum/movie.noOfRatings.toFixed(1)); // keeps 1 digit after decimal point
   return true;
 }
 
+// tested
 // sort movies according to releaseYear (descending order)
 function sortMovieYear(){
   let sortedMovies = [];
@@ -512,6 +559,7 @@ function sortMovieYear(){
   return sortedMovies;
 }
 
+// tested
 // sort movies according to averageRating (descending order)
 function sortMovieRating(){
   let sortedMovies = [];
@@ -545,7 +593,7 @@ function yourList(requesting){
   let moviesList = [];
   let reviews = users[requesting].reviews;
 
-  for (reviewID in reviews){
+  for (reviewID of reviews){
     moviesList.push(movies[reviews[reviewID].movieID]);
   }
   return moviesList;
@@ -561,23 +609,24 @@ function getReview(requestingUser, reviewID){
   return reviews[reviewID];
 }
 
+// tested
 // add a full review by specifying title, content, and rating out of 10
 function addFullReview(requestingUser, reviewObject){
   if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(reviewObject.movieID)){
     return false; // could not add review
   }
-  //let lastID = reviews[(reviews.length).toString()].id;
-  let lastID = reviews[(Object.keys(reviews).length-1).toString].id;
-  //reviews.push(reviewObject);
-  reviewObject.id = (lastID + 1).toString();
+
+  reviewObject.id = (nextReviewID).toString();
   reviews[reviewObject.id] = reviewObject;
 
-  movies[reviewObject.movieID].reviews.push(lastID+1);
+  movies[reviewObject.movieID].reviews.push(nextReviewID);
   updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
-  users[requestingUser].reviews.push(lastID+1);
+  users[requestingUser].reviews.push(nextReviewID);
+  nextReviewID++;
   return true; // review added successfully
 }
 
+// tested
 // add a basic review by only specifying a score out of 10
 function addBasicReview(requestingUser, movieID, rating){
   if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
@@ -587,6 +636,7 @@ function addBasicReview(requestingUser, movieID, rating){
   return true; // review added successfully
 }
 
+// tested
 // get reviews for a particular movie
 function getReviewMovie(requestingUser, movieID){
   if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
@@ -594,7 +644,7 @@ function getReviewMovie(requestingUser, movieID){
   }
   let movie = movies[movieID];
   let reviewList = [];
-  for (reviewID in movie.reviews){
+  for (reviewID of movie.reviews){
     reviewList.push(reviews[reviewID]); // add every review object for that movie to the list
   }
   return reviewList; // return list of reviews for that movie
@@ -612,7 +662,7 @@ function followPerson(requesting, requested){   // requesting user follows reque
   let requestingUser = users[requesting];
   let requestingID = requestingUser.id;
   let requestedPerson = people[requested];
-  
+
   if(!requestingUser.followingPeople.includes(requested) && !requestedPerson.followers.includes(requestingID)) {
     requestingUser.followingPeople.push(requested);
     requestedPerson.followers.push(requesting);
@@ -656,7 +706,6 @@ function addPerson(requesting, personObject) {
         return false;
       }
     }
-    //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
     personObject.id = (nextPersonID).toString();
     people[personObject.id] = personObject;
@@ -666,7 +715,6 @@ function addPerson(requesting, personObject) {
   return false;
 }
 
-// tested - not working
 // remove person - if exists
 function removePerson(requesting, requested) {
   // check if requesting (userID) exists
@@ -681,23 +729,23 @@ function removePerson(requesting, requested) {
 
     // removing from collaborator's collaborator list
     let collabIDList = requestedPerson.collaborators;
-    for(let i=0; i<collabIDList.length; i++) {
+    for(let i = 0; i < collabIDList.length; i++) {
       let collaborator = people[collabIDList[i]];
-      collaborator.contributors = collaborator.collaborators.filter(personID => personID !== requestedPerson.id);      
+      collaborator.collaborators = collaborator.collaborators.filter(personID => personID !== requestedPerson.id);
     }
 
     // removing from followers' followingPeople list
     let followerIDList = requestedPerson.followers;
-    for(let i=0; i<followerIDList.length; i++) {
-      requestingUser.followingPeople = requestingUser.followingPeople.filter(personID => personID !== requestedPerson.id);
+    for(let i = 0; i < followerIDList.length; i++) {
+      users[followerIDList[i]].followingPeople = users[followerIDList[i]].followingPeople.filter(personID => personID !== requestedPerson.id);
     }
 
     // removing from movies' cast list
     let movieIDList = requestedPerson.movies;
-    for(let i=0; i<movieIDList.length; i++) {
+    for(let i = 0; i < movieIDList.length; i++) {
       let movie = movies[movieIDList[i].toString()];
       if(movie) {
-        
+
         // actors
         movie.actors = movie.actors.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
         if(movie.actors.length === 0) {
@@ -706,16 +754,16 @@ function removePerson(requesting, requested) {
 
         // director
         if(movie.director === requestedPerson.id) { // if movie director id string is the same as requested person's id (valueOf)
-          movie.director = "N/A"; 
-        } 
-        
+          movie.director = "N/A";
+        }
+
         // writers
         movie.writers = movie.writers.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
         if(movie.writers.length === 0) {
           movie.writers = "N/A";
         }
       }
-      
+
     }
 
     // remove the key requested from people list
@@ -786,8 +834,8 @@ console.log('login({username: "user1", password: "password"})');
 console.log(login({username: "user1", password: "password"}));
 console.log();
 
-console.log('getUser("user2", "user2")');
-console.log(getUser("user2", "user2"));
+console.log('getUser("user2", "user1")');
+console.log(getUser("user2", "user1"));
 console.log();
 
 console.log('getMovie("0")');
@@ -812,12 +860,13 @@ console.log('toggleContributing("user2")');
 console.log(toggleContributing("user2"));
 console.log();
 
-console.log('removeMovie("user2", "0")');
-console.log(removeMovie("user2", "0"));
-console.log();
-// remove movie should remove all the reviews associated with it 
-// removing reviews should remove it in all the places where it is stored (users)
-// similarly addMovie and editMovie should update all of its cast members
+//console.log('removeMovie("user2", "0")');
+//console.log(removeMovie("user2", "0"));
+//console.log();
+
+// remove movie should remove all the reviews associated with it - done
+// removing reviews should remove it in all the places where it is stored (users) - done
+// similarly addMovie and editMovie should update all of its cast members - done
 console.log('getUser("user2", "user2")');
 console.log(getUser("user2", "user2"));
 console.log();
@@ -832,37 +881,45 @@ console.log();
 
 console.log("addmovie");
 console.log(addMovie("user2", {
-        "title": "Toy Story",
-        "runtime": "81 min",
+        "title": "GoldenEye",
+        "runtime": "130 min",
         "releaseYear": "1995",
-        "averageRating": 8.3,
-        "noOfRatings": 864385,
-        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
-        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
-        "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
+        "averageRating": 7.2,
+        "noOfRatings": 233822,
+        "genre": ["action", "adventure", "thriller"],
+        "plot": "Years after a friend and fellow 00 agent is killed on a joint mission, a secret space based weapons program known as \"GoldenEye\" is stolen. James Bond sets out to stop a Russian crime syndicate from using the weapon.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1_SX300.jp",
         "actors": ["1", "2"],
-        "director": "3",
+        "director": "4",
         "writers": ["6", "8"],
-        "reviews": ["1", "4"],
+        "reviews": ["0", "2"],
         "trailer": ""
 }));
 console.log();
 
+console.log('removePerson("user2", "4")');
+console.log(removePerson("user2", "4"));
+console.log();
+
+console.log('getMovie("6")');
+console.log(getMovie("6"));
+console.log();
+
 console.log("editmovie");
 console.log(editMovie("user2", {
-        "id": "3",
-        "title": "Toy Story",
-        "runtime": "81 min",
-        "releaseYear": "1995",
+        "id": "6",
+        "title": "GoldenEye",
+        "runtime": "130 min",
+        "releaseYear": "1998",
         "averageRating": 8.3,
         "noOfRatings": 864385,
-        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
-        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "genre": ["action", "adventure", "thriller", "fantasy"],
+        "plot": "Years after a friend and fellow 00 agent is killed on a joint mission, a secret space based weapons program known as \"GoldenEye\" is stolen. James Bond sets out to stop a Russian crime syndicate from using the weapon.",
         "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
-        "actors": ["1", "2"],
+        "actors": ["4", "0"],
         "director": "3",
         "writers": ["6", "8"],
-        "reviews": ["1", "4"],
+        "reviews": ["0", "2"],
         "trailer": ""
 }));
 console.log();
