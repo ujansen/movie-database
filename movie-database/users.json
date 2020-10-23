@@ -9,7 +9,7 @@
       "followers": ["user1", "user2", "user3", "user4"],
       "followingUsers":  ["user1", "user2"],
       "followingPeople": ["1", "3"],
-      "reviews": [23, 534, 12],
+      "reviews": ["23", "534", "12"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -23,7 +23,7 @@
       "followers": ["user0", "user2", "user3"],
       "followingUsers":  ["user0", "user2", "user4"],
       "followingPeople": ["1", "2"],
-      "reviews": [13, 10, 2],
+      "reviews": ["13", "10", "2"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -35,9 +35,9 @@
       "userType": false,
       "about": "My favourite genre is every Christopher Nolan movie ever created",
       "followers": ["user3"],
-      "followingUsers":  ["user0", "user1", "user3"],
+      "followingUsers":  ["user0", "user3"],
       "followingPeople": ["4"],
-      "reviews": [4, 5, 1],
+      "reviews": ["4", "1"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -51,7 +51,7 @@
       "followers": ["user1", "user2"],
       "followingUsers":  ["user0", "user2"],
       "followingPeople": ["4"],
-      "reviews": [3, 11, 10],
+      "reviews": ["3", "11", "10"],
       "recommendedMovies": [],
       "contributedMovies": []
     }

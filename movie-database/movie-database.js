@@ -16,6 +16,20 @@ for(uid in users){
   }
 }
 
+let nextMovieID = -1;
+for(mid in movies) {
+  if(Number(mid) >= nextMovieID){
+    nextMovieID = Number(mid) + 1  ;
+  }
+}
+
+let nextPersonID = -1;
+for(pid in people) {
+  if(Number(pid) >= nextUserID){
+    nextPersonID = Number(pid) + 1  ;
+  }
+}
+
 // -------------------------------------------------USER----------------------------------------------
 
 function isValidUser(userObj){    // checks if the user exists
@@ -28,13 +42,14 @@ function isValidUser(userObj){    // checks if the user exists
   return true;
 }
 
+// tested
 function registerUser(newUser){
   if (!newUser.username || !newUser.password){
     return null;
   }
-  if (users.hasOwnProperty(newUser.username)){
-    return null;
-  }
+  // if (users.hasOwnProperty(newUser.username)){
+  //   return null;
+  // }
 
   newUser.id = String(nextUserID);
   newUser.userType = false;
@@ -48,6 +63,7 @@ function registerUser(newUser){
   return users[newUser.username];
 }
 
+// tested
 function login(loginObject){
   if (!users.hasOwnProperty(loginObject.username)){
     return false;
@@ -58,6 +74,7 @@ function login(loginObject){
   return true;
 }
 
+// tested
 function showReviews(requestedUser){    // displays requested user's reviews
   let reviewList = [];
   for (reviewID in users[requestedUser].reviews){
@@ -91,12 +108,13 @@ function showFollowing(requestedUser){    // displays the list of users the user
 }
 
 function getUser(requesting, requested){    // gets the user object when supplied with username
-  if (!users.hasOwnProperty(requested)){
+  if (users.hasOwnProperty(requested)){
     return users[requested];
   }
   return null;
 }
 
+// tested
 function viewRecommendedMovies(requesting){     // lists recommended movies for requesting user
   if (!users.hasOwnProperty(requesting)){
     return null;
@@ -108,6 +126,8 @@ function viewRecommendedMovies(requesting){     // lists recommended movies for 
   return users[requesting].recommendedMovies;
 }
 
+// could use similarMovies
+// tested, fixed
 function getRecommendedMovies(requesting){
   if (!users.hasOwnProperty(requesting)){
     return false;
@@ -115,25 +135,57 @@ function getRecommendedMovies(requesting){
 
   let requestingUser = users[requesting];
   let count = 0;
+  let reviewedMovieIDs = [];
+  for(let i=0; i<requestingUser.reviews.length; i++) {
+    let reviewID = requestingUser.reviews[i];
+    let movieID = reviews[reviewID].movieID;
+    reviewedMovieIDs.push(movieID);
+  }
 
-  while (requestingUser.recommendedMovies.length < 6){
-    for (reviewID in requestingUser.reviews){
-      count = 0;
-      let movie = movies[reviews[reviewID].movieID];
+  //while (requestingUser.recommendedMovies.length < 6){ - solved
+    for(let i=0; i<requestingUser.reviews.length; i++) {      //for (reviewID in requestingUser.reviews){   
+      // reviewID is getting index of array requestingUser.reviews(why?) - solved
+      // https://stackoverflow.com/questions/3010840/loop-through-an-array-in-javascript
+      let reviewID = requestingUser.reviews[i];
+      // count = 0;
+      // console.log("review id");
+      // console.log(reviewID);
+      let movie = movies[reviews[reviewID].movieID]; // 4-0, 1-2
+      // console.log(movie);
       for (movieID in movies){
-        if (commonElements(movie.genre, movieID.genre) > 2 && !requestingUser.recommendedMovies.includes(movies[movieID])){
+        // console.log("movie ids");
+        // console.log(movie.id);
+        // console.log(movieID);
+        // console.log("--")
+        if(movie.id === movieID) {
+          // console.log("continuing");
+          continue;
+        }
+        // only getting string keys, not object
+        // loops from 0 to 5 and again from 0 to 5 infinitely - solved
+        //console.log(movieID); //string, "0"
+        if (commonElements(movie.genre, movies[movieID].genre) > 2 && !requestingUser.recommendedMovies.includes(movieID) && !reviewedMovieIDs.includes(movieID)){
             count++;
-            requestingUser.recommendedMovies.push(movies[movieID]);
+            requestingUser.recommendedMovies.push(movieID);
             if (count > 1){
               break;
             }
         }
       }
     }
-  }
+    //break;
+  //}
   return true;
 }
 
+function toggleContributing(requesting) {
+  if (!users.hasOwnProperty(requesting)){
+    return null;
+  }
+  let requestingUser = users[requesting];
+  requestingUser.userType = !requestingUser.userType;
+  return true;
+}
 // --------------------------------------OTHER USER--------------------------------------------------------
 
 function canAccessUser(requesting, requested){    // checks if user can access other user's profile
@@ -158,13 +210,14 @@ function searchUsers(requesting, keyWord){    // searches user by given keyword
   }
   for (username in users){
     let user = users[username];
-    if (user.username.toLowerCase().indexOf(keyWord) >= 0){
+    if (user.username.toLowerCase().indexOf(keyWord.toLowerCase) >= 0){
       results.push(user);
     }
   }
   return results;
 }
 
+// tested
 function followUser(requesting, requested){   // requesting user follows requested user
   if (!users.hasOwnProperty(requested)){
     return null;
@@ -177,8 +230,10 @@ function followUser(requesting, requested){   // requesting user follows request
   let requestedUser = users[requested];
   requestingUser.followingUsers.push(requested);
   requestedUser.followers.push(requesting);
+  return true;
 }
 
+// tested
 function unfollowUser(requesting, requested){   // requesting user unfollows requested user
   if (!users.hasOwnProperty(requested)){
     return null;
@@ -194,6 +249,7 @@ function unfollowUser(requesting, requested){   // requesting user unfollows req
   }
 
   removeUser(requestingUser, requestedUser);
+  return true;
 }
 
 function viewReviewsOtherUser(requesting, requested){   // requesting user viewing the reviews of another user
@@ -248,6 +304,7 @@ function viewFollowingOtherUser(requesting, requested){   // requesting user vie
 
 // --------------------------------------MOVIES--------------------------------------------------------
 
+// tested
 function getMovie(movieID){    // gets the movie object when supplied with movieID
   if (movies.hasOwnProperty(movieID)){
     return movies[movieID];
@@ -255,6 +312,7 @@ function getMovie(movieID){    // gets the movie object when supplied with movie
   return null;
 }
 
+// tested
 // add movie
 // need to parse genre from string to list? not required is movieObject is passed
 // movieObject may have the "id" key empty - will be filled in by this function
@@ -269,7 +327,7 @@ function addMovie(requesting, movieObject) {
     // search if same title exists
     for(movieID in movies) {
       let movie = movies[movieID];
-      if(movie["title"].toLowercase() === movieObject.title.toLowerCase()) {
+      if(movie.title.toLowerCase() === movieObject.title.toLowerCase()) {
         return false;
       }
     }
@@ -286,19 +344,21 @@ function addMovie(requesting, movieObject) {
       movieObject.writers = "N/A";
     }
 
-    let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
+    //let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
     // adding object to movies object
-    movieObject.id = (lastID + 1).toString();
+    movieObject.id = (nextMovieID).toString();
     movies[movieObject.id] = movieObject;
     // adding object to moviesCopy array
     moviesCopy.push(movieObject);
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
+    nextMovieID++;
     return true;  // if addition is successful
   }
   return false;
 }
 
+// tested
 // search movie
 function searchMovie(requestingUser, keyWord) {
   let results = [];
@@ -307,13 +367,14 @@ function searchMovie(requestingUser, keyWord) {
   }
   for (movieID in movies){
     let movie = movies[movieID];
-    if (movie.title.toLowerCase().indexOf(keyWord) >= 0){
+    if (movie.title.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
       results.push(movie);
     }
   }
   return results;
 }
 
+// tested
 // edit movie - if exists
 // need to parse genre from string(?) to list
 function editMovie(requesting, movieObject) {
@@ -323,7 +384,7 @@ function editMovie(requesting, movieObject) {
   }
   let requestingUser = users[requesting];
   // check if user contributing
-  if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id)) {
+  if(requestingUser["userType"] && movies.hasOwnProperty(movieObject.id) && movieObject.title === movies[movieObject.id].title) {
     // get movie via movieID
     movies[movieObject.id] = movieObject;
     moviesCopy = sortMovieYear();
@@ -333,6 +394,7 @@ function editMovie(requesting, movieObject) {
   return false;
 }
 
+// tested
 // deletes movies from database - if exists
 function removeMovie(requesting, movieID) {
   // check if requesting (userID) exists
@@ -342,11 +404,38 @@ function removeMovie(requesting, movieID) {
   let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"] && movies.hasOwnProperty(movieID)) {
-    // remove the key movieID from movies list
-    delete movies[movieID];
     moviesCopy = moviesCopy.filter(movie => movie.id !== movieID);
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
+    if(Number(movieID) === nextMovieID-1) {
+      nextMovieID--;
+    }
+
+    /*
+    // remove movieID from person's movie list
+    for(let i=0; i<movies[movieID].actors; i++) {
+      actor = people[i.toString];
+      if(actor) {
+        actor.movies = actor.movies.filter(movie => movie.id !== movieID);
+      }
+    }
+
+    director = people[movies[movieID].director];
+    if(director !== "N/A") {
+      director.movies = director.movies.filter(movie => movie.id !== movieID);
+    }
+
+    for(let i=0; i<movies[movieID].writers; i++) {
+      writer = people[i.toString];
+      if(writer) {
+        writer.movies = writer.movies.filter(movie => movie.id !== movieID);
+      }
+    }
+    */
+
+    // remove the key movieID from movies list
+    delete movies[movieID];
+
     return true; // if deletion is successful
   }
   return false;
@@ -362,9 +451,11 @@ function commonElements(array1, array2){
       }
     }
   }
+  // console.log(common);
   return common;
 }
 
+// tested
 // similar movies - based on similar genre, cast
 function similarMovies(requesting, movieID) {
   // implementation pending for cast
@@ -386,6 +477,8 @@ function similarMovies(requesting, movieID) {
         }
       }
     }
+    // console.log("movieid");
+    // console.log(movieid);
   }
   return similar;
 }
@@ -452,6 +545,7 @@ function yourList(requesting){
 }
 // -------------------------------------------------REVIEWS-------------------------------------------------
 
+// tested
 // get a particular review
 function getReview(requestingUser, reviewID){
   if(!users.hasOwnProperty(requestingUser) || !reviews.hasOwnProperty(reviewID)){
@@ -501,6 +595,7 @@ function getReviewMovie(requestingUser, movieID){
 
 // -------------------------------------------------PERSON-------------------------------------------------
 
+// tested
 // follows person
 function followPerson(requesting, requested){   // requesting user follows requested person
   if (!people.hasOwnProperty(requested)){
@@ -518,8 +613,9 @@ function followPerson(requesting, requested){   // requesting user follows reque
   else return null;
 }
 
+// tested
 // unfollow person
-function unfollowUser(requesting, requested){   // requesting user unfollows requested person
+function unfollowPerson(requesting, requested){   // requesting user unfollows requested person
   if (!people.hasOwnProperty(requested)){
     return null;
   }
@@ -549,19 +645,21 @@ function addPerson(requesting, personObject) {
     // search if same user exists
     for(personID in people) {
       let person = people[personID];
-      if(person["name"].toLowercase() === personObject.name.toLowerCase()) {
+      if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
         return false;
       }
     }
-    let lastID = people[(Object.keys(people).length-1).toString()]["id"]
+    //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
-    personObject.id = (lastID + 1).toString();
+    personObject.id = (nextPersonID).toString();
     people[personObject.id] = personObject;
+    nextPersonID++;
     return true;  // if addition is successful
   }
   return false;
 }
 
+// tested - not working
 // remove person - if exists
 function removePerson(requesting, requested) {
   // check if requesting (userID) exists
@@ -589,8 +687,9 @@ function removePerson(requesting, requested) {
 
     // removing from movies' cast list
     let movieIDList = requestedPerson.movies;
+    console.log(movieIDList);
     for(let i=0; i<movieIDList.length; i++) {
-      let movie = movies[i];
+      let movie = movies[i.toString];
       // actors
       movie.actors = movie.actors.filter(personID => personID !== requestedPerson.id);  // person id saved as string in movies.json
       if(movie.actors.length === 0) {
@@ -611,6 +710,9 @@ function removePerson(requesting, requested) {
 
     // remove the key requested from people list
     delete people[requested];
+    if(Number(requested) === nextPersonID-1) {
+      nextPersonID--;
+    }
     return true; // if deletion is successful
   }
   return false;
@@ -632,7 +734,7 @@ function searchPerson(requestingUser, keyWord) {
   }
   for (personID in people){
     let person = people[personID];
-    if (person.name.toLowerCase().indexOf(keyWord) >= 0){
+    if (person.name.toLowerCase().indexOf(keyWord.toLowerCase) >= 0){
       results.push(person);
     }
   }
@@ -663,6 +765,130 @@ let userB = registerUser({username: "user5", password: "password"});
 //console.log(users);
 //unfollowUser("user0", "user4");
 //console.log(users);
+
+// ------------------------------------------ testing ---------------------------------------------------
+console.log(registerUser({username: "user1", password: "password"}));
+console.log();
+
+console.log('login({username: "user1", password: "password"})');
+console.log(login({username: "user1", password: "password"}));
+console.log();
+
+console.log('getUser("user2", "user2")');
+console.log(getUser("user2", "user2"));
+console.log();
+
+console.log('getMovie("0")');
+console.log(getMovie("0"));
+console.log();
+
+// comments cleanup required
+console.log('viewRecommendedMovies("user2")');
+console.log(viewRecommendedMovies("user2"));
+console.log();
+
+// console.log('similarMovies("user2", "0")');
+// console.log(similarMovies("user2", "0"));
+// console.log();
+
+console.log('showReviews("user2")');
+console.log(showReviews("user2"));
+console.log();
+
+// switch to contributing
+console.log('toggleContributing("user2")');
+console.log(toggleContributing("user2"));
+console.log();
+
+console.log('removeMovie("user2", "0")');
+console.log(removeMovie("user2", "0"));
+console.log();
+// remove movie should remove all the reviews associated with it 
+// removing reviews should remove it in all the places where it is stored (users)
+console.log('getUser("user2", "user2")');
+console.log(getUser("user2", "user2"));
+console.log();
+
+console.log('getMovie("0")');
+console.log(getMovie("0"));
+console.log();
+
+console.log('getReview("user2", "4")');
+console.log(getReview("user2", "4"));
+console.log();
+
+console.log("addmovie");
+console.log(addMovie("user2", {
+        "title": "Toy Story",
+        "runtime": "81 min",
+        "releaseYear": "1995",
+        "averageRating": 8.3,
+        "noOfRatings": 864385,
+        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
+        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
+        "actors": ["1", "2"],
+        "director": "3",
+        "writers": ["6", "8"],
+        "reviews": ["1", "4"],
+        "trailer": ""
+}));
+console.log();
+
+console.log("editmovie");
+console.log(editMovie("user2", {
+        "id": "3",
+        "title": "Toy Story",
+        "runtime": "81 min",
+        "releaseYear": "1995",
+        "averageRating": 8.3,
+        "noOfRatings": 864385,
+        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
+        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
+        "actors": ["1", "2"],
+        "director": "3",
+        "writers": ["6", "8"],
+        "reviews": ["1", "4"],
+        "trailer": ""
+}));
+console.log();
+
+console.log('searchMovie("user2", "to")');
+console.log(searchMovie("user2", "to"));
+console.log();
+
+console.log('followUser("user2", "user1")');
+console.log(followUser("user2", "user1"));
+console.log();
+
+console.log('unfollowUser("user2", "user3")');
+console.log(unfollowUser("user2", "user3"));
+console.log();
+
+console.log('unfollowPerson("user2", "5")');
+console.log(unfollowPerson("user2", "5"));
+console.log();
+
+console.log('followPerson("user2", "4")');
+console.log(followPerson("user2", "4"));
+console.log();
+
+console.log('getUser("user2", "user2")');
+console.log(getUser("user2", "user2"));
+console.log();
+
+console.log('getPerson("1")');
+console.log(getPerson("1"));
+console.log();
+
+console.log('removePerson("user2", "1")');
+console.log(removePerson("user2", "1"));
+console.log();
+
+console.log('searchPerson("user2", "")');
+console.log(searchPerson("user2", ""));
+console.log();
 
 // recommended movies - user --> implement the function
 
