@@ -1,0 +1,74 @@
+html(lang = "en" dir = "ltr")
+  head
+    meta(charset="utf-8")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+    link(rel="stylesheet" type="text/css" href="./css/style.css")
+    link(rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg" type="image/x-icon")
+  title #{movie.Title}
+  body
+    header
+      include ../partials/navBar
+    main(class="block container")
+      div
+        h4 #{movie.Title} (#{movie.Year})
+          small(style="font-size: 16px; font-style:italic;" class="text-secondary ml-2") PG-13
+      div(class="row flex-nowrap poster container")
+        div(class="col-xs-4 cp-1")
+          div(class="card card-block")
+            img(src=movie.Poster)
+        div(class="col-xs-4 cp-1")
+          div(class="card card-block ml-5")
+            iframe(width="600" height="400" style="border: 1.5px white solid;" src="https://youtube.com/embed/V75dMMIW2B4?autoplay=1&mute=1")
+      div(class="details")
+        ul(style="list-style-type:none; padding-left: 4px;")
+          ul(style="list-style-type:none; padding-left: 4px;")
+            li(style="padding-top: 0;")
+              em Runtime: #{movie.Runtime}
+            li
+              em Synopsis:
+                span(class="mb-0.5")
+                  br
+                  |#{movie.Plot}
+            li
+              em Genre:
+                a(class="active ml-1" href="#") #{movie.Genre}
+            li
+              em Director:
+                a(class="active ml-1" href="#") #{movie.Director}
+            li
+              em Writer:
+                a(class="active ml-1" href="#") #{movie.Writer}
+            li
+              em Actors:
+                a(class="active ml-1" href="#") #{movie.Actors}
+      div(class="container scrolling similar_movies")
+        h4 Similar Movies
+        div(class="row flex-nowrap")
+          each similarMovie in similarMovies
+            div(class="col-xs-4 cp-1")
+              div(class="card card-block")
+                a(href="#" target="_blank")
+                  img(src=similarMovie.Poster class = "slider-img")
+      div(class="review")
+        h6(style="padding-top: 20px; padding-left: 4px;") Add rating:
+          span(class="fa fa-star checked")
+          span(class="fa fa-star checked")
+          span(class="fa fa-star checked")
+          span(class="fa fa-star checked")
+          span(class="fa fa-star checked")
+        h6(style="padding-top: 20px; padding-left: 4px;") Add review:
+        div
+          textarea(id="movieReview" name="movieReview" rows="4" cols="50")
+        button(type="submit" class="btn btn-outline-primary" id="submitReview") Submit
+      div(class = "container reviews mt-4" id="reviews")
+        h5 Reviews
+        ul(class="list-group")
+          li(class="list-group-item") Please Christopher Tolkien, give Peter Jackson the rights for the Silmarillion
+          li(class="list-group-item") They have a cave troll
+          li(class="list-group-item") Fool of a Took!
+          li(class="list-group-item") Boil em, mash em, stick em in a stew
+          li(class="list-group-item") For Frodo
+script(src = "./js/navBar.js")
