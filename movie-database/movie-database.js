@@ -121,6 +121,20 @@ function getUser(requesting, requested){    // gets the user object when supplie
   return null;
 }
 
+function editUser(requesting, userObject) {
+  if (!users.hasOwnProperty(requested) && !(requesting === userObject.username)){
+    return null;
+  }
+  // user can only edit their own username, password, and about
+  let user = users[requesting];
+  // if user changes their username, their object key would need to change - since keys are usernames 
+  // * need to change keys everywhere - reviews, movies, people, other users 
+  user.username = userObject.username;
+  user.password = userObject.password;
+  user.about = userObject.about;
+  return true;
+}
+
 // tested
 function viewRecommendedMovies(requesting){     // lists recommended movies for requesting user
   if (!users.hasOwnProperty(requesting)){
@@ -699,7 +713,7 @@ function addPerson(requesting, personObject) {
   let requestingUser = users[requesting];
   // check if user contributing
   if(requestingUser["userType"]) {
-    // search if same user exists
+    // search if person with same name exists
     for(personID in people) {
       let person = people[personID];
       if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
@@ -711,6 +725,30 @@ function addPerson(requesting, personObject) {
     people[personObject.id] = personObject;
     nextPersonID++;
     return true;  // if addition is successful
+  }
+  return false;
+}
+
+function editPerson(requesting, personObject) {
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
+  // check if user contributing
+  if(requestingUser["userType"]) {
+    // search if person with same name exists
+    for(personID in people) {
+      let person = people[personID];
+      if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
+        return false;
+      }
+    }
+    person = people[personObject.id];
+    //personObject.id = (nextPersonID).toString();
+    person.name = personObject.name;
+    person.about = personObject.about;
+    // followers, collaborators, and movies are determined by the system
+    return true;  // if edit is successful
   }
   return false;
 }
