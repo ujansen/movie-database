@@ -128,8 +128,7 @@ function editUser(requesting, userObject) {
   // user can only edit their own username, password, and about
   let user = users[requesting];
   // if user changes their username, their object key would need to change - since keys are usernames 
-  // * need to change keys everywhere - reviews, movies, people, other users 
-  user.username = userObject.username;
+  // do not allow change of username
   user.password = userObject.password;
   user.about = userObject.about;
   return true;
