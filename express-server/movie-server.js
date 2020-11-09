@@ -4,7 +4,9 @@ const app = express();
 const model = require("./movie-database-module.js");
 let requestingUser = "";
 
-const session = require('express-session')
+const session = require('express-session');
+app.use(express.static('public'));
+app.set('view engine', 'pug');
 app.use(session({ secret: 'some secret here'}))
 app.use(express.urlencoded({extended: true}));
 
@@ -16,23 +18,41 @@ app.use("/", function(req, res, next){
   next();
 });
 
+// tested
 app.get("/", function(req, res, next){
   let resultUpcoming = model.upcoming(requestingUser);
   let resultFanPicks = model.fanPicks(requestingUser);
   let resultYourList = model.yourList(requestingUser);
   if (resultUpcoming && resultFanPicks){
-    res.status(200).send("Upcoming movies are: " + JSON.stringify(resultUpcoming) +
-                         "\nand fan picks are: " + JSON.stringify(resultFanPicks) +
-                         "\n and your list is: " + JSON.stringify(resultYourList));
+    res.render('pages/index', {resultUpcoming: resultUpcoming, resultFanPicks: resultFanPicks, resultYourList: resultYourList});
+    res.status(200);
   }
   else{
     res.status(500).send("Unable to fetch movies.");
   }
 });
 
+//tested
 app.get("/login", function(req, res, next){
   //show login page
+  if (req.session.user){
+    res.status(401).send("You are already logged in.");
+  }
+  else{
+    res.render('pages/login');
+    res.status(200);
+  }
 });
+
+//tested
+app.get("/register", function(req, res, next){
+  if (req.session.user){
+    res.status(401).send("You are already logged in.");
+  }
+  res.render('pages/register');
+  res.status(200);
+});
+
 
 app.post("/login", function(req, res, next){
   if (model.login(req.body)){
@@ -55,6 +75,7 @@ app.post("/logout", function(req, res, next){
   requestingUser = "";
 });
 
+
 app.get("/users", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -68,6 +89,7 @@ app.get("/users", function(req, res, next){
     res.status(200).json(result);
   }
 });
+
 
 app.post("/users", function(req, res, next){
   if (!req.session.user){
@@ -84,6 +106,7 @@ app.post("/users", function(req, res, next){
     }
   }
 });
+
 
 app.get("/users/:uid/edit", function(req, res, next){
   if (!req.session.user){
@@ -108,6 +131,7 @@ app.put("/users/:uid", function(req, res, next){
   }
 });
 
+
 app.post("/users/:uid/toggle", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -128,6 +152,8 @@ app.post("/users/:uid/toggle", function(req, res, next){
   }
 });
 
+//tested (other-user)
+// remaining to be tested with user
 app.get("/users/:uid", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -136,8 +162,9 @@ app.get("/users/:uid", function(req, res, next){
   {
     let result = model.getUser(requestingUser, "user" + req.params.uid);
     let resultReviews = model.viewReviewsOtherUser(requestingUser, "user" + req.params.uid);
+    console.log(resultReviews);
     let reviewedMovies = [];
-    if (resultReviews.length > 0){
+    if (resultReviews && resultReviews.length > 0){
       for (review of resultReviews){
           console.log(review);
           if (!reviewedMovies.includes(model.movies[review.movieID])){
@@ -145,8 +172,12 @@ app.get("/users/:uid", function(req, res, next){
           }
         }
     }
-    if (result){
-      res.status(200).send("User found: " + JSON.stringify(result)+"\nand his reviews are " + JSON.stringify(resultReviews) + "\nand his reviewed movies are " + JSON.stringify(reviewedMovies));
+    if (result && result.id === req.session.user.uid){
+      res.render('pages/user', {user: result, likedMovies: reviewedMovies, resultReviews: resultReviews});
+      res.status(200);
+    }
+    else if (result && result.id !== req.session.user.uid){
+      res.render('pages/other-user', {requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
     }
     else{
       res.status(404).send("User " + req.params.uid + " does not exist.");
@@ -281,12 +312,12 @@ app.get("/movies", function(req, res, next){
   res.status(200).send("Movies found: " + JSON.stringify(result));
 });
 
+//tested
 app.get("/movies/:mid", function(req, res, next){
   let result = model.getMovie(req.params.mid);
   if(result){
-    res.status(200).send(JSON.stringify(result) +
-                        "\n\nReviews are: " + JSON.stringify(model.getReviewMovie(requestingUser, req.params.mid)) +
-                        "\n\nSimilar movies are: " + JSON.stringify(model.similarMovies(requestingUser, req.params.mid)));
+    res.render('pages/movie', {movie: result, similarMovies: [model.movies["0"], model.movies["4"], model.movies["3"]]});
+    res.status(200);                    
   }
   else{
     res.status(404).send("Movie does not exist.");
@@ -495,9 +526,14 @@ app.post("/movies/:mid/fullReview", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.addFullReview(requestingUser, req.body);
-    if (result){
-      res.status(200).send("Full review added.\n\n" + JSON.stringify(model.reviews));
+    if (requestingUser === req.body.userID){
+      let result = model.addFullReview(requestingUser, req.body);
+      if (result){
+        res.status(200).send("Full review added.\n\n" + JSON.stringify(model.reviews));
+      }
+      else{
+        res.status(500).send("Review could not be added.");
+      }
     }
     else{
       res.status(500).send("Review could not be added.");
