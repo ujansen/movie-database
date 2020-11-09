@@ -1,0 +1,53 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' type='text/css' href='./css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title Martin Freeman
+body
+    header
+        include ../partials/navBar
+    main.block.container
+    div
+        h4.text-center
+        | Martin Freeman (Actor)
+    div
+        .actorImage.text-center
+        div
+            img.rounded(src='https://upload.wikimedia.org/wikipedia/commons/7/7f/Martin_Freeman-5341.jpg')
+        button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Follow
+    .container.scrolling.personMovies
+        h4(style='padding-top: 2; padding-left: 4px;')
+        | Works
+        .row.flex-nowrap
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_SX300.jpg')
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BMzU0NDY0NDEzNV5BMl5BanBnXkFtZTgwOTIxNDU1MDE@._V1_SX300.jpg')
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BODAzMDgxMDc1MF5BMl5BanBnXkFtZTgwMTI0OTAzMjE@._V1_SX300.jpg')
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BMTI3NzM3NDU4M15BMl5BanBnXkFtZTcwNjYzODgzMQ@@._V1_SX300.jpg')
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BZTE4YzAyN2QtZDBkNC00YjUwLTk5ZjktMGEwZDMxZDI0MTg4XkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_SX300.jpg')
+        .col-xs-4.cp-1
+            .card.card-block
+            a(href='#' target='_blank')
+                img.slider-img(src='https://m.media-amazon.com/images/M/MV5BNDhkOGZkZWMtNGI4Mi00ZWI3LTgyYTgtMDU4ZDI3NTNjMWFiXkEyXkFqcGdeQXVyNjk1Njg5NTA@._V1_SX300.jpg')
+    span(style='display:flex; justify-content:flex-end; width:100%; padding:0;')
+        button#followPerson.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') See Full List
+script(src='./js/navBar.js')

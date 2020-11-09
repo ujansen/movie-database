@@ -15,16 +15,68 @@
   <title>Search</title>
   <body>
     <header>
-      
+      <!-- insert navbar -->
     </header>
     <main class="block container">
         <div>
             <h4>
                 Add movie:
             </h4>
-            <!-- work in progress -->
+            <hr style = "border-width: 2px;">
 
+            <label>Title: </label>
             <br>
+            <textarea id="movieTitle" name="movieTitle" rows="1" cols="50"></textarea>
+            <br>
+
+            <label>Runtime: </label>
+            <br>
+            <input id="runtime" name="runtime" type="text" rows="1" cols="10" />
+            <br>
+
+            <label>Year of Release: </label>
+            <br>
+            <input id="movieYear" name="movieYear" type="number" min="1600" max="2030" />
+            <br>
+            
+            <label>Genre: (separated by commas, eg: comedy, family, adventure)</label>
+            <br>
+            <textarea id="genreList" name="genreList" rows="2" cols="50"></textarea>
+            <br>
+
+            <label>Plot: </label>
+            <br>
+            <textarea id="plot" name="plot" rows="3" cols="50"></textarea>
+            <br>
+
+            <label>Poster URL: </label>
+            <br>
+            <textarea id="poster" name="poster" rows="1" cols="50"></textarea>
+            <br>
+
+            <label>Trailer URL: </label>
+            <br>
+            <textarea id="trailer" name="trailer" rows="1" cols="50"></textarea>
+            <br>
+
+            <label>List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)</label>
+            <br>
+            <textarea id="actorList" name="actorList" rows="2" cols="50"></textarea>
+            <br>
+
+            <label>List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)</label>
+            <br>
+            <textarea id="directorList" name="directorList" rows="2" cols="50"></textarea>
+            <br>
+
+            <label>List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)</label>
+            <br>
+            <textarea id="writerList" name="writerList" type="text" rows="2" cols="50"></textarea>
+            <br>
+            <br>
+
+            <button class="btn btn-outline-primary" type="submit" id="addMovie">Add to Database</button>
+
     </main>
 </body>
 <script src = "./js/navBar.js"></script>

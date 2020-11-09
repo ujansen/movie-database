@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.set("view engine", "pug");
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 app.use("/", function(req, res, next){
   console.log(req.session);
@@ -64,6 +64,7 @@ app.post("/login", function(req, res, next){
 });
 
 // USERS
+// no webpage yet
 app.get("/users", function(req, res, next){
   let result = model.searchUsers(requestingUser, req.query.name);
   res.status(200).json(result);
