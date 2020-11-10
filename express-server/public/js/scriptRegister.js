@@ -28,9 +28,10 @@ function sendPost(){
   let password = passwordBox.value.toString();
 
   let credentials = {username: username, password: password};
-
+  /*
   let req = new XMLHttpRequest();
   req.open("POST", "http://localhost:3000/users");
   req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
   req.send(JSON.stringify(credentials));
+  */
 }

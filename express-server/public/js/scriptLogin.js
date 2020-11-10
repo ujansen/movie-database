@@ -32,15 +32,17 @@ function sendPost(){
   let credentials = {username: username, password: password};
   //console.log(credentials);
 
+  /*
   let req = new XMLHttpRequest();
-  /* req.onreadystatechange = function(){
+   req.onreadystatechange = function(){
 		if(this.readyState == 4 && this.status == 200){
       console.log("All good. " + this.responseText);
       window.location.href = "http://localhost:3000/" + this.responseText;
 		}
-  } */
+  } 
   
   req.open("POST", "http://localhost:3000/login");
   req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
   req.send(JSON.stringify(credentials));
+  */
 }

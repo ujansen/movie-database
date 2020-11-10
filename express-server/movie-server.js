@@ -58,7 +58,7 @@ app.get("/register", function(req, res, next){
   }
 });
 
-// you are already logged in???
+// "you are already logged in"???
 app.post("/login", function(req, res, next){
   if (model.login(req.body)){
     req.session.user = model.users[req.body.username];
@@ -136,7 +136,7 @@ app.put("/users/:uid", function(req, res, next){
   }
 });
 
-
+// function ready, not tested
 app.post("/users/:uid/toggle", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -249,6 +249,7 @@ app.get("/users/:uid/people", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.post("/users/:uid/follow", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -265,6 +266,7 @@ app.post("/users/:uid/follow", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.post("/users/:uid/unfollow", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -328,7 +330,7 @@ app.get("/movies", function(req, res, next){
   res.status(200).send("Movies found: " + JSON.stringify(result));
 });
 
-//tested - needs person IDs
+// needs work - needs person objects, review objects, similarMovie objects
 app.get("/movies/:mid", function(req, res, next){
   let result = model.getMovie(req.params.mid);
   if(result){
@@ -340,6 +342,7 @@ app.get("/movies/:mid", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.post("/movies", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -377,7 +380,7 @@ app.get("/movies/:mid/edit", function(req, res, next){
   }
 });
 
-
+// function ready, not tested
 app.put("/movies/:mid", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -398,6 +401,7 @@ app.put("/movies/:mid", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.delete("/movies/:mid", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -446,6 +450,7 @@ app.get("/people/:pid", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.post("/people", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -484,6 +489,7 @@ app.get("/addperson", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.put("/people/:pid", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
@@ -494,6 +500,7 @@ app.put("/people/:pid", function(req, res, next){
   }
 });
 
+// function ready, not tested
 app.delete("/people/:pid", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");

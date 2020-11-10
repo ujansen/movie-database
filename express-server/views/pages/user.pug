@@ -31,10 +31,10 @@ body
                 label.switch
                     //- use if condition for this
                     if(user.userType)
-                        input#toggleContributing(type='checkbox')
+                        input#toggleContributing(type='checkbox', checked)
                         span.slider.round
                     else
-                        input#toggleContributing(type='checkbox', checked)
+                        input#toggleContributing(type='checkbox')
                         span.slider.round
             //- row 1 ends
         .mt-3
