@@ -25,7 +25,7 @@ function addMovie() {
         directors: directorList,
         writers: writerList
     }
-    
+
     let req = new XMLHttpRequest();
     req.open("POST", "http://localhost:3000/movies");
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')

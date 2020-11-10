@@ -17,7 +17,7 @@ function editPerson() {
         image: image,
         movies: movies
     }
-    
+
     let req = new XMLHttpRequest();
     req.open("PUT", "http://localhost:3000/person/"+id);
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')

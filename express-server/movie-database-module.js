@@ -115,7 +115,7 @@ function showFollowing(requestedUser){    // displays the list of users the user
   return followingList;
 }
 
-function getUser(requesting, requested){    // gets the user object when supplied with username
+function getUser(requested){    // gets the user object when supplied with username
   if (users.hasOwnProperty(requested)){
     return users[requested];
   }
@@ -456,8 +456,6 @@ function addMovie(requesting, movieObject) {
     return false
   }
   let requestingUser = users[requesting];
-  // check if user contributing
-  if(requestingUser["userType"]) {
     // search if same title exists
     for(movieID in movies) {
       let movie = movies[movieID];
@@ -558,7 +556,6 @@ function addMovie(requesting, movieObject) {
     moviesCopy = sortMovieRating();
     nextMovieID++;
     return true;  // if addition is successful
-  }
   return false;
 }
 
@@ -769,12 +766,9 @@ function commonElements(array1, array2){
 
 // tested
 // similar movies - based on similar genre, cast
-function similarMovies(requesting, movieID) {
+function similarMovies(movieID) {
   // implementation pending for cast
   // currently works if more than 2 genres match
-  if (!users.hasOwnProperty(requesting) || !movies.hasOwnProperty(movieID)){
-    return [];
-  }
   let similar = [];
   let movie = movies[movieID];
   for (movieid in movies){
@@ -857,8 +851,8 @@ function yourList(requesting){
 
 // tested
 // get a particular review
-function getReview(requestingUser, reviewID){
-  if(!users.hasOwnProperty(requestingUser) || !reviews.hasOwnProperty(reviewID)){
+function getReview(reviewID){
+  if(!reviews.hasOwnProperty(reviewID)){
     return false;
   }
   return reviews[reviewID];
@@ -874,9 +868,9 @@ function addFullReview(requestingUser, reviewObject){
   reviewObject.id = (nextReviewID).toString();
   reviews[reviewObject.id] = reviewObject;
 
-  movies[reviewObject.movieID].reviews.push(nextReviewID);
+  movies[reviewObject.movieID].reviews.push(reviewObject.id);
   updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
-  users[requestingUser].reviews.push(nextReviewID);
+  users[requestingUser].reviews.push(reviewObject.id);
   nextReviewID++;
   return true; // review added successfully
 }
@@ -957,19 +951,18 @@ function addPerson(requesting, personObject) {
     // search if same person exists
     for(personID in people) {
       let person = people[personID];
-      if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
+      if(person.name.toLowerCase() === personObject.name.toLowerCase()) {
         return false;
       }
     }
-
-    personObject.id = (nextPersonID).toString();
+    personObject["id"] = (nextPersonID).toString();
     if (personObject.movies !== ""){
       let personObjectMovies = personObject.movies.trim().split(",");
       let personMovies = [];
-      for (movie of personMovies){
+      for (movie of personObjectMovies){
         let movieName = "";
         for (let i = 0; i < movie.trim().split(" ").length - 1; i++){
-          movieName += movie.trim().split(" ")[i];
+          movieName += movie.trim().split(" ")[i] + " ";
         }
         let movieRole = "";
         let movieRoleString = movie.trim().split(" ")[movie.trim().split(" ").length - 1];
@@ -1011,9 +1004,10 @@ function addPerson(requesting, personObject) {
 
     //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
+    console.log(personObject);
     people[personObject.id] = personObject;
     nextPersonID++;
-    return true;  // if addition is successful
+    return personObject.id;  // if addition is successful
   }
   return false;
 }

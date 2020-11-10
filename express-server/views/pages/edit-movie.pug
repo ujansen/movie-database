@@ -14,36 +14,33 @@ header
   include ../partials/navBar
 main.block.container
   div
-    h4 Edit movie #{movie.title}:
+    h4 Edit #{movie.title}:
     hr(style='border-width: 2px;')
-    label Movie ID:
-    label#id #{movie.id}
-    br
-    label Title: 
+    label Title:
     br
     textarea#movieTitle(name='movieTitle' rows='1' cols='50' disabled) #{movie.title}
     br
-    label Runtime: 
+    label Runtime:
     br
     input#runtime(name='runtime' type='text' rows='1' cols='10' value=movie.runtime)
     br
-    label Year of Release: 
+    label Year of Release:
     br
     input#movieYear(name='movieYear' type='number' min='1600' max='2030' value=movie.releaseYear)
     br
     label Genre: (separated by commas, eg: comedy, family, adventure)
     br
-    textarea#genreList(name='genreList' rows='2' cols='50')
+    textarea#genreList(name='genreList' rows='2' cols='50') #{movie.genre}
     br
-    label Plot: 
+    label Plot:
     br
     textarea#plot(name='plot' rows='3' cols='50') #{movie.plot}
     br
-    label Poster URL: 
+    label Poster URL:
     br
-    textarea#poster(name='poster' rows='1' cols='50')
+    textarea#poster(name='poster' rows='3' cols='50') #{movie.poster}
     br
-    label Trailer URL: 
+    label Trailer URL:
     br
     textarea#trailer(name='trailer' rows='1' cols='50')
     br

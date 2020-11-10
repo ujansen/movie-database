@@ -6,9 +6,9 @@
       "password": "password",
       "userType": false,
       "about": "Friendly cat-lover who loves sci-fi!",
-      "followers": ["user1", "user2", "user3", "user4"],
+      "followers": ["user1", "user3", "user4"],
       "followingUsers":  ["user1", "user2"],
-      "followingPeople": ["1", "3"],
+      "followingPeople": ["3"],
       "reviews": ["23", "534", "12"],
       "recommendedMovies": [],
       "contributedMovies": []
@@ -18,12 +18,12 @@
       "id": "1",
       "username": "user1",
       "password": "password",
-      "userType": false,
+      "userType": true,
       "about": "Our reality isn't enough for our minds. Films are our escape.",
       "followers": ["user0", "user2", "user3"],
-      "followingUsers":  ["user0", "user2", "user3"],
-      "followingPeople": ["0", "2", "3"],
-      "reviews": ["0", "2", "3"],
+      "followingUsers":  ["user0", "user2", "user4"],
+      "followingPeople": ["1", "2"],
+      "reviews": ["13", "10", "2"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -34,9 +34,9 @@
       "password": "password",
       "userType": false,
       "about": "My favourite genre is every Christopher Nolan movie ever created",
-      "followers": ["user3"],
-      "followingUsers":  ["user0", "user3"],
-      "followingPeople": ["4"],
+      "followers": ["user0", "user3"],
+      "followingUsers":  ["user3"],
+      "followingPeople": ["1", "4"],
       "reviews": ["4", "1"],
       "recommendedMovies": [],
       "contributedMovies": []
@@ -50,9 +50,9 @@
       "about": "Media student here to explore and critique works by different film-makers.",
       "followers": ["user1", "user2"],
       "followingUsers":  ["user0", "user2"],
-      "followingPeople": ["4"],
-      "reviews": ["3", "11", "10"],
+      "followingPeople": ["1", "4"],
+      "reviews": ["3", "2"],
       "recommendedMovies": [],
       "contributedMovies": []
     }
-}
+  }

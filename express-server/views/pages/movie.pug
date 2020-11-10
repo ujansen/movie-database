@@ -1,5 +1,4 @@
 //- SCRIPT REMAINING
-
 doctype html
 head
   meta(charset="utf-8")
@@ -36,19 +35,19 @@ body
                 |#{movie.plot}
           li
             em Actors:
-              each actor in movie.actors
-                a(class="active ml-1" href="http://localhost:3000/people/"+actor) #{actor}, 
+              each actor in actorList
+                a(class="active ml-1" href="http://localhost:3000/people/"+actor.id)  #{actor.name},
           li
             em Genre:
               each genre in movie.genre
-                a(class="active ml-1" href="#") #{genre}, 
+                a(class="active ml-1" href="#") #{genre},
           li
             em Director:
-              a(class="active ml-1" href="http://localhost:3000/people/"+director) #{director}
+              a(class="active ml-1" href="http://localhost:3000/people/"+director.id) #{director.name}
           li
             em Writer:
-              each writer in movie.writers
-                a(class="active ml-1" href="http://localhost:3000/people/"+writer) #{writer}, 
+              each writer in writerList
+                a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
     div(class="container scrolling similar_movies")
       h4 Similar Movies
       div(class="row flex-nowrap")
@@ -59,7 +58,7 @@ body
                 img(src=similarMovie.poster class = "slider-img")
     div(class="review")
       h6(style="padding-top: 20px; padding-left: 4px;") Average Rating: #{movie.averageRating}
-      h6(style="padding-top: 20px; padding-left: 4px;") Add rating: 
+      h6(style="padding-top: 20px; padding-left: 4px;") Add rating:
         input(type='number' min='1' max='10')
       h6(style="padding-top: 20px; padding-left: 4px;") Add review:
       div
@@ -68,10 +67,9 @@ body
     div(class = "container reviews mt-4" id="reviews")
       h5 Reviews
       ul(class="list-group")
-        each review in movie.reviews
-          li(class="list-group-item") #{review}
+        each review in reviewList
+          li(class="list-group-item") #{review.content}
     br
     //-if(user)
     a(href="http://localhost:3000/movies/"+movie.id+"/edit")
       button#editMovie.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Movie
-

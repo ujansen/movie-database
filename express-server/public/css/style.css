@@ -17,19 +17,6 @@ body{
   color: #ffffff;
 }
 
-.navbar {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  position: -webkit-sticky;
-  position: sticky;
-  z-index: 5;
-  top: 0;
-}
-
-.navbar-dark {
-  background-color: black !important;
-}
-
 .block{
   padding-top: 30px !important;
   padding-left: 150px;

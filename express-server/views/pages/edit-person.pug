@@ -14,26 +14,23 @@ header
   include ../partials/navBar
 main.block.container
   div
-    h4 Edit Person #{person.name}:
+    h4 Edit #{person.name}:
     hr(style='border-width: 2px;')
-    label Person ID:  
-    label#id #{person.id}
-    br
-    label Name: 
+    label Name:
     br
     textarea#name(name='name' rows='1' cols='50' disabled) #{person.name}
     br
-    label About: 
+    label About:
     br
     textarea#about(name='about' rows='3' cols='50') #{person.about}
     br
-    label 
-      | Movies they worked in: (separated by commas, role in brackets) 
+    label
+      | Movies they worked in: (separated by commas, role in brackets)
       | Eg: Pink Panther (actor), The Grand Budapest Hotel (director)
     br
     textarea#movies(name='movies' rows='2' cols='50')
     br
-    label Image URL: 
+    label Image URL:
     br
     textarea#image(name='image' rows='1' cols='50')
     br

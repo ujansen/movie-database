@@ -16,28 +16,28 @@ main.block.container
   div
     h4 Add Person:
     hr(style='border-width: 2px;')
-    label Name: 
+    label Name:
     br
     textarea#name(name='name' rows='1' cols='50')
     br
-    label About: 
+    label About:
     br
     textarea#about(name='about' rows='3' cols='50')
     br
-    label 
-      | Movies they worked in: (separated by commas, role in brackets) 
+    label
+      | Movies they worked in: (separated by commas, role in brackets)
       | Eg: Pink Panther (actor), The Grand Budapest Hotel (director)
     br
     textarea#movies(name='movies' rows='2' cols='50')
     br
-    label Image URL: 
+    label Image URL:
     br
     textarea#image(name='image' rows='1' cols='50')
     br
     br
     if(user.userType)
-      button#addMovie.btn.btn-outline-primary(type='submit') Add to Database
+      button#addPerson.btn.btn-outline-primary(type="submit") Add to Database
     else
-      button#addMovie.btn.btn-outline-primary(type='submit' disabled) Add to Database
+      button#addPerson.btn.btn-outline-primary(type="submit" disabled) Add to Database
       p You must be a contributing user to add a person to the Database.
 script(src='/js/addPerson.js')

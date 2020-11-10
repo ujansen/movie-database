@@ -8,12 +8,12 @@ head
   link(rel='stylesheet' type='text/css' href='/css/style.css')
   link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
   //- Title of the tab
-  title #{user.username}'s Following
+  title #{user.id}'s Following
 body
     header
         include ../partials/navBar
     .container.body_content
-        h5 Users that #{user.username} Follows
+        h5 Users that #{user.id} Follows
         br
         ul.list-group
         each following in followingList

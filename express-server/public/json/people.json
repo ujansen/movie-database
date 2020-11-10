@@ -12,16 +12,16 @@
         "name": "Tom Hanks",
         "about": "",
         "followers": ["user1", "user2", "user3"],
-        "collaborators": ["2"],
-        "movies": ["0", "2"]
+        "collaborators": ["0", "2"],
+        "movies": ["0", "2", "5"]
       },
     "2":
       {
         "id": "2",
         "name": "Brad Pitt",
         "about": "",
-        "followers": ["user1", "user2", "user4"],
-        "collaborators": [],
+        "followers": ["user1", "user2"],
+        "collaborators": ["0", "1"],
         "movies": ["0", "3", "4"]
       },
     "3":
@@ -79,4 +79,3 @@
         "movies": ["0", "3", "4"]
       }
   }
-  

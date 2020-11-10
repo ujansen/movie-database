@@ -29,7 +29,7 @@ function editMovie() {
         directors: directorList,
         writers: writerList
     }
-    
+
     let req = new XMLHttpRequest();
     req.open("PUT", "http://localhost:3000/movies"+id);
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')

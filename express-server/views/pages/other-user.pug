@@ -1,14 +1,12 @@
 //- let content = renderOtherUser({
 //-     requestingUser: requestingUser,
 //-     requestedUser: otherUser,
-//-     
+//-
 //- });
-
 //- result: otherUser
 //- their reviews
 //- followers, following, people - separate page with links
 //- reviewed movie objects
-
 //- SCRIPT REMAINING
 doctype html
 head
@@ -62,8 +60,8 @@ main(style='background-color: #243742;')
     ul.list-group
       each review in reviewList
         a(href="http://localhost:3000/reviews/"+review.id)
-                li.list-group-item 
-                    p 
+                li.list-group-item
+                    p
                     | #{review.title}
                     |
                     | #{review.content}
