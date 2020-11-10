@@ -359,7 +359,7 @@ app.post("/movies", function(req, res, next){
 });
 
 // tested
-app.get("/addmovie", function(req, res, next){
+app.get("/addMovie", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
   }
@@ -479,7 +479,7 @@ app.get("/people/:pid/edit", function(req, res, next){
 });
 
 // tested
-app.get("/addperson", function(req, res, next){
+app.get("/addPerson", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
   }

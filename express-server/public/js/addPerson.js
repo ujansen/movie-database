@@ -1,12 +1,17 @@
-let name = document.getElementById("name").value.toString();
-let about = document.getElementById("about").value.toString();
-let movies = document.getElementById("movies").value.toString();
-let image = document.getElementById("image").value.toString();
+let name = document.getElementById("name");
+let about = document.getElementById("about");
+let movies = document.getElementById("movies");
+let image = document.getElementById("image");
 
 let button = document.getElementById("addPerson");
 button.addEventListener("click", addPerson);
 
 function addPerson() {
+    let name = document.getElementById("name").value.toString();
+    let about = document.getElementById("about").value.toString();
+    let movies = document.getElementById("movies").value.toString();
+    let image = document.getElementById("image").value.toString();
+
     let personObj = {
         name: name,
         about: about,

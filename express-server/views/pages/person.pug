@@ -19,7 +19,11 @@ body
                 div
                     if(person.image)
                         img.rounded(src=person.image)
-                button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Follow
+                //-button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Follow
+                if(userFollowsPerson)
+                    button#followPerson.btn.btn-outline-primary(type='submit') Unfollow
+                else
+                    button#followPerson.btn.btn-outline-primary(type='submit') Follow
         .container.scrolling.personMovies
             h4(style='padding-top: 2; padding-left: 4px;') Works
             .row.flex-nowrap
