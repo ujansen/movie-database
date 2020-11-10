@@ -1,7 +1,7 @@
 nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
-  a(class="navbar-brand ml-2", href="./index.html")
+  a(class="navbar-brand ml-2", href="/")
     img(style="height: 40px; width: 40px;", src="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg")
-  a(class="navbar-brand" href="./index.html") MDB
+  a(class="navbar-brand" href="/") MDB
   form(class="form-inline")
     input(class="form-control mr-sm-2", type="search", placeholder="Search", aria-label="Search", id="searchBar")
     button(class="btn btn-outline-success my-2 my-sm-0" type="submit" id="searchButton") Search
@@ -9,9 +9,15 @@ nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
     span(class="navbar-toggler-icon")
   div(class="collapse navbar-collapse", id="navbarNavAltMarkup")
     div(class="navbar-nav ml-auto")
-      a(class="nav-item nav-link active" href="./index.html") Home
+      a(class="nav-item nav-link active" href="/") Home
         span(class="sr-only")
-      a(class="nav-item nav-link active" href="./login.html") Log In
+      a(class="nav-item nav-link active" href="/login") Log In
         span(class="sr-only")
+      //-if(user)
+          | Log Out
+          span(class="sr-only")
+        else
+          | Log In
+          span(class="sr-only")
 
-script(src='./js/navBar.js')
+script(src='/js/navBar.js')

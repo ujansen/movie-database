@@ -6,7 +6,7 @@ head
   //- Bootstrap CSS
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
   link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
-  link(rel='stylesheet' type='text/css' href='./css/style.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
   link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
 
 title Search
@@ -14,8 +14,7 @@ header
   include ../partials/navBar
 main.block.container
   div
-    h4
-      | Add movie:
+    h4 Add movie:
     hr(style='border-width: 2px;')
     label Title: 
     br
@@ -49,16 +48,18 @@ main.block.container
     br
     textarea#actorList(name='actorList' rows='2' cols='50')
     br
-    label
-      | List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
+    label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
     br
     textarea#directorList(name='directorList' rows='2' cols='50')
     br
-    label
-      | List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)
+    label List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)
     br
     textarea#writerList(name='writerList' type='text' rows='2' cols='50')
     br
     br
-    button#addMovie.btn.btn-outline-primary(type='submit') Add to Database
-script(src='./js/addMovie.js')
+    if(user.userType)
+      button#addMovie.btn.btn-outline-primary(type='submit') Add to Database
+    else
+      button#addMovie.btn.btn-outline-primary(type='submit' disabled) Add to Database
+      p You must be a contributing user to add a movie to the Database.
+script(src='/js/addMovie.js')

@@ -1,0 +1,54 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+
+title Search
+header
+  include ../partials/navBar
+main.block.container
+  div
+    h4 Edit Person #{person.name}:
+    hr(style='border-width: 2px;')
+    label Person ID:  
+    label#id #{person.id}
+    br
+    label Name: 
+    br
+    textarea#name(name='name' rows='1' cols='50' disabled) #{person.name}
+    br
+    label About: 
+    br
+    textarea#about(name='about' rows='3' cols='50') #{person.about}
+    br
+    label 
+      | Movies they worked in: (separated by commas, role in brackets) 
+      | Eg: Pink Panther (actor), The Grand Budapest Hotel (director)
+    br
+    textarea#movies(name='movies' rows='2' cols='50')
+    br
+    label Image URL: 
+    br
+    textarea#image(name='image' rows='1' cols='50')
+    br
+    br
+    if(user.userType)
+      button#editPerson.btn.btn-outline-primary(type='submit') Update in Database
+      br
+      br
+      button#deletePerson.btn.btn-outline-primary(type='submit') Delete from Database
+    else
+      button#editPerson.btn.btn-outline-primary(type='submit' disabled) Update in Database
+      br
+      br
+      button#deletePerson.btn.btn-outline-primary(type='submit' disabled) Delete from Database
+      br
+      br
+      p You must be a contributing user to edit a person in the Database.
+script(src='/js/editPerson.js')

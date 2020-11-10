@@ -10,10 +10,10 @@ head
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
-    link(rel='stylesheet' type='text/css' href='./css/style.css')
+    link(rel='stylesheet' type='text/css' href='/css/style.css')
     link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
 title MDB
-// NAVBAR
+
 body
     header
         include ../partials/navBar
@@ -27,7 +27,7 @@ body
                             a(href="http://localhost:3000/movies/"+movie.id)
                                 //- link = "localhost .... /movie/#{movie.id}"
                                 img(src=movie.poster class = "slider-img")
-        if(resultYourList === [])
+        if !(resultYourList == undefined || resultYourList.length == 0)
             //- resultYourList === []
             br
             br
@@ -38,7 +38,7 @@ body
                         div(class="col-xs-4 cp-1")
                             div(class="card card-block")
                                 a(href="http://localhost:3000/movies/"+movie.id)
-                                    img(src=movie.Poster class = "slider-img")
+                                    img(src=movie.poster class = "slider-img")
         br
         br
         .container.scrolling.fan_picks
@@ -50,4 +50,4 @@ body
                             a(href="http://localhost:3000/movies/"+movie.id)
                                 img(src=movie.poster class = "slider-img")
 
-script(src='./js/movie-list.js')
+script(src='/js/movie-list.js')

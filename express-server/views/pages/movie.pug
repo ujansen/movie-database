@@ -6,23 +6,24 @@ head
   meta(name="viewport" content="width=device-width, initial-scale=1")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous")
   link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
-  link(rel="stylesheet" type="text/css" href="./css/style.css")
+  link(rel="stylesheet" type="text/css" href="/css/style.css")
   link(rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg" type="image/x-icon")
 title #{movie.title}
 body
   header
     include ../partials/navBar
-  main(class="block container")
+  .container.body_content
     div
-      h4 #{movie.title} (#{movie.year})
+      h4 #{movie.title} (#{movie.releaseYear})
         //-small(style="font-size: 16px; font-style:italic;" class="text-secondary ml-2") PG-13
     div(class="row flex-nowrap poster container")
       div(class="col-xs-4 cp-1")
         div(class="card card-block")
           img(src=movie.poster)
-      div(class="col-xs-4 cp-1")
-        div(class="card card-block ml-5")
-          iframe(width="600" height="400" style="border: 1.5px white solid;" src=movie.trailer)
+      if(movie.trailer)
+        div(class="col-xs-4 cp-1")
+          div(class="card card-block ml-5")
+            iframe(width="600" height="400" style="border: 1.5px white solid;" src=movie.trailer)
     div(class="details")
       ul(style="list-style-type:none; padding-left: 4px;")
         ul(style="list-style-type:none; padding-left: 4px;")
@@ -34,27 +35,27 @@ body
                 br
                 |#{movie.plot}
           li
+            em Actors:
+              each actor in movie.actors
+                a(class="active ml-1" href="http://localhost:3000/people/"+actor) #{actor}, 
+          li
             em Genre:
               each genre in movie.genre
                 a(class="active ml-1" href="#") #{genre}, 
           li
             em Director:
-              a(class="active ml-1" href="#") #{director}
+              a(class="active ml-1" href="http://localhost:3000/people/"+director) #{director}
           li
             em Writer:
               each writer in movie.writers
-                a(class="active ml-1" href="#") #{writer}, 
-          li
-            em Actors:
-              each actor in movie.actors
-                a(class="active ml-1" href="#") #{actor}, 
+                a(class="active ml-1" href="http://localhost:3000/people/"+writer) #{writer}, 
     div(class="container scrolling similar_movies")
       h4 Similar Movies
       div(class="row flex-nowrap")
         each similarMovie in similarMovies
           div(class="col-xs-4 cp-1")
             div(class="card card-block")
-              a(href="#" target="_blank")
+              a(href="http://localhost:3000/movies/"+similarMovie.id)
                 img(src=similarMovie.poster class = "slider-img")
     div(class="review")
       h6(style="padding-top: 20px; padding-left: 4px;") Average Rating: #{movie.averageRating}
@@ -69,4 +70,8 @@ body
       ul(class="list-group")
         each review in movie.reviews
           li(class="list-group-item") #{review}
-script(src = "./js/navBar.js")
+    br
+    //-if(user)
+    a(href="http://localhost:3000/movies/"+movie.id+"/edit")
+      button#editMovie.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Movie
+

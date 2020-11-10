@@ -1,10 +1,10 @@
-let users = require("./users.json");
-let movies = require("./movies.json");
+let users = require("./public/json/users.json");
+let movies = require("./public/json/movies.json");
 let moviesCopy = Object.keys(movies).map(key => {
     return movies[key];
 });
-let reviews = require("./reviews.json");
-let people = require("./people.json");
+let reviews = require("./public/json/reviews.json");
+let people = require("./public/json/people.json");
 const puppeteer = require('puppeteer');
 
 

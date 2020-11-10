@@ -24,51 +24,51 @@ main(style='background-color: #243742;')
   header
     include ../partials/navBar
 .container.body_content
-  //- row 1 starts
-  .row.flex-wrap.mb-4
-    .col-xs.cp-1.bg-secondary
-      img.user-img(src= requestedUser.profilePic)
-      //- add user image property to user objects
-      //- img.user-img(src= requestedUser.image)
-    .col.ml-4.align-self-center
-      h4#username #{requestedUser.username}
-    .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="http://localhost:3000/users/"+requestedUser.id+"/followers") Followers
-    .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="http://localhost:3000/users/"+requestedUser.id+"/following") Following
-    //- Follow button
-    .col-xs.ml-5.justify-content-end.align-self-center
-      //-if userFollowsOtherUser
-      //-button#follow-user.btn.btn-outline-primary(type='submit') Unfollow
-      button#follow-user.btn.btn-outline-primary(type='submit') Follow
-    //- row 1 ends
-  .mt-3
-    p.about-user
-      | #{requestedUser.about}
-  hr(style='border-width: 2px;')
-  .container.scrolling.liked-movies
-    h5 Liked Movies
-    //- image slider starts
-    .row.flex-nowrap.ml-1.mr-1
-      each movie in likedMovies
-        .col-xs-4.cp-1.bg-secondary
-            .card.card-block
-            a(href='http://localhost:3000/movies/'+movie.id)
-                img.slider-img(src=movie.poster)
-  //- image slider ends
-  .container.reviews.mt-4
-    h5 Reviews
-    ul.list-group
-      each review in reviewList
-        a(href="http://localhost:3000/reviews/"+review.id)
-                li.list-group-item 
-                    p 
-                    | #{review.title}
-                    |
-                    | #{review.content}
+    //- row 1 starts
+    .row.flex-wrap.mb-4
+      .col-xs.cp-1.bg-secondary
+        img.user-img(src= requestedUser.profilePic)
+        //- add user image property to user objects
+        //- img.user-img(src= requestedUser.image)
+      .col.ml-4.align-self-center
+        h4#username #{requestedUser.username}
+      .col-xs.ml-5.justify-content-end.align-self-center
+        a(href="http://localhost:3000/users/"+requestedUser.id+"/followers") Followers
+      .col-xs.ml-5.justify-content-end.align-self-center
+        a(href="http://localhost:3000/users/"+requestedUser.id+"/following") Following
+      //- Follow button
+      .col-xs.ml-5.justify-content-end.align-self-center
+        //-if userFollowsOtherUser
+        //-button#follow-user.btn.btn-outline-primary(type='submit') Unfollow
+        button#follow-user.btn.btn-outline-primary(type='submit') Follow
+      //- row 1 ends
+    .mt-3
+      p.about-user
+        | #{requestedUser.about}
+    hr(style='border-width: 2px;')
+    .container.scrolling.liked-movies
+      h5 Liked Movies
+      //- image slider starts
+      .row.flex-nowrap.ml-1.mr-1
+        each movie in likedMovies
+          .col-xs-4.cp-1.bg-secondary
+              .card.card-block
+              a(href='http://localhost:3000/movies/'+movie.id)
+                  img.slider-img(src=movie.poster)
+    //- image slider ends
+    .container.reviews.mt-4
+      h5 Reviews
+      ul.list-group
+        each review in reviewList
+          a(href="http://localhost:3000/reviews/"+review.id)
+                  li.list-group-item 
+                      p 
+                      | #{review.title}
+                      |
+                      | #{review.content}
 
-  hr(style='border-width: 2px;')
-  a(href="http://localhost:3000/user/"+requestingUser.id+"/people")
-    h5 People that #{requestingUser.username} follows
-  //- body ends
+    hr(style='border-width: 2px;')
+    a(href="http://localhost:3000/user/"+requestingUser.id+"/people")
+      h5 People that #{requestingUser.username} follows
+    //- body ends
 script(src='./js/scriptOtherUser.js')
