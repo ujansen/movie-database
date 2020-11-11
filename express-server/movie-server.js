@@ -317,6 +317,7 @@ app.get("/users/:uid/recommended", function(req, res, next){
 });
 
 app.get("/searchIMDB/:sid", async function(req, res, next){
+  // where / how do we want the result to show up? A separate page?
   let searchTerms = [];
   let searchTerm = req.params.sid;
   if (searchTerm.includes("+")){
@@ -339,9 +340,10 @@ app.get("/movies", function(req, res, next){
   if (!req.query.title){
     req.query.title = "";
   }
-  let result = model.searchMovie(req.query.title); // only searches using title
+  let result = model.searchMovie(req.query.title); // only searches using title, does not consider spaces
   res.status(200); //.send("Movies found: " + JSON.stringify(result));
   res.render('pages/search-movie', {movieObjects: result});
+  // gives a 302 status(???)
 });
 
 //tested
@@ -477,7 +479,8 @@ app.get("/people", function(req, res, next){
   }
   else{
     let result = model.searchPerson(req.query.name);
-    res.status(200).send("People found: " + JSON.stringify(result));
+    res.status(200); //.send("People found: " + JSON.stringify(result));
+    res.render('pages/search-person', {personObjects: result});
   }
 });
 
