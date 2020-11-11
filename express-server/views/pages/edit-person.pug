@@ -14,8 +14,11 @@ header
   include ../partials/navBar
 main.block.container
   div
-    h4 Edit #{person.name}:
+    h4 Edit Person #{person.name}:
     hr(style='border-width: 2px;')
+    label Person ID:
+    label#id #{person.id}
+    br
     label Name:
     br
     textarea#name(name='name' rows='1' cols='50' disabled) #{person.name}

@@ -6,7 +6,7 @@ button.disabled = true;
 
 emailBox.addEventListener("keyup", enableButton);
 passwordBox.addEventListener("keyup", enableButton);
-button.addEventListener("click", sendPost);
+//button.addEventListener("click", sendPost);
 
 function enableButton(){
   if (emailBox.value.toString() !== '' && passwordBox.value.toString() !== ''){
@@ -17,12 +17,12 @@ function enableButton(){
   }
 }
 
+/*
 function sendPost(){
   let username = emailBox.value.toString();
   let password = passwordBox.value.toString();
   let credentials = {username: username, password: password};
-  /*let req = new XMLHttpRequest();
-
+  let req = new XMLHttpRequest();
   req.open("POST", "http://localhost:3000/login");
   req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
   req.onreadystatechange = function () {
@@ -31,5 +31,6 @@ function sendPost(){
       //window.location.replace(req.responseText);
     }
   };
-  req.send(JSON.stringify(credentials));*/
+  req.send(JSON.stringify(credentials));
 }
+*/

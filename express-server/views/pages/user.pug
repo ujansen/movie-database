@@ -64,10 +64,9 @@ body
                             | #{review.content}
                     //- counter++;
                     //- if(counter > 5) break
-                //-a(href="http://localhost:3000/users/"+user.id+"/reviews") See all reviews
+                //-a(href="http://localhost:3000/user/"+user.id+"/reviews") See all reviews
         hr(style='border-width: 2px;')
         a(href="http://localhost:3000/users/"+user.id+"/people")
             h5 People that #{user.username} follows
         //- body ends
 script(src='/js/scriptUser.js')
-script(src='/js/navBar.js')

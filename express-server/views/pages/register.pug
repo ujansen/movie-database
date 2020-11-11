@@ -5,7 +5,7 @@ head
   meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
   //- Bootstrap CSS
   link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
-  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='stylesheet' type='text/css' href='./css/style.css')
   link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
 title Register
 body
@@ -14,7 +14,7 @@ body
     main(style='background-color: #243742;')
     .container
         form.sign_up_form(action='/', method='POST')
-        // add the path for index.html inside action
+        //- add the path for index.html inside action
         fieldset.form-group
             legend.border-bottom.mb-3 Sign Up
             .form-group
@@ -40,4 +40,3 @@ body
                 | Already Have An Account?
                 a.ml-2(href='/login') Login Now!
 script(src='/js/scriptRegister.js')
-script(src = "/js/navBar.js")

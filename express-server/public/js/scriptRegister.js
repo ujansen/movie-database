@@ -20,3 +20,9 @@ function enableButton(){
     button.disabled = true;
   }
 }
+/*
+let req = new XMLHttpRequest();
+req.open("POST", "http://localhost:3000/users");
+req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+req.send(JSON.stringify(credentials));
+*/

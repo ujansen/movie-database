@@ -14,8 +14,11 @@ header
   include ../partials/navBar
 main.block.container
   div
-    h4 Edit #{movie.title}:
+    h4 Edit movie #{movie.title}:
     hr(style='border-width: 2px;')
+    label Movie ID:
+    label#id #{movie.id}
+    br
     label Title:
     br
     textarea#movieTitle(name='movieTitle' rows='1' cols='50' disabled) #{movie.title}
@@ -30,7 +33,7 @@ main.block.container
     br
     label Genre: (separated by commas, eg: comedy, family, adventure)
     br
-    textarea#genreList(name='genreList' rows='2' cols='50') #{movie.genre}
+    textarea#genreList(name='genreList' rows='2' cols='50' required) #{movie.genre}
     br
     label Plot:
     br
@@ -38,7 +41,7 @@ main.block.container
     br
     label Poster URL:
     br
-    textarea#poster(name='poster' rows='3' cols='50') #{movie.poster}
+    textarea#poster(name='poster' rows='1' cols='50' required) #{movie.poster}
     br
     label Trailer URL:
     br
@@ -47,6 +50,8 @@ main.block.container
     label List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)
     br
     textarea#actorList(name='actorList' rows='2' cols='50')
+      each actor in movie.actors
+        actor.name
     br
     label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
     br

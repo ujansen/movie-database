@@ -29,7 +29,7 @@
         "id": "3",
         "name": "Quentin Tarantino",
         "about": "",
-        "followers": ["user1", "user3", "user4"],
+        "followers": ["user1", "user3", "user2"],
         "collaborators": [],
         "movies": ["0", "3"]
       },
@@ -47,7 +47,7 @@
         "id": "5",
         "name": "Steven Spielberg",
         "about": "",
-        "followers": ["user4"],
+        "followers": ["user3"],
         "collaborators": [],
         "movies": ["2"]
       },
