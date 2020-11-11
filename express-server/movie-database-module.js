@@ -115,11 +115,24 @@ function showFollowing(requestedUser){    // displays the list of users the user
   return followingList;
 }
 
-function getUser(requesting, requested){    // gets the user object when supplied with username
+function getUser(requested){    // gets the user object when supplied with username
   if (users.hasOwnProperty(requested)){
     return users[requested];
   }
   return null;
+}
+
+function editUser(requesting, userObject) {
+  if (!users.hasOwnProperty(requested) && !(requesting === userObject.username)){
+    return null;
+  }
+  // user can only edit their own username, password, and about
+  let user = users[requesting];
+  // if user changes their username, their object key would need to change - since keys are usernames 
+  // do not allow change of username
+  user.password = userObject.password;
+  user.about = userObject.about;
+  return true;
 }
 
 // tested
@@ -456,7 +469,6 @@ function addMovie(requesting, movieObject) {
     return false
   }
   let requestingUser = users[requesting];
-  // check if user contributing
   if(requestingUser["userType"]) {
     // search if same title exists
     for(movieID in movies) {
@@ -535,7 +547,12 @@ function addMovie(requesting, movieObject) {
     movies[movieObject.id] = movieObject;
     // adding object to moviesCopy array
     moviesCopy.push(movieObject);
-
+/* 
+    if(movieObject.genre) {
+      let genreList = movieObject.genre.trim().split(",");
+      movieObject.genre = genreList;
+    }
+ */
     // pushes movie to each of new actor's movie list
     for (actorID of movies[movieObject.id].actors){
       if (!people[actorID].movies.includes(movieObject.id)){
@@ -557,6 +574,7 @@ function addMovie(requesting, movieObject) {
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     nextMovieID++;
+    console.log(movieObject);
     return true;  // if addition is successful
   }
   return false;
@@ -614,7 +632,7 @@ function editMovie(requesting, movieObject) {
       movieObject.actors = "N/A";
     }
 
-    if (movieObject.director !== ""){
+    if (!movieObject.director){
       let movieObjectDirector = movieObject.director.trim();
       let directorFound = false;
       for (personID in people){
@@ -674,21 +692,21 @@ function editMovie(requesting, movieObject) {
       people[oldDirector].movies = people[oldDirector].movies.filter(movie => movie !== movieObject.id);
 
       // pushes movie to new director's movie list
-      if (!people[movies[movieObject.id].director].movies.includes(movieObject.id)){
+      if (people[movies[movieObject.id].director] && !people[movies[movieObject.id].director].movies.includes(movieObject.id)){
         people[movies[movieObject.id].director].movies.push(movieObject.id);
       }
     }
 
     // pushes movie to each of new actor's movie list
     for (actorID of movies[movieObject.id].actors){
-      if (!people[actorID].movies.includes(movieObject.id)){
+      if (people[actorID] && !people[actorID].movies.includes(movieObject.id)){
         people[actorID].movies.push(movieObject.id);
       }
     }
 
     // pushes movie to each of new writer's movie list
     for (writerID of movies[movieObject.id].writers){
-      if (!people[writerID].movies.includes(movieObject.id)){
+      if (people[writerID] && !people[writerID].movies.includes(movieObject.id)){
         people[writerID].movies.push(movieObject.id);
       }
     }
@@ -769,12 +787,9 @@ function commonElements(array1, array2){
 
 // tested
 // similar movies - based on similar genre, cast
-function similarMovies(requesting, movieID) {
+function similarMovies(movieID) {
   // implementation pending for cast
   // currently works if more than 2 genres match
-  if (!users.hasOwnProperty(requesting) || !movies.hasOwnProperty(movieID)){
-    return [];
-  }
   let similar = [];
   let movie = movies[movieID];
   for (movieid in movies){
@@ -857,8 +872,8 @@ function yourList(requesting){
 
 // tested
 // get a particular review
-function getReview(requestingUser, reviewID){
-  if(!users.hasOwnProperty(requestingUser) || !reviews.hasOwnProperty(reviewID)){
+function getReview(reviewID){
+  if(!reviews.hasOwnProperty(reviewID)){
     return false;
   }
   return reviews[reviewID];
@@ -874,9 +889,9 @@ function addFullReview(requestingUser, reviewObject){
   reviewObject.id = (nextReviewID).toString();
   reviews[reviewObject.id] = reviewObject;
 
-  movies[reviewObject.movieID].reviews.push(nextReviewID);
+  movies[reviewObject.movieID].reviews.push(reviewObject.id);
   updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
-  users[requestingUser].reviews.push(nextReviewID);
+  users[requestingUser].reviews.push(reviewObject.id);
   nextReviewID++;
   return true; // review added successfully
 }
@@ -957,19 +972,18 @@ function addPerson(requesting, personObject) {
     // search if same person exists
     for(personID in people) {
       let person = people[personID];
-      if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
+      if(person.name.toLowerCase() === personObject.name.toLowerCase()) {
         return false;
       }
     }
-
-    personObject.id = (nextPersonID).toString();
+    personObject["id"] = (nextPersonID).toString();
     if (personObject.movies !== ""){
       let personObjectMovies = personObject.movies.trim().split(",");
       let personMovies = [];
-      for (movie of personMovies){
+      for (movie of personObjectMovies){
         let movieName = "";
         for (let i = 0; i < movie.trim().split(" ").length - 1; i++){
-          movieName += movie.trim().split(" ")[i];
+          movieName += movie.trim().split(" ")[i] + " ";
         }
         let movieRole = "";
         let movieRoleString = movie.trim().split(" ")[movie.trim().split(" ").length - 1];
@@ -1011,9 +1025,54 @@ function addPerson(requesting, personObject) {
 
     //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
+    console.log(personObject);
     people[personObject.id] = personObject;
     nextPersonID++;
-    return true;  // if addition is successful
+    return personObject.id;  // if addition is successful
+  }
+  return false;
+}
+
+function editPerson(requesting, personObject) {
+  if (!users.hasOwnProperty(requesting)){
+    return false
+  }
+  let requestingUser = users[requesting];
+  // check if user contributing
+  if(requestingUser["userType"]) {
+    // search if person with same name exists
+    for(personID in people) {
+      let person = people[personID];
+      if(person["name"].toLowerCase() === personObject.name.toLowerCase()) {
+        return false;
+      }
+    }
+    let person = people[personObject.id];
+    //personObject.id = (nextPersonID).toString();
+    let tempPerson = {
+      "id": person.id,
+      //"name": person.name,
+      //"about": personObject.about,
+      //"collaborators": person.collaborators,
+      //"movies": person.movies,
+      "followers": [...person.followers]    // shallow copy: https://www.freecodecamp.org/news/how-to-clone-an-array-in-javascript-1d3183468f6a/ 
+    }
+    /* person.name = personObject.name;
+    person.about = personObject.about; */
+
+    let newID = addPerson(requesting, tempPerson);
+    if(removePerson(requesting, person)) {
+      people[tempPerson.id] = people[newID];
+      delete people[newID];
+      people[tempPerson.id].id = tempPerson.id;
+      people[tempPerson.id].followers = tempPerson.followers;
+      nextPersonID--;
+    }
+    else {
+      return false;
+    }
+    // followers, collaborators, and movies are determined by the system
+    return true;  // if edit is successful
   }
   return false;
 }
@@ -1170,56 +1229,44 @@ module.exports = {
 /*// ------------------------------------------ testing ---------------------------------------------------
 console.log(registerUser({username: "user1", password: "password"}));
 console.log();
-
 console.log('login({username: "user1", password: "password"})');
 console.log(login({username: "user1", password: "password"}));
 console.log();
-
 console.log('getUser("user2", "user1")');
 console.log(getUser("user2", "user1"));
 console.log();
-
 console.log('getMovie("0")');
 console.log(getMovie("0"));
 console.log();
-
 // comments cleanup required
 console.log('viewRecommendedMovies("user2")');
 console.log(viewRecommendedMovies("user2"));
 console.log();
-
 // console.log('similarMovies("user2", "0")');
 // console.log(similarMovies("user2", "0"));
 // console.log();
-
 console.log('showReviews("user2")');
 console.log(showReviews("user2"));
 console.log();
-
 // switch to contributing
 console.log('toggleContributing("user2")');
 console.log(toggleContributing("user2"));
 console.log();
-
 //console.log('removeMovie("user2", "0")');
 //console.log(removeMovie("user2", "0"));
 //console.log();
-
 // remove movie should remove all the reviews associated with it - seems to be done
 // removing reviews should remove it in all the places where it is stored (users)
 // similarly addMovie and editMovie should update all of its cast members
 console.log('getUser("user2", "user2")');
 console.log(getUser("user2", "user2"));
 console.log();
-
 console.log('getMovie("0")');
 console.log(getMovie("0"));
 console.log();
-
 console.log('getReview("user2", "4")');
 console.log(getReview("user2", "4"));
 console.log();
-
 console.log("addmovie");
 console.log(addMovie("user2", {
         "title": "GoldenEye",
@@ -1237,7 +1284,6 @@ console.log(addMovie("user2", {
         "trailer": ""
 }));
 console.log();
-
 console.log("editmovie");
 console.log(editMovie("user2", {
         "id": "6",
@@ -1256,49 +1302,37 @@ console.log(editMovie("user2", {
         "trailer": ""
 }));
 console.log();
-
 console.log('searchMovie("user2", "to")');
 console.log(searchMovie("user2", "to"));
 console.log();
-
 console.log('followUser("user2", "user1")');
 console.log(followUser("user2", "user1"));
 console.log();
-
 console.log('unfollowUser("user2", "user3")');
 console.log(unfollowUser("user2", "user3"));
 console.log();
-
 console.log('unfollowPerson("user2", "5")');
 console.log(unfollowPerson("user2", "5"));
 console.log();
-
 console.log('followPerson("user2", "4")');
 console.log(followPerson("user2", "4"));
 console.log();
-
 console.log('getUser("user2", "user2")');
 console.log(getUser("user2", "user2"));
 console.log();
-
 console.log('getPerson("1")');
 console.log(getPerson("1"));
 console.log();
-
 console.log('removePerson("user2", "1")');
 console.log(removePerson("user2", "1"));
 console.log();
-
 console.log('getMovie("2")');
 console.log(getMovie("2"));
 console.log();
-
 console.log('getFrequentCollaborator("0")');
 console.log(getFrequentCollaborator("0"));
 console.log();
-
 // recommended movies - user --> implement the function
-
 // PERSON - json obj
 // follow
 // unfollow
@@ -1308,7 +1342,6 @@ console.log();
 // get person - specific person
 // search person - list
 // get frequent collaborator
-
 // MOVIES
 // get movie
 // search movie
@@ -1317,13 +1350,11 @@ console.log();
 // remove movie - if exists
 // similar movies - based on similar genre, cast --> pending
 // get movie rating - original number of ratings from imdbVotes, average rating from imdbRating
-
 // REVIEWS
 // add review - updates average rating, number of ratings, review id gets added, id added to user review list - limit review characters
 // delete review (if own) - (opt)
 // get review - (opt)
 // get all reviews for user
-
 // INDEX
 // new and upcoming - list of recent 8 movies - edited only when movies added or removed
 // your list - reviewed movies sorted by which you have rated highest - updated when user adds or removes a movie

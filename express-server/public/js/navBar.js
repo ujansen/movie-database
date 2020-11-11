@@ -1,3 +1,4 @@
+/*
 let searchBar = document.getElementById("searchBar");
 let searchButton = document.getElementById("searchButton");
 
@@ -12,3 +13,4 @@ function enableButton(){
     searchButton.disabled = true;
   }
 }
+*/

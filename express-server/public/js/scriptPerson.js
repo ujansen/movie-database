@@ -1,12 +1,12 @@
-let button = document.getElementById("followPerson");
+let followButton = document.getElementById("followPerson");
 let urlArray = window.location.href.split("/");
 let personID = urlArray[urlArray.length -1];
 
-if (button.innerText === "Unfollow") {
-    button.onclick = postUnfollowReq;
+if (followButton.innerText === "Unfollow") {
+    followButton.onclick = postUnfollowReq;
 }
 else {
-    button.onclick = postFollowReq;
+    followButton.onclick = postFollowReq;
 }
 
 function postFollowReq() {

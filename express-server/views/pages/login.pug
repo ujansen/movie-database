@@ -12,21 +12,20 @@ main(style='background-color: #243742;')
   header
     include ../partials/navBar
   .container
-    form.login_form
-      //- action='index.html', method="POST"
+    form.login_form(action='/login', method="POST")
       //-add the path for the index.html file inside action
       fieldset.form-group
         legend.border-bottom.mb-3 Login
         .form-group
           label(for='emailAddress') Email address
-          input#emailAddress.form-control(type='text' required='')
+          input#emailAddress.form-control(name='username' type='text' required='')
         .form-group
           label(for='password') Password
-          input#password.form-control(type='password' required='')
+          input#password.form-control(name='password' type='password' required='')
         button#login.btn.btn-outline-primary(type='submit') Login
         .border-top.mt-3.pt-4
           small.text-muted
-            | Need An Account? 
+            | Need An Account?
             a.ml-2(href='http://localhost:3000/register') Sign Up Now!
 
-script(src='js/scriptLogin.js')
+script(src='/js/scriptLogin.js')

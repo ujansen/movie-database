@@ -2,22 +2,43 @@ nav(class="navbar navbar-expand-lg navbar-dark bg-dark")
   a(class="navbar-brand ml-2", href="/")
     img(style="height: 40px; width: 40px;", src="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg")
   a(class="navbar-brand" href="/") MDB
-  form(class="form-inline")
-    input(class="form-control mr-sm-2", type="search", placeholder="Search", aria-label="Search", id="searchBar")
-    button(class="btn btn-outline-success my-2 my-sm-0" type="submit" id="searchButton") Search
-  button(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation")
-    span(class="navbar-toggler-icon")
+  .dropdown
+    button#toggleNav(class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation")
+      span(class="navbar-toggler-icon")
+    .dropdown-menu(aria-labelledby="toggleNav")
+      a(href="/")
+        button.dropdown-item(type="button") Home
+      if(user)
+        a(href="/logout") 
+          button.dropdown-item(type="button") Log Out
+      else
+        a(href="/login") 
+          button.dropdown-item(type="button") Log In
+    //-
+      ul.list-group
+        li.list-group-item
+          a(class="nav-item nav-link active" href="/") Home
+            span(class="sr-only")
+        li.list-group-item
+          if(user)
+            a(class="nav-item nav-link active" href="/logout") Log Out
+              span(class="sr-only")
+          else
+            a(class="nav-item nav-link active" href="/login") Log In
+              span(class="sr-only")
+
+      
   div(class="collapse navbar-collapse", id="navbarNavAltMarkup")
     div(class="navbar-nav ml-auto")
       a(class="nav-item nav-link active" href="/") Home
         span(class="sr-only")
-      a(class="nav-item nav-link active" href="/login") Log In
-        span(class="sr-only")
-      //-if(user)
-          | Log Out
+      //-a(class="nav-item nav-link active" href="/login") Log In
+        //-span(class="sr-only")
+      if(user)
+        a(class="nav-item nav-link active" href="/logout") Log Out
           span(class="sr-only")
-        else
-          | Log In
+      else
+        a(class="nav-item nav-link active" href="/login") Log In
           span(class="sr-only")
 
 script(src='/js/navBar.js')
