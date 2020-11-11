@@ -479,8 +479,11 @@ app.get("/people", function(req, res, next){
   }
   else{
     let result = model.searchPerson(req.query.name);
-    res.status(200); //.send("People found: " + JSON.stringify(result));
-    res.render('pages/search-person', {personObjects: result});
+    if(result) {
+      res.status(200); //.send("People found: " + JSON.stringify(result));
+      res.render('pages/search-person', {personObjects: result});
+    }
+    res.status(500).send("Trouble finding results.");
   }
 });
 
