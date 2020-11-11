@@ -313,7 +313,6 @@ async function searchIMDB(searchTerm){
     let [posterLink] = await page.$x('//*[@id="title-overview-widget"]/div[1]/div[3]/div[1]/a/img');
     let linkContent = await posterLink.getProperty('src');
     let poster = await linkContent.jsonValue();
-    console.log(poster);
     movieDetails.poster = poster;
   }
 
@@ -596,13 +595,67 @@ function addMovie(requesting, movieObject) {
 
 // tested
 // search movie
-function searchMovie(keyWord) {
+function searchMovie(searchObject) {
+  let title = "";
+  let genre = "";
+  let minRating = 0;
+  let year = "";
+  if (searchObject.title){
+    title = searchObject.title;
+  }
+  else{
+    title = "";
+  }
+  if (searchObject.genre){
+    genre = searchObject.genre;
+  }
+  else{
+    genre = "";
+  }
+  if (searchObject.minRating){
+    minRating = Number(searchObject.minRating);
+  }
+  else{
+    minRating = 0;
+  }
+  if (searchObject.year){
+    year = searchObject.year;
+  }
+  else{
+    year = "";
+  }
   let results = [];
+  if (title == "" && genre == "" && minRating == 0 && year == ""){
+    results = movies;
+    return results;
+  }
   for (movieID in movies){
     let movie = movies[movieID];
-    if (movie.title.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
-      results.push(movie);
+    if (year == "" && genre == ""){
+      if (movie.title.toLowerCase().indexOf(title.toLowerCase()) >= 0  &&
+          movie.averageRating >= minRating){
+        results.push(movie);
+      }
     }
+    else if (year == ""){
+      if (movie.title.toLowerCase().indexOf(title.toLowerCase()) >= 0  && movie.genre.includes(genre) &&
+          movie.averageRating >= minRating){
+        results.push(movie);
+      }
+    }
+    else if (genre == ""){
+      if (movie.title.toLowerCase().indexOf(title.toLowerCase()) >= 0  && movie.releaseYear.trim() == year &&
+          movie.averageRating >= minRating){
+        results.push(movie);
+      }
+    }
+    else{
+      if (movie.title.toLowerCase().indexOf(title.toLowerCase()) >= 0  && movie.genre.includes(genre) &&
+          movie.averageRating >= minRating && movie.releaseYear.trim() == year){
+        results.push(movie);
+    }
+  }
+
   }
   return results;
 }
