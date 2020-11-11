@@ -37,6 +37,6 @@ function editMovie() {
 
 function deleteMovie() {
     let req = new XMLHttpRequest();
-    req.open("DELETE", "http://localhost:3000/movies/"+id);
+    req.open("DELETE", "http://localhost:3000/movies/"+id.textContent);
     req.send();
 }

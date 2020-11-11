@@ -11,29 +11,29 @@ searchIMDB.addEventListener("click", searchIMDBRequest);
 function searchDatabaseRequest() {
   let searchQuery = "";
 
-  movieTitle = movieTitle.value.toString();
+  movieTitle = movieTitle.value;
   if(movieTitle) {
     searchQuery += "title=";
     searchQuery += movieTitle.trim().split(" ").join("+");
-    searchQuery += "&";
   }
 
-  movieGenre = movieGenre.value.toString();
+  movieGenre = movieGenre.value;
   if(movieGenre) {
+    searchQuery += "&";
     searchQuery += "genre=";
     searchQuery += movieGenre.trim().split(" ").join("+");
-    searchQuery += "&";
   }
 
-  movieMinRating = movieMinRating.value.toString();
+  movieMinRating = movieMinRating.value;
   if(movieMinRating && Number(movieMinRating.trim()) > 0 && Number(movieMinRating.trim()) <= 10) {
+    searchQuery += "&";
     searchQuery += "minRating=";
     searchQuery += movieMinRating.trim();
-    searchQuery += "&";
   }
 
-  movieYear = movieYear.value.toString();
+  movieYear = movieYear.value;
   if(movieYear && Number(movieYear.trim()) > 1600 && Number(movieMinRating.trim()) <= 2030) {
+    searchQuery += "&";
     searchQuery += "year=";
     searchQuery += movieYear.trim();
   }
