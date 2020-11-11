@@ -5,7 +5,7 @@ const model = require("./movie-database-module.js");
 let requestingUser = "";
 
 const session = require('express-session');
-app.use(session({ secret: 'some secret here', resave: true, saveUninitialized: true, cookie: { maxAge: 24 * 60 * 60 * 1000}}))
+app.use(session({ secret: 'some secret here', resave: true, saveUninitialized: true, cookie: { maxAge: 24 * 60 * 60 * 1000}}));
 app.use(express.static('public'));
 app.set('view engine', 'pug');
 app.use(express.urlencoded({extended: true}));
@@ -76,6 +76,7 @@ app.get("/logout", function(req, res, next){
   res.session.user = null;
   req.session.username = "";
   requestingUser = "";
+  res.status(200).send("/");
 });
 
 
@@ -162,7 +163,6 @@ app.post("/users/:uid/toggle", function(req, res, next){
 // remaining to be tested with user
 app.get("/users/:uid", function(req, res, next){
   if (!req.session.user){
-    console.log("SOmething");
     res.redirect("/login");
   }
   else
@@ -172,7 +172,6 @@ app.get("/users/:uid", function(req, res, next){
     let reviewedMovies = [];
     if (resultReviews && resultReviews.length > 0){
       for (review of resultReviews){
-          console.log(review);
           if (review && !reviewedMovies.includes(model.movies[review.movieID])){
             reviewedMovies.push(model.movies[review.movieID]);
           }
@@ -271,7 +270,7 @@ app.post("/users/:uid/follow", function(req, res, next){
     let result = model.followUser(requestingUser, "user" + req.params.uid);
     if(result){
       res.status(200);
-      res.redirect("/users/"+req.params.uid);
+      res.send("/users/"+req.params.uid);
     }
     else{
       res.status(404).send("User" + req.params.uid + " does not exist or you already follow them.");
@@ -284,7 +283,7 @@ app.post("/users/:uid/unfollow", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.unfollowUser(requestingUser, "user" + req.params.uid);
+    let result = model.unfollowUser(req.session.user.username, "user" + req.params.uid);
     if (result){
       res.status(200);
       res.send("/users/"+req.params.uid);
@@ -300,11 +299,11 @@ app.get("/users/:uid/recommended", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== requestingUser){
+    if (("user" + req.params.uid) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
-      let result = model.viewRecommendedMovies(requestingUser);
+      let result = model.viewRecommendedMovies(req.session.user.username);
       if (result){
         res.status(200).send("Recommended movies are: " + JSON.stringify(result));
       }
@@ -327,7 +326,7 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
   }
   let result = await model.searchIMDB(searchTerm);
   if (result){
-    res.status(200).send(JSON.stringify(result));
+    res.status(200).send("/searchIMDB" + searchTerm);
   }
   else{
     res.status(500).send("Server could not access specified movie.");
@@ -335,12 +334,38 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
 });
 
 app.get("/movies", function(req, res, next){
-  if (!req.query.title){
-    req.query.title = "";
+  if (!req.query){
+    req.query = {};
   }
-  let result = model.searchMovie(req.query.title); // only searches using title
+  let result = model.searchMovie(req.query);
   res.status(200); //.send("Movies found: " + JSON.stringify(result));
   res.render('pages/search-movie', {movieObjects: result});
+  //res.send("/movies");
+});
+
+app.get("/movies/search/", function (req, res, next){
+  if (!req.query){
+    req.query = {};
+  }
+  let result = model.searchMovie(req.query);
+  let searchQuery = ""
+  if (req.query.title){
+      searchQuery += "?title=" + req.query.title;
+  }
+  else{
+    searchQuery += "?title=";
+  }
+  if (req.query.genre){
+    searchQuery += "&genre=" + req.query.genre;
+  }
+  if (req.query.minRating){
+    searchQuery += "&minRating=" + req.query.minRating;
+  }
+  if (req.query.year){
+    searchQuery += "&year=" + req.query.year;
+  }
+  res.status(200);
+  res.send("/movies" + searchQuery);
 });
 
 //tested
@@ -377,7 +402,6 @@ app.get("/movies/:mid", function(req, res, next){
   }
 
   if(result){
-    console.log(directorList);
     res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
     res.status(200);
   }
@@ -389,7 +413,6 @@ app.post("/movies", function(req, res, next){
   }
   else{
     let result = model.addMovie(req.session.user.username, req.body);
-    console.log(req.body);
     if (result){
       res.status(200);
       res.send("/movies");
