@@ -35,17 +35,17 @@ body
                   p IMDB Rating: #{movie.rating}
                   br
                   if(movie.director)
-                    p Directors: 
+                    p Directors:
                     each person in movie.director
-                      p #{person}, 
+                      p #{person},
                   if(movie.actors)
-                    p Actors: 
+                    p Actors:
                     each person in movie.actors
-                      p #{person}, 
+                      p #{person},
                   if(movie.writers)
-                    p Writers: 
+                    p Writers:
                     each person in movie.writers
-                      p #{person}, 
+                      p #{person},
         else
           p#wait Result will show here
 
@@ -100,3 +100,4 @@ body
                       em N/A
                     else
                       a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
+script(src='js/searchIMDB.js')
