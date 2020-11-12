@@ -54,21 +54,24 @@ main(style='background-color: #243742;')
       each movie in likedMovies
         .col-xs-4.cp-1.bg-secondary
             .card.card-block
-            a(href='http://localhost:3000/movies/'+movie.id)
-                img.slider-img(src=movie.poster)
+              a(href='http://localhost:3000/movies/'+movie.id)
+                  img.slider-img(src=movie.poster)
   //- image slider ends
   .container.reviews.mt-4
     h5 Reviews
     ul.list-group
       each review in reviewList
         a(href="http://localhost:3000/reviews/"+review.id)
-                li.list-group-item 
-                    b #{review.title}
-                    br
-                    p #{review.content}
+          li.list-group-item 
+              b #{review.title}
+              br
+              p #{review.content}
 
   hr(style='border-width: 2px;')
-  a(href="http://localhost:3000/users/"+requestedUser.id+"/people")
-    h5 People that #{requestedUser.username} follows
+  a(href="http://localhost:3000/users/" + requestedUser.id + "/people")
+    button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{requestedUser.username} follows
+  a(href="http://localhost:3000/users/" + requestedUser.id + "/recommended")
+    button.btn.btn-outline-primary.ml-3(type='submit') #{requestedUser.username}'s recommended movies
   //- body ends
+
 script(src='/js/scriptOtherUser.js')

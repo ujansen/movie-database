@@ -131,7 +131,8 @@ app.get("/users/:uid/edit", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    // show editUser page
+    res.status(200);
+    res.render('pages/edit-user', {user: req.session.user});
   }
 });
 
@@ -144,7 +145,13 @@ app.put("/users/:uid", function(req, res, next){
       res.status(403).send("Unauthorized");
     }
     else{
-      // editUser function here
+      let result = model.editUser(req.session.user.username, req.body);
+      if(result) {
+        res.status(200).send('/users/' + req.session.user.id);
+      }
+      else {
+        res.status(500);
+      }
     }
   }
 });
@@ -319,8 +326,10 @@ app.get("/users/:uid/recommended", function(req, res, next){
     }
     else{
       let result = model.viewRecommendedMovies(req.session.user.username);
+      console.log(result);
       if (result){
-        res.status(200).send("Recommended movies are: " + JSON.stringify(result));
+        res.status(200); //.send("Recommended movies are: " + JSON.stringify(result));
+        res.render('pages/recommended-movies', {user: req.session.user, movieObjects: result});
       }
       else{
         res.status(404).send("User" + req.params.uid + " does not exist.");

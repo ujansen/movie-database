@@ -18,7 +18,7 @@ main.block.container
     hr(style='border-width: 2px;')
     label Title: 
     br
-    textarea#movieTitle(name='movieTitle' rows='1' cols='50')
+    textarea#movieTitle(name='movieTitle' rows='1' cols='50' required='')
     br
     label Runtime: 
     br
@@ -30,7 +30,7 @@ main.block.container
     br
     label Genre: (separated by commas, eg: comedy, family, adventure)
     br
-    textarea#genreList(name='genreList' rows='2' cols='50')
+    textarea#genreList(name='genreList' rows='2' cols='50' required='')
     br
     label Plot: 
     br
@@ -46,15 +46,15 @@ main.block.container
     br
     label List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)
     br
-    textarea#actorList(name='actorList' rows='2' cols='50')
+    textarea#actorList(name='actorList' rows='2' cols='50' required='')
     br
     label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
     br
-    textarea#directorList(name='directorList' rows='2' cols='50')
+    textarea#directorList(name='directorList' rows='2' cols='50' required='')
     br
     label List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)
     br
-    textarea#writerList(name='writerList' type='text' rows='2' cols='50')
+    textarea#writerList(name='writerList' type='text' rows='2' cols='50' required='')
     br
     br
     if(user.userType)

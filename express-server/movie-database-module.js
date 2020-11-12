@@ -61,6 +61,7 @@ function registerUser(newUser){
 
   newUser.id = String(nextUserID);
   newUser.userType = false;
+  newUser.profilePic = "";
   newUser.followers = [];
   newUser.followingUsers = [];
   newUser.followingPeople = [];
@@ -123,15 +124,19 @@ function getUser(requested){    // gets the user object when supplied with usern
 }
 
 function editUser(requesting, userObject) {
-  if (!users.hasOwnProperty(requested) && !(requesting === userObject.username)){
+  if (!users.hasOwnProperty(requesting) && !(requesting === userObject.username)){
     return null;
   }
   // user can only edit their own username, password, and about
   let user = users[requesting];
+  /* if(user.password !== userObject.oldPassword) {
+    return null;
+  } */
   // if user changes their username, their object key would need to change - since keys are usernames
   // do not allow change of username
   user.password = userObject.password;
   user.about = userObject.about;
+  user["profilePic"] = userObject.profilePic;
   return true;
 }
 
@@ -201,7 +206,7 @@ function getRecommendedMovies(requesting){
     }
     //break;
   //}
-  return true;
+  return requestingUser.recommendedMovies.push(movieID);
 }
 
 function toggleContributing(requesting) {
@@ -561,6 +566,7 @@ function addMovie(requesting, movieObject) {
     movieObject.averageRating = 1;
     movieObject.noOfRatings = 1;
     movieObject.id = (nextMovieID).toString();
+    movieObject.reviews = [];
     movies[movieObject.id] = movieObject;
     // adding object to moviesCopy array
     moviesCopy.push(movieObject);
@@ -909,6 +915,7 @@ function updateMovieRating(movieID, rating) {
   if (!movies.hasOwnProperty(movieID)){
     return false;
   }
+  rating = Number(rating);
   let movie = movies[movieID];
   let currentRatingSum = Number(movie.averageRating) * Number(movie.noOfRatings);
   currentRatingSum += rating;
@@ -983,6 +990,7 @@ function addFullReview(requestingUser, reviewObject){
   reviewObject.userID = requestingUser;
   reviews[reviewObject.id] = reviewObject;
 
+  console.log(movies[reviewObject.movieID]);
   movies[reviewObject.movieID].reviews.push(reviewObject.id);
   updateMovieRating(reviewObject.movieID, reviewObject.rating); // movie rating is updated
   users[requestingUser].reviews.push(reviewObject.id);
@@ -1319,6 +1327,7 @@ module.exports = {
   viewFollowersOtherUser,
   viewFollowingOtherUser,
   getUser,
+  editUser,
   viewRecommendedMovies,
   toggleContributing,
   searchIMDB,
