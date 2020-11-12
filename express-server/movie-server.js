@@ -342,7 +342,7 @@ app.get("/searchIMDB", function(req, res, next){
   let result = undefined;
   res.render("pages/imdb-result", {movie:result});
   res.status(200);
-})
+});
 
 app.get("/searchIMDB/:sid", async function(req, res, next){
   let searchTerms = [];
@@ -356,7 +356,7 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
   }
   let result = await model.searchIMDB(searchTerm);
   if (result){
-    res.status(200).send("/searchIMDB/" + searchTerm);
+    res.status(200);
     res.render("pages/imdb-result", {movie:result});
   }
   else{
