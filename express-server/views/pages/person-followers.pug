@@ -17,5 +17,5 @@ body
         br
         ul.list-group
         each follower in followerList
-            a(href="http://localhost:3000/users/"+follower.id)
+            a(href="/users/"+follower.id)
                 li.list-group-item #{follower.username}

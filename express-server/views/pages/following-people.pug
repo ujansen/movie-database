@@ -17,5 +17,5 @@ body
         br
         ul.list-group
         each person in peopleList
-            a(href="http://localhost:3000/people/"+person.id)
+            a(href="/people/"+person.id)
                 li.list-group-item #{person.name}

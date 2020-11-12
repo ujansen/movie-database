@@ -3,7 +3,7 @@
     {
       "id": "0",
       "userID": "user0",
-      "movieID": "0",
+      "movieID": "1",
       "title": "Exceeded Expectations",
       "content": "Great movie. Pretty sweet acting. Loved it. 8/10",
       "rating": "8"
@@ -11,7 +11,7 @@
     "1":
     {
       "id": "1",
-      "userID": "user1",
+      "userID": "user2",
       "movieID": "2",
       "title": "Meh. Did not like it as much.",
       "content": "Okayish movie. Could be much better.",
@@ -21,7 +21,7 @@
     {
       "id": "2",
       "userID": "user3",
-      "movieID": "2",
+      "movieID": "1",
       "title": "DO NOT WATCH THIS.",
       "content": "Hated the movie. Complete waste of time and money.",
       "rating": "1"
@@ -29,7 +29,7 @@
     "3":
     {
       "id": "3",
-      "userID": "user2",
+      "userID": "user3",
       "movieID": "1",
       "title": "Masterpiece",
       "content": "It's a must watch. Go with family and watch this. Incredibly enjoyable.",
@@ -38,7 +38,7 @@
     "4":
     {
       "id": "4",
-      "userID": "user3",
+      "userID": "user2",
       "movieID": "1",
       "title": "Sweet and Sour",
       "content": "Has its moments but they're too few and far between.",

@@ -19,15 +19,15 @@ body
     .container.mt-4
       ul.list-group
         each movie in movieObjects
-          a(href="http://localhost:3000/movies/"+movie.id)
+          a(href="/movies/"+movie.id)
             li.list-group-item
               .row.flex-wrap.mb-4
                 .col-xs.cp-1.bg-secondary
                   img.user-img(src=movie.poster)
                 .col.ml-4.align-self-center
                   h4 #{movie.title}
-                  br  
+                  br
                   p #{movie.plot}
     hr(style='border-width: 2px;')
-    a(href="http://localhost:3000/users/" + user.id)
+    a(href="/users/" + user.id)
       button.btn.btn-outline-primary(type='submit') Go to #{user.username}'s page

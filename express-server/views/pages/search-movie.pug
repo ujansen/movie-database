@@ -48,7 +48,7 @@ body
             h5 Search Results:
             ul.list-group
                 each movie in movieObjects
-                    a(href="http://localhost:3000/movies/"+movie.id)
+                    a(href="/movies/"+movie.id)
                         li.list-group-item
                             .row.flex-wrap.mb-4
                                 .col-xs.cp-1.bg-secondary

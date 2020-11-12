@@ -497,14 +497,14 @@ function addMovie(requesting, movieObject) {
         }
       }
       if (movieActorsList.length === 0){
-        movieObject.actors = "N/A";
+        movieObject.actors = ["N/A"];
       }
       else{
         movieObject.actors = movieActorsList;
       }
     }
     else{
-      movieObject.actors = "N/A";
+      movieObject.actors = ["N/A"];
     }
 
     if (movieObject.director !== ""){
@@ -541,14 +541,14 @@ function addMovie(requesting, movieObject) {
         }
       }
       if (movieWritersList.length === 0){
-        movieObject.writers = "N/A";
+        movieObject.writers = ["N/A"];
       }
       else{
         movieObject.writers = movieWritersList;
       }
     }
     else{
-      movieObject.writers = "N/A";
+      movieObject.writers = ["N/A"];
     }
     if (movieObject.genre !== ""){
       let movieObjectGenres = movieObject.genre.trim().split(",");
@@ -578,22 +578,25 @@ function addMovie(requesting, movieObject) {
  */
     // pushes movie to each of new actor's movie list
     for (actorID of movies[movieObject.id].actors){
-      if (!people[actorID].movies.includes(movieObject.id)){
+      if (actorID !== "N/A" && !people[actorID].movies.includes(movieObject.id)){
         people[actorID].movies.push(movieObject.id);
       }
     }
 
     // pushes movie to each of new writer's movie list
     for (writerID of movies[movieObject.id].writers){
-      if (!people[writerID].movies.includes(movieObject.id)){
+      if (writerID !== "N/A" && !people[writerID].movies.includes(movieObject.id)){
         people[writerID].movies.push(movieObject.id);
       }
     }
 
     // pushes movie to new director's movie list
-    if(!people[movies[movieObject.id].director].movies.includes(movieObject.id)){
-      people[movies[movieObject.id].director].movies.push(movieObject.id);
+    for (directorID of movies[movieObject.id].director){
+      if(directorID !== "N/A" && !people[movies[movieObject.id].director].movies.includes(movieObject.id)){
+        people[movies[movieObject.id].director].movies.push(movieObject.id);
+      }
     }
+
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     nextMovieID++;
@@ -634,8 +637,6 @@ function searchMovie(searchObject) {
   else{
     searchyear = "";
   }
-  console.log("SEARCH OBJECT HERE ----------------");
-  console.log(searchObject);
   let results = [];
   if (searchtitle == "" && searchgenre == "" && searchminRating == 0 && searchyear == ""){
     results = movies;
@@ -643,8 +644,6 @@ function searchMovie(searchObject) {
   }
   for (movieID in movies){
     let movie = movies[movieID];
-    console.log("CURRENT MOVIE----------"); 
-    console.log(movie);
     if (searchyear == "" && searchgenre == ""){
       if (movie.title.toLowerCase().indexOf(searchtitle.toLowerCase()) >= 0  &&
           movie.averageRating >= searchminRating){
@@ -690,6 +689,9 @@ function editMovie(requesting, movieObject) {
     let oldActors = movies[movieObject.id].actors; // stores current actors
     let oldWriters = movies[movieObject.id].writers; // stores current writers
     let oldDirectors = movies[movieObject.id].director; // stores current director
+    movieObject.reviews = movies[movieObject.id].reviews;
+    movieObject.averageRating = movies[movieObject.id].averageRating;
+    movieObject.noOfRatings = movies[movieObject.id].noOfRatings;
     if (movieObject.actors !== ""){
       let movieObjectActors = movieObject.actors.trim().split(",");
       let movieActorsList = [];
@@ -774,17 +776,23 @@ function editMovie(requesting, movieObject) {
 
     // removes movie from old actors' movie list
     for (uniqueActorID of uniqueActors){
-      people[uniqueActorID].movies = people[uniqueActorID].movies.filter(movie => movie !== movieObject.id);
+      if (uniqueActorID !== "N/A"){
+        people[uniqueActorID].movies = people[uniqueActorID].movies.filter(movie => movie !== movieObject.id);
+      }
     }
 
     // removes movie from old writers' movie list
     for (uniqueWriterID of uniqueWriters){
-      people[uniqueWriterID].movies = people[uniqueWriterID].movies.filter(movie => movie !== movieObject.id);
+      if (uniqueWriterID !== "N/A"){
+        people[uniqueWriterID].movies = people[uniqueWriterID].movies.filter(movie => movie !== movieObject.id);
+      }
     }
 
     // removes movie from old director's movie list
     for (uniqueDirectorID of uniqueDirectors){
-      people[uniqueDirectorID].movies = people[uniqueDirectorID].movies.filter(movie => movie !== movieObject.id);
+      if (uniqueDirectorID !== "N/A"){
+        people[uniqueDirectorID].movies = people[uniqueDirectorID].movies.filter(movie => movie !== movieObject.id);
+      }
     }
 
 
@@ -840,26 +848,32 @@ function removeMovie(requesting, movieID) {
     let actorsList = movies[movieID].actors;
     for(let i=0; i<actorsList.length; i++) {
       let actor = people[actorsList[i]];
-      if(actor) {
+      if(actor && actor !== "N/A") {
         actor.movies = actor.movies.filter(movie => movie !== movieID.toString()); // removes movie from actors
       }
     }
-    let director = people[movies[movieID].director];
-    if(director !== "N/A") {
-      director.movies = director.movies.filter(movie => movie !== movieID.toString()); // removes movie from director
+    let directorList = movies[movieID].director;
+    for (let i = 0; i < directorList.length; i++){
+      director = people[directorList[i]];
+      if(director && director !== "N/A") {
+        director.movies = director.movies.filter(movie => movie !== movieID.toString()); // removes movie from director
+      }
     }
+
     let writersList = movies[movieID].writers;
     for(let i=0; i<writersList.length; i++) {
       writer = people[writersList[i]];
-      if(writer) {
+      if(writer && writer !== "N/A") {
         writer.movies = writer.movies.filter(movie => movie !== movieID.toString()); // removes movie from writer
       }
     }
 
     let reviewList = movies[movieID].reviews;
-    for (reviewID of reviewList){ // removes reviews associated with movie and removes reviews from users
-      users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
-      delete reviews[reviewID]; // remove the key reviewID from reviews list
+    if (reviewList && reviewList.length > 0){
+      for (reviewID of reviewList){ // removes reviews associated with movie and removes reviews from users
+        users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+        delete reviews[reviewID]; // remove the key reviewID from reviews list
+      }
     }
 
     // remove the key movieID from movies list
@@ -1038,6 +1052,7 @@ function followPerson(requesting, requested){   // requesting user follows reque
   if(!requestingUser.followingPeople.includes(requested) && !requestedPerson.followers.includes(requestingID)) {
     requestingUser.followingPeople.push(requested);
     requestedPerson.followers.push(requesting);
+    return true;
   }
   else return null;
 }
@@ -1060,6 +1075,7 @@ function unfollowPerson(requesting, requested){   // requesting user unfollows r
   // user stores followingPerson list as an array of id strings
   requestingUser.followingPeople = requestingUser.followingPeople.filter(person => person !== requestedPerson.id); // removes follower (requested person) from requesting user's followingPeople
   requestedPerson.followers = requestedPerson.followers.filter(user => user !== requestingUser.username); // removes requesting user from requested person's followers list
+  return true;
 }
 
 // add a new person
@@ -1093,19 +1109,28 @@ function addPerson(requesting, personObject) {
           movieRole += movieRoleString[i];
         }
         for (movieID in movies){
-          if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase() && !personMovies.includes(movies[movieID].id)){
+          if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase()){
             personMovies.push(movies[movieID].id);
             if (movieRole === "actor"){
+              if (movies[movieID].actors.includes("N/A")){
+                movies[movieID].actors = [];
+              }
               if (!movies[movieID].actors.includes(personObject.id)){
                 movies[movieID].actors.push(personObject.id);
               }
             }
-            if (movieRole === "director"){
+            else if (movieRole === "director"){
+              if (movies[movieID].director.includes("N/A")){
+                movies[movieID].director = [];
+              }
               if (!movies[movieID].director.includes(personObject.id)){
                 movies[movieID].director.push(personObject.id);
               }
             }
-            if (movieRole === "writer"){
+            else if (movieRole === "writer"){
+              if (movies[movieID].writers.includes("N/A")){
+                movies[movieID].writers = [];
+              }
               if (!movies[movieID].writers.includes(personObject.id)){
                 movies[movieID].writers.push(personObject.id);
               }
@@ -1115,21 +1140,23 @@ function addPerson(requesting, personObject) {
         }
       }
       if (personMovies.length === 0){
-        personObject.movies = "N/A";
+        personObject.movies = ["N/A"];
       }
       else{
-        personObject.movies = personMovies;
+        let finalMovieList = [...new Set(personMovies)];
+        personObject.movies = finalMovieList;
       }
     }
     else{
-      personObject.movies = "N/A";
+      personObject.movies = ["N/A"];
     }
 
     //where to add that person in movie - actors/writers/director?
 
     //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
-    console.log(personObject);
+    personObject.followers = [];
+    personObject.collaborators = [];
     people[personObject.id] = personObject;
     nextPersonID++;
     return personObject.id;  // if addition is successful
@@ -1159,22 +1186,31 @@ function editPerson(requesting, personObject) {
           movieRole += movieRoleString[i];
         }
         for (movieID in movies){
-          if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase() && !personMovies.includes(movies[movieID].id)){
+          if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase()){
             personMovies.push(movies[movieID].id);
-            movies[movieID].actors = movies[movieID].actors.filter(personID => personID !== personObject.id);
-            movies[movieID].director = movies[movieID].director.filter(personID => personID !== personObject.id);
-            movies[movieID].writers = movies[movieID].writers.filter(personID => personID !== personObject.id);
             if (movieRole === "actor"){
+              movies[movieID].actors = movies[movieID].actors.filter(personID => personID !== personObject.id);
+              if (movies[movieID].actors.includes("N/A") || movies[movieID].actors.length == 0){
+                movies[movieID].actors = [];
+              }
               if (!movies[movieID].actors.includes(personObject.id)){
                 movies[movieID].actors.push(personObject.id);
               }
             }
-            if (movieRole === "director"){
+            else if (movieRole === "director"){
+              movies[movieID].director = movies[movieID].director.filter(personID => personID !== personObject.id);
+              if (movies[movieID].director.includes("N/A") || movies[movieID].director.length == 0){
+                movies[movieID].director = [];
+              }
               if (!movies[movieID].director.includes(personObject.id)){
                 movies[movieID].director.push(personObject.id);
               }
             }
-            if (movieRole === "writer"){
+            else if (movieRole === "writer"){
+              movies[movieID].writers = movies[movieID].writers.filter(personID => personID !== personObject.id);
+              if (movies[movieID].writers.includes("N/A") || movies[movieID].writers.length == 0){
+                movies[movieID].writers = [];
+              }
               if (!movies[movieID].writers.includes(personObject.id)){
                 movies[movieID].writers.push(personObject.id);
               }
@@ -1187,7 +1223,8 @@ function editPerson(requesting, personObject) {
         personObject.movies = ["N/A"];
       }
       else{
-        personObject.movies = personMovies;
+        let finalMovieList = [...new Set(personMovies)];
+        personObject.movies = finalMovieList;
       }
     }
     else{
@@ -1204,7 +1241,7 @@ function editPerson(requesting, personObject) {
     return true;  // if edit is successful
 }
 
-// tested - not working
+// tested
 // remove person - if exists
 function removePerson(requesting, requested) {
   // check if requesting (userID) exists

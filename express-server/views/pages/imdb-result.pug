@@ -34,18 +34,18 @@ body
               p IMDB Rating: #{movie.rating}
               br
               if(movie.director)
-                p Directors: 
+                p Directors:
                 each person in movie.director
-                  p #{person}, 
+                  p #{person},
               if(movie.actors)
-                p Actors: 
+                p Actors:
                 each person in movie.actors
-                  p #{person}, 
+                  p #{person},
               if(movie.writers)
-                p Writers: 
+                p Writers:
                 each person in movie.writers
-                  p #{person}, 
-          a(href=movie.url)
+                  p #{person},
+          a(href=movie.url target='_blank')
             button.btn.btn-outline-primary(type='submit') View the movie on IMDB
         else
           p#wait Result will show here

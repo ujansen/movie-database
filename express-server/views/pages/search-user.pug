@@ -27,7 +27,7 @@ body
             h5 Search Results:
             ul.list-group
                 each user in userObjects
-                    a(href="http://localhost:3000/users/"+user.id)
+                    a(href="/users/"+user.id)
                         li.list-group-item
                             .row.flex-wrap.mb-4
                                 if(user.profilePic)

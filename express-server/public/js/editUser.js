@@ -26,7 +26,7 @@ function editUser() {
         sendRequest(userObj);
       }
       else if(newPassword === confirmNewPassword) {
-        // change 
+        // change
         let userObj = {
           "id": id,
           "username": username,
@@ -48,14 +48,14 @@ function editUser() {
 
 function sendRequest(userObj) {
   let req = new XMLHttpRequest();
-  req.open("PUT", "http://localhost:3000/users/" + id);
+  req.open("PUT", "/users/" + id);
   req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
   req.onreadystatechange = function(){
     if(req.readyState == 4 && req.status == 200){
       window.location.href = req.responseText;
     }
     else if(req.readyState == 4 && req.status == 500) {
-      alert("Something went wrong. Check if the password input is correct.");
+      alert(req.responseText);
     }
   };
   req.send(JSON.stringify(userObj));

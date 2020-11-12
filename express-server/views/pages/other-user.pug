@@ -1,14 +1,12 @@
 //- let content = renderOtherUser({
 //-     requestingUser: requestingUser,
 //-     requestedUser: otherUser,
-//-     
+//-
 //- });
-
 //- result: otherUser
 //- their reviews
 //- followers, following, people - separate page with links
 //- reviewed movie objects
-
 //- SCRIPT REMAINING
 doctype html
 head
@@ -33,9 +31,9 @@ main(style='background-color: #243742;')
     .col.ml-4.align-self-center
       h4#username #{requestedUser.username}
     .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="http://localhost:3000/users/"+requestedUser.id+"/followers") Followers
+      a(href="/users/"+requestedUser.id+"/followers") Followers
     .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="http://localhost:3000/users/"+requestedUser.id+"/following") Following
+      a(href="/users/"+requestedUser.id+"/following") Following
     //- Follow button
     .col-xs.ml-5.justify-content-end.align-self-center
       if(userFollowsOtherUser)
@@ -54,24 +52,23 @@ main(style='background-color: #243742;')
       each movie in likedMovies
         .col-xs-4.cp-1.bg-secondary
             .card.card-block
-              a(href='http://localhost:3000/movies/'+movie.id)
+              a(href='/movies/'+movie.id)
                   img.slider-img(src=movie.poster)
   //- image slider ends
   .container.reviews.mt-4
     h5 Reviews
     ul.list-group
       each review in reviewList
-        a(href="http://localhost:3000/reviews/"+review.id)
-          li.list-group-item 
+        a(href="/reviews/"+review.id)
+          li.list-group-item
               b #{review.title}
               br
               p #{review.content}
 
   hr(style='border-width: 2px;')
-  a(href="http://localhost:3000/users/" + requestedUser.id + "/people")
+  a(href="/users/" + requestedUser.id + "/people")
     button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{requestedUser.username} follows
-  a(href="http://localhost:3000/users/" + requestedUser.id + "/recommended")
+  a(href="/users/" + requestedUser.id + "/recommended")
     button.btn.btn-outline-primary.ml-3(type='submit') #{requestedUser.username}'s recommended movies
   //- body ends
-
 script(src='/js/scriptOtherUser.js')

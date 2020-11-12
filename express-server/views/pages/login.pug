@@ -17,7 +17,7 @@ main(style='background-color: #243742;')
       fieldset.form-group
         legend.border-bottom.mb-3 Login
         .form-group
-          label(for='emailAddress') Email address
+          label(for='emailAddress') Username
           input#emailAddress.form-control(name='username' type='text' required='')
         .form-group
           label(for='password') Password
@@ -26,6 +26,6 @@ main(style='background-color: #243742;')
         .border-top.mt-3.pt-4
           small.text-muted
             | Need An Account?
-            a.ml-2(href='http://localhost:3000/register') Sign Up Now!
+            a.ml-2(href='/register') Sign Up Now!
 
 script(src='/js/scriptLogin.js')

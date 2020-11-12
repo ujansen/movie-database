@@ -21,10 +21,10 @@ body
             .col.ml-4.align-self-center
                 h4#username #{user.username}
             .col-xs.ml-5.justify-content-end.align-self-center
-                a(href="http://localhost:3000/users/"+user.id+"/followers") Followers
+                a(href="/users/"+user.id+"/followers") Followers
             //- create a new followers, following page
             .col-xs.ml-5.justify-content-end.align-self-center
-                a(href="http://localhost:3000/users/"+user.id+"/following") Following
+                a(href="/users/"+user.id+"/following") Following
             .col-xs.ml-4.justify-content-end.align-self-center
                 | Contributor
                 label.switch
@@ -48,7 +48,7 @@ body
                 each movie in likedMovies
                     .col-xs-4.cp-1.bg-secondary
                         .card.card-block
-                            a(href="http://localhost:3000/movies/"+movie.id)
+                            a(href="/movies/"+movie.id)
                                 img.slider-img(src=movie.poster)
         //- image slider ends
         .container.reviews.mt-4
@@ -56,22 +56,22 @@ body
             ul.list-group
                 //- let counter = 0;
                 each review in resultReviews
-                    a(href="http://localhost:3000/reviews/"+review.id)
+                    a(href="/reviews/"+review.id)
                         li.list-group-item
                             b #{review.title}
                             br
                             p #{review.content}
                     //- counter++;
                     //- if(counter > 5) break
-                //-a(href="http://localhost:3000/user/"+user.id+"/reviews") See all reviews
+                //-a(href="/user/"+user.id+"/reviews") See all reviews
         hr(style='border-width: 2px;')
-        a(href="http://localhost:3000/users/" + user.id + "/people")
+        a(href="/users/" + user.id + "/people")
             button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{user.username} follows
-        a(href="http://localhost:3000/users/" + user.id + "/recommended")
+        a(href="/users/" + user.id + "/recommended")
             button.btn.btn-outline-primary.ml-3(type='submit') #{user.username}'s recommended movies
         br
         br
-        a(href="http://localhost:3000/users/" + user.id + "/edit")
+        a(href="/users/" + user.id + "/edit")
             button.btn.btn-outline-primary.ml-3(type='submit') Edit User
         //- body ends
 script(src='/js/scriptUser.js')

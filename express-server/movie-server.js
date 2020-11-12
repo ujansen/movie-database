@@ -42,7 +42,6 @@ app.get("/login", function(req, res, next){
   }
   else{
     res.render('pages/login');
-    res.status(200);
   }
 });
 
@@ -71,12 +70,15 @@ app.post("/login", function(req, res, next){
 
 app.get("/logout", function(req, res, next){
   if (!req.session.user){
-    res.status(401).send("You are not logged in.");
+    res.status(401);
+    res.redirect("/login");
   }
-  req.session.user = null;
-  req.session.username = "";
-  requestingUser = "";
-  res.status(200).send("/");
+  else{
+    req.session.user = null;
+    req.session.username = "";
+    requestingUser = "";
+    res.redirect("/");
+  }
 });
 
 app.get("/users", function(req, res, next){
@@ -89,7 +91,7 @@ app.get("/users", function(req, res, next){
     }
     let result = model.searchUsers(req.session.user.username, req.query.username);
     res.status(200);
-    res.render('pages/search-user', {userObjects: result});
+    res.render('pages/search-user', {user: req.session.user, userObjects: result});
   }
 });
 
@@ -145,12 +147,17 @@ app.put("/users/:uid", function(req, res, next){
       res.status(403).send("Unauthorized");
     }
     else{
-      let result = model.editUser(req.session.user.username, req.body);
-      if(result) {
-        res.status(200).send('/users/' + req.session.user.id);
+      if (model.getUser(req.session.user.username).password !== req.body.oldPassword){
+        res.status(500).send("Old password does not match.");
       }
-      else {
-        res.status(500);
+      else{
+        let result = model.editUser(req.session.user.username, req.body);
+        if(result) {
+          res.status(200).send('/users/' + req.session.user.id);
+        }
+        else {
+          res.status(500).send("Something went wrong. Please try again.");
+        }
       }
     }
   }
@@ -206,7 +213,7 @@ app.get("/users/:uid", function(req, res, next){
     else if (result && result.id !== req.session.user.id){
       let followBool = model.getUser(req.session.user.username).followingUsers.includes(result.username);
       res.status(200);
-      res.render('pages/other-user', {userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
+      res.render('pages/other-user', {user: req.session.user, userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
     }
     else{
       res.status(404).send("User " + req.params.uid + " does not exist.");
@@ -340,7 +347,7 @@ app.get("/users/:uid/recommended", function(req, res, next){
 
 app.get("/searchIMDB", function(req, res, next){
   let result = undefined;
-  res.render("pages/imdb-result", {movie:result});
+  res.render("pages/imdb-result", {user: req.session.user, movie:result});
   res.status(200);
 });
 
@@ -357,7 +364,7 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
   let result = await model.searchIMDB(searchTerm);
   if (result){
     res.status(200);
-    res.render("pages/imdb-result", {movie:result});
+    res.render("pages/imdb-result", {user: req.session.user, movie:result});
   }
   else{
     res.status(500).send("Server could not access specified movie.");
@@ -370,7 +377,7 @@ app.get("/movies", function(req, res, next){
   }
   let result = model.searchMovie(req.query);
   res.status(200); //.send("Movies found: " + JSON.stringify(result));
-  res.render('pages/search-movie', {movieObjects: result});
+  res.render('pages/search-movie', {user: req.session.user, movieObjects: result});
   //res.send("/movies");
 });
 
@@ -403,39 +410,42 @@ app.get("/movies/search/", function (req, res, next){
 app.get("/movies/:mid", function(req, res, next){
   let result = model.getMovie(req.params.mid);
   if(!result) {
+    console.log(result);
     res.status(404).send("Movie does not exist.");
   }
-  let actorList = [];
-  let writerList = [];
-  let directorList = [];
-  for (actorID of result.actors){
-    if (!actorList.includes(model.getPerson(actorID))){
-      actorList.push(model.getPerson(actorID));
-    }
-  }
-  for (writerID of result.writers){
-    if (!writerList.includes(model.getPerson(writerID))){
-      writerList.push(model.getPerson(writerID));
-    }
-  }
-  for (directorID of result.director){
-    if (!directorList.includes(model.getPerson(directorID))){
-      directorList.push(model.getPerson(directorID));
-    }
-  }
-  let movieReviewList = [];
-  if(result.reviews) {
-    for (reviewID of result.reviews){
-      if(!movieReviewList.includes(model.getReview(reviewID))){
-        movieReviewList.push(model.getReview(reviewID));
+    else{
+    let actorList = [];
+    let writerList = [];
+    let directorList = [];
+    for (actorID of result.actors){
+      if (!actorList.includes(model.getPerson(actorID))){
+        actorList.push(model.getPerson(actorID));
       }
     }
-  }
+    for (writerID of result.writers){
+      if (!writerList.includes(model.getPerson(writerID))){
+        writerList.push(model.getPerson(writerID));
+      }
+    }
+    for (directorID of result.director){
+      if (!directorList.includes(model.getPerson(directorID))){
+        directorList.push(model.getPerson(directorID));
+      }
+    }
+    let movieReviewList = [];
+    if(result.reviews) {
+      for (reviewID of result.reviews){
+        if(!movieReviewList.includes(model.getReview(reviewID))){
+          movieReviewList.push(model.getReview(reviewID));
+        }
+      }
+    }
 
-  if(result){
-    res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
-    res.status(200);
-  }
+    if(result){
+      res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
+      res.status(200);
+    }
+}
 });
 
 app.post("/movies", function(req, res, next){
@@ -525,7 +535,7 @@ app.get("/people", function(req, res, next){
   }
   let result = model.searchPerson(req.query.name);
   res.status(200);
-  res.render('pages/search-person', {personObjects: result});
+  res.render('pages/search-person', {user: req.session.user, personObjects: result});
 });
 
 app.get("/people/search/", function (req, res, next){
@@ -589,7 +599,7 @@ app.post("/people", function(req, res, next){
 
 app.post("/people/:pid/follow", function(req, res, next){
   if (!req.session.user){
-    res.redirect("/login");
+    res.send("/login");
   }
   else{
     let result = model.followPerson(req.session.user.username, req.params.pid);
@@ -605,7 +615,7 @@ app.post("/people/:pid/follow", function(req, res, next){
 
 app.post("/people/:pid/unfollow", function(req, res, next){
   if (!req.session.user){
-    res.redirect("/login");
+    res.send("/login");
   }
   else{
     let result = model.unfollowPerson(req.session.user.username, req.params.pid);

@@ -1,31 +1,7 @@
-let movieTitle = document.getElementById("movieTitle");
-let runtime = document.getElementById("runtime");
-let movieYear = document.getElementById("movieYear");
-let genreList = document.getElementById("genreList");
-let plot = document.getElementById("plot");
-let poster = document.getElementById("poster");
-let trailer = document.getElementById("trailer");
-let actorList = document.getElementById("actorList");
-let directorList = document.getElementById("directorList");
-let writerList = document.getElementById("writerList");
-
 let editButton = document.getElementById("editMovie");
 editButton.addEventListener("click", editMovie);
-editButton.disabled = true;
 let deleteButton = document.getElementById("deleteMovie");
 deleteButton.addEventListener("click", deleteMovie);
-
-movieTitle.addEventListener("keyup", enableButton);
-genreList.addEventListener("keyup", enableButton);
-actorList.addEventListener("keyup", enableButton);
-directorList.addEventListener("keyup", enableButton);
-writerList.addEventListener("keyup", enableButton);
-
-function enableButton() {
-  if (movieTitle.value.toString() && genreList.value.toString() && actorList.value.toString() && directorList.value.toString() && writerList.value.toString()) {
-      editButton.disabled = false;
-  }
-}
 
 function editMovie() {
     let id = document.getElementById("id").textContent.toString();
@@ -54,7 +30,7 @@ function editMovie() {
     }
 
     let req = new XMLHttpRequest();
-    req.open("PUT", "http://localhost:3000/movies/"+id);
+    req.open("PUT", "/movies/"+id);
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.onreadystatechange = function(){
       if(req.readyState == 4 && req.status == 200){
@@ -67,7 +43,7 @@ function editMovie() {
 function deleteMovie() {
     let id = document.getElementById("id").textContent.toString();
     let req = new XMLHttpRequest();
-    req.open("DELETE", "http://localhost:3000/movies/"+id);
+    req.open("DELETE", "/movies/"+id);
     req.onreadystatechange = function(){
       if(req.readyState == 4 && req.status == 200){
         window.location.href = req.responseText;
