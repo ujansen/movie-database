@@ -5,7 +5,7 @@ const model = require("./movie-database-module.js");
 let requestingUser = "";
 
 const session = require('express-session');
-app.use(session({ secret: 'some secret here', resave: true, saveUninitialized: true, cookie: { maxAge: 24 * 60 * 60 * 1000}}))
+app.use(session({ secret: 'some secret here', resave: true, saveUninitialized: true, cookie: { maxAge: 24 * 60 * 60 * 1000}}));
 app.use(express.static('public'));
 app.set('view engine', 'pug');
 app.use(express.urlencoded({extended: true}));
@@ -14,7 +14,6 @@ app.use(express.json());
 
 app.use("/", function(req, res, next){
   console.log(req.session);
-  console.log("Request from user: " + req.session.username);
   if (req.session.user){
     req.session.user = model.getUser(req.session.user.username);
   }
@@ -26,9 +25,8 @@ app.get("/", function(req, res, next){
   let resultUpcoming = model.upcoming(requestingUser);
   let resultFanPicks = model.fanPicks(requestingUser);
   let resultYourList = model.yourList(requestingUser);
-  console.log(resultYourList);
   if (resultUpcoming && resultFanPicks){
-    res.render('pages/index', {resultUpcoming: resultUpcoming, resultYourList: resultYourList, resultFanPicks: resultFanPicks});
+    res.render('pages/index', {user: req.session.user, resultUpcoming: resultUpcoming, resultYourList: resultYourList, resultFanPicks: resultFanPicks});
     res.status(200);
   }
   else{
@@ -59,12 +57,11 @@ app.get("/register", function(req, res, next){
 
 // tested
 app.post("/login", function(req, res, next){
-  console.log(req.body);
   if (model.login(req.body)){
     req.session.user = model.users[req.body.username];
     req.session.username = req.session.user.username;
     requestingUser = req.session.user.username;
-    res.status(304);
+    res.status(302);
     res.redirect("/users/" + req.session.user.id);
   }
   else{
@@ -72,44 +69,59 @@ app.post("/login", function(req, res, next){
   }
 });
 
-app.post("/logout", function(req, res, next){
+app.get("/logout", function(req, res, next){
   if (!req.session.user){
     res.status(401).send("You are not logged in.");
   }
-  res.session.user = null;
+  req.session.user = null;
   req.session.username = "";
   requestingUser = "";
+  res.status(200).send("/");
 });
-
 
 app.get("/users", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
   }
-  else
-  {
-    if (!req.query.name){
-      req.query.name = "";
+  else {
+    if (!req.query.username){
+      req.query.username = "";
     }
-    let result = model.searchUsers(requestingUser, req.query.name);
-    res.status(200).json(result);
+    let result = model.searchUsers(req.session.user.username, req.query.username);
+    res.status(200);
+    res.render('pages/search-user', {userObjects: result});
   }
 });
 
+app.get("/users/search/", function (req, res, next){
+  if (!req.query){
+    req.query.name = "";
+  }
+  //let result = model.searchPerson(req.query.name);
+  let searchQuery = ""
+  if (req.query.username){
+      searchQuery += "?username=" + req.query.username;
+  }
+  else{
+    searchQuery += "?username=";
+  }
+  res.status(200);
+  res.send("/users" + searchQuery);
+});
+
+
 
 app.post("/users", function(req, res, next){
-  if (!req.session.user){
-    res.redirect("/login");
+  let result = model.registerUser(req.body);
+  if(result){
+    req.session.user = result;
+    req.session.username = req.session.user.username;
+    requestingUser = req.session.user.username;
+    res.status(200);
+    res.redirect("/users/" + req.session.user.id);
   }
-  else
-  {
-    let result = model.registerUser(req.body);
-    if(result){
-      res.status(200).send("User added: " + JSON.stringify(result));
-    }
-    else{
-      res.status(500).send("Failed to add user.");
-    }
+  else{
+    res.status(500).send("Failed to add user.");
   }
 });
 
@@ -150,7 +162,8 @@ app.post("/users/:uid/toggle", function(req, res, next){
       let result = model.toggleContributing("user" + req.params.uid);
       //console.log(req.session.user);
       if (result){
-        res.status(200).send();
+        res.status(200);
+        res.send("/users/" + req.params.uid);
       }
       else{
         res.status(404).send("User does not exist.");
@@ -163,22 +176,22 @@ app.post("/users/:uid/toggle", function(req, res, next){
 // remaining to be tested with user
 app.get("/users/:uid", function(req, res, next){
   if (!req.session.user){
-    console.log("SOmething");
     res.redirect("/login");
   }
   else
   {
     let result = model.getUser("user" + req.params.uid);
     let resultReviews = model.viewReviewsOtherUser(requestingUser, "user" + req.params.uid);
+    console.log(resultReviews);
     let reviewedMovies = [];
     if (resultReviews && resultReviews.length > 0){
       for (review of resultReviews){
-          console.log(review);
           if (review && !reviewedMovies.includes(model.movies[review.movieID])){
             reviewedMovies.push(model.movies[review.movieID]);
           }
         }
     }
+    console.log(reviewedMovies);
     if (result && result.id === req.session.user.id){
       res.status(200);
       res.render('pages/user', {user: result, likedMovies: reviewedMovies, resultReviews: resultReviews});
@@ -272,7 +285,7 @@ app.post("/users/:uid/follow", function(req, res, next){
     let result = model.followUser(requestingUser, "user" + req.params.uid);
     if(result){
       res.status(200);
-      res.redirect("/users/"+req.params.uid);
+      res.send("/users/"+req.params.uid);
     }
     else{
       res.status(404).send("User" + req.params.uid + " does not exist or you already follow them.");
@@ -285,10 +298,10 @@ app.post("/users/:uid/unfollow", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.unfollowUser(requestingUser, "user" + req.params.uid);
+    let result = model.unfollowUser(req.session.user.username, "user" + req.params.uid);
     if (result){
       res.status(200);
-      res.redirect("/users/"+req.params.uid);
+      res.send("/users/"+req.params.uid);
     }
     else{
       res.status(404).send("User" + req.params.uid + " does not exist or you do not follow them.");
@@ -301,11 +314,11 @@ app.get("/users/:uid/recommended", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== requestingUser){
+    if (("user" + req.params.uid) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
-      let result = model.viewRecommendedMovies(requestingUser);
+      let result = model.viewRecommendedMovies(req.session.user.username);
       if (result){
         res.status(200).send("Recommended movies are: " + JSON.stringify(result));
       }
@@ -317,7 +330,6 @@ app.get("/users/:uid/recommended", function(req, res, next){
 });
 
 app.get("/searchIMDB/:sid", async function(req, res, next){
-  // where / how do we want the result to show up? A separate page?
   let searchTerms = [];
   let searchTerm = req.params.sid;
   if (searchTerm.includes("+")){
@@ -329,7 +341,7 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
   }
   let result = await model.searchIMDB(searchTerm);
   if (result){
-    res.status(200).send(JSON.stringify(result));
+    res.status(200).send("/searchIMDB" + searchTerm);
   }
   else{
     res.status(500).send("Server could not access specified movie.");
@@ -337,55 +349,76 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
 });
 
 app.get("/movies", function(req, res, next){
-  if (!req.query.title){
-    req.query.title = "";
+  if (!req.query){
+    req.query = {};
   }
-  let result = model.searchMovie(req.query.title); // only searches using title, does not consider spaces
+  let result = model.searchMovie(req.query);
   res.status(200); //.send("Movies found: " + JSON.stringify(result));
   res.render('pages/search-movie', {movieObjects: result});
-  // gives a 302 status(???)
+  //res.send("/movies");
+});
+
+app.get("/movies/search/", function (req, res, next){
+  if (!req.query){
+    req.query = {};
+  }
+  let result = model.searchMovie(req.query);
+  let searchQuery = ""
+  if (req.query.title){
+      searchQuery += "?title=" + req.query.title;
+  }
+  else{
+    searchQuery += "?title=";
+  }
+  if (req.query.genre){
+    searchQuery += "&genre=" + req.query.genre;
+  }
+  if (req.query.minRating){
+    searchQuery += "&minRating=" + req.query.minRating;
+  }
+  if (req.query.year){
+    searchQuery += "&year=" + req.query.year;
+  }
+  res.status(200);
+  res.send("/movies" + searchQuery);
 });
 
 //tested
 app.get("/movies/:mid", function(req, res, next){
-  if (isNaN(req.params.mid)){
-    res.redirect("/movies/add");
+  let result = model.getMovie(req.params.mid);
+  if(!result) {
+    res.status(404).send("Movie does not exist.");
   }
-  else{
-    let result = model.getMovie(req.params.mid);
-    if(!result) {
-      res.status(404).send("Movie does not exist.");
+  let actorList = [];
+  let writerList = [];
+  let directorList = [];
+  for (actorID of result.actors){
+    if (!actorList.includes(model.getPerson(actorID))){
+      actorList.push(model.getPerson(actorID));
     }
-    let actorList = [];
-    let writerList = [];
-    let director = "";
-    for (actorID of result.actors){
-      if (!actorList.includes(model.getPerson(actorID))){
-        actorList.push(model.getPerson(actorID));
+  }
+  for (writerID of result.writers){
+    if (!writerList.includes(model.getPerson(writerID))){
+      writerList.push(model.getPerson(writerID));
+    }
+  }
+  for (directorID of result.director){
+    if (!directorList.includes(model.getPerson(directorID))){
+      directorList.push(model.getPerson(directorID));
+    }
+  }
+  let movieReviewList = [];
+  if(result.reviews) {
+    for (reviewID of result.reviews){
+      if(!movieReviewList.includes(model.getReview(reviewID))){
+        movieReviewList.push(model.getReview(reviewID));
       }
     }
-    for (writerID of result.writers){
-      if (!writerList.includes(model.getPerson(writerID))){
-        writerList.push(model.getPerson(writerID));
-      }
-    }
-    director = model.getPerson(result.director);
-    let movieReviewList = [];
-    if(result.reviews) {
-      for (reviewID of result.reviews){
-        if(!movieReviewList.includes(model.getReview(reviewID))){
-          movieReviewList.push(model.getReview(reviewID));
-        }
-      }
-    }
-    
-    if(result){
-      res.render('pages/movie', {movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, director: director, reviewList: movieReviewList});
-      res.status(200);
-    }
-    else{
-      res.status(404).send("Movie does not exist.");
-    }
+  }
+
+  if(result){
+    res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
+    res.status(200);
   }
 });
 
@@ -395,9 +428,10 @@ app.post("/movies", function(req, res, next){
   }
   else{
     let result = model.addMovie(req.session.user.username, req.body);
-    console.log(req.body);
     if (result){
-      res.status(200).send();
+      console.log(model.movies);
+      res.status(200);
+      res.send("/movies");
       //res.redirect("/movies/" + result);
     }
     else{
@@ -423,7 +457,7 @@ app.get("/movies/:mid/edit", function(req, res, next){
   else{
   //show edit movie page
     if (model.getMovie(req.params.mid)){
-      res.render("pages/edit-movie.pug", {movie: model.getMovie(req.params.mid), user: req.session.user});
+      res.render("pages/edit-movie", {movie: model.getMovie(req.params.mid), user: req.session.user});
       res.status(200);
     }
     else{
@@ -439,9 +473,10 @@ app.put("/movies/:mid", function(req, res, next){
   }
   else{
     if (req.params.mid === req.body.id){
-      let result = model.editMovie(requestingUser, req.body);
+      let result = model.editMovie(req.session.user.username, req.body);
       if (result){
-        res.status(200).send("Movie successfully edited.\n\n" + JSON.stringify(model.movies));
+        res.status(200);
+        res.send("/movies/" + req.params.mid);
       }
       else{
         res.status(500).send("Failed to edit movie.");
@@ -458,17 +493,12 @@ app.delete("/movies/:mid", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (req.params.mid === req.body.id){
-      let result = model.removeMovie(requestingUser, req.params.mid);
-      if (result){
-        res.status(200).send("Movie successfully deleted.\n\n" + JSON.stringify(model.movies));
-      }
-      else{
-        res.status(500).send("Failed to delete movie.");
-      }
+    let result = model.removeMovie(req.session.user.username, req.params.mid);
+    if (result){
+      res.status(200).send("/movies");
     }
     else{
-      res.status(404).send("Movie does not exist.");
+      res.status(500).send("Failed to delete movie.");
     }
   }
 });
@@ -477,14 +507,25 @@ app.get("/people", function(req, res, next){
   if (!req.query.name){
     req.query.name = "";
   }
-  else{
-    let result = model.searchPerson(req.query.name);
-    if(result) {
-      res.status(200); //.send("People found: " + JSON.stringify(result));
-      res.render('pages/search-person', {personObjects: result});
-    }
-    res.status(500).send("Trouble finding results.");
+  let result = model.searchPerson(req.query.name);
+  res.status(200);
+  res.render('pages/search-person', {personObjects: result});
+});
+
+app.get("/people/search/", function (req, res, next){
+  if (!req.query){
+    req.query.name = "";
   }
+  //let result = model.searchPerson(req.query.name);
+  let searchQuery = ""
+  if (req.query.name){
+      searchQuery += "?name=" + req.query.name;
+  }
+  else{
+    searchQuery += "?name=";
+  }
+  res.status(200);
+  res.send("/people" + searchQuery);
 });
 
 app.get("/people/:pid", function(req, res, next){
@@ -497,7 +538,11 @@ app.get("/people/:pid", function(req, res, next){
       }
     }
     if (result){
-      res.render("pages/person", {person: result, movieList: movieList, user: req.session.user});
+      let followBool = false;
+      if (req.session.user){
+        followBool = model.getUser(req.session.user.username).followingPeople.includes(result.id);
+      }
+      res.render("pages/person", {userFollowsPerson: followBool, person: result, movieList: movieList, user: req.session.user});
       res.status(200);
     }
     else{
@@ -518,7 +563,7 @@ app.post("/people", function(req, res, next){
     console.log(req.body);
     if (result){
       res.status(200);
-      res.redirect("/people/" + result);
+      res.send("/people/" + result);
     }
     else{
       res.status(500).send("Failed to add person.");
@@ -531,32 +576,32 @@ app.post("/people/:pid/follow", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.followPerson(requestingUser, req.params.pid);
+    let result = model.followPerson(req.session.user.username, req.params.pid);
     if(result){
       res.status(200);
-      res.redirect("/people/"+req.params.pid);
+      res.send("/people/"+req.params.pid);
     }
     else{
       res.status(404).send("Person with id" + req.params.pid + " does not exist or you already follow them.");
     }
   }
-  });
+});
 
 app.post("/people/:pid/unfollow", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
   }
   else{
-    let result = model.unfollowUser(requestingUser, req.params.pid);
+    let result = model.unfollowPerson(req.session.user.username, req.params.pid);
     if (result){
       res.status(200);
-      res.redirect("/people/"+req.params.pid);
+      res.send("/people/"+req.params.pid);
     }
     else{
       res.status(404).send("Person with id" + req.params.pid + " does not exist or you do not follow them.");
     }
   }
-  });
+});
 
 app.get("/people/:pid/edit", function(req, res, next){
   if (!req.session.user){
@@ -565,7 +610,7 @@ app.get("/people/:pid/edit", function(req, res, next){
   else{
   //show editing person page after checking if that ID exists
     if (model.getPerson(req.params.pid)){
-      res.render("pages/edit-person.pug", {person: model.getPerson(req.params.pid), user: req.session.user});
+      res.render("pages/edit-person", {person: model.getPerson(req.params.pid), user: req.session.user});
       res.status(200);
     }
     else{
@@ -589,7 +634,19 @@ app.put("/people/:pid", function(req, res, next){
     res.redirect("/login");
   }
   else{
-  //call editPerson function
+    if (req.params.pid === req.body.id){
+      let result = model.editPerson(req.session.user.username, req.body);
+      if (result){
+        res.status(200);
+        res.send("/people/" + req.params.pid);
+      }
+      else{
+        res.status(500).send("Failed to edit person.");
+      }
+    }
+    else{
+      res.status(404).send("Person does not exist.");
+    }
   }
 });
 
@@ -598,19 +655,15 @@ app.delete("/people/:pid", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (req.params.pid === req.body.id){
-      let result = model.removePerson(requestingUser, req.params.pid);
+      let result = model.removePerson(req.session.user.username, req.params.pid);
       if (result){
-        res.status(200).send("Person successfully deleted.\n\n" + JSON.stringify(model.people));
+        res.status(200);
+        res.send("/people");
       }
       else{
         res.status(500).send("Failed to delete person.");
       }
     }
-    else{
-      res.status(404).send("Person does not exist.");
-    }
-  }
 });
 
 app.get("/people/:pid/collaborators", function(req, res, next){
@@ -624,9 +677,10 @@ app.get("/people/:pid/collaborators", function(req, res, next){
 });
 
 app.get("/reviews/:rid", function(req, res, next){
-  let result = model.getReview(requestingUser, req.params.rid);
+  let result = model.getReview(req.params.rid);
   if (result){
-    res.status(200).send(JSON.stringify(result));
+    res.status(200); //.send(JSON.stringify(result));
+    res.render('pages/review', {review: result, reviewUser: model.getUser(result.userID)});
   }
   else{
     res.status(404).send("Review does not exist.");
@@ -638,9 +692,10 @@ app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.addBasicReview(requestingUser, req.params.mid, req.params.rating);
+    let result = model.addBasicReview(req.session.user.username, req.params.mid, req.params.rating);
     if (result){
-      res.status(200).send("Basic review added.");
+      res.status(200).send("/movies/"+req.params.mid);
+      // window location href in client side js
     }
     else{
       res.status(404).send("Movie does not exist.");
@@ -653,10 +708,10 @@ app.post("/movies/:mid/fullReview", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (requestingUser === req.body.userID){
-      let result = model.addFullReview(requestingUser, req.body);
+    if (req.params.mid === req.body.movieID){
+      let result = model.addFullReview(req.session.user.username, req.body);
       if (result){
-        res.status(200).send("Full review added.\n\n" + JSON.stringify(model.reviews));
+        res.status(200).send("/movies/"+req.params.mid);
       }
       else{
         res.status(500).send("Review could not be added.");
@@ -675,7 +730,8 @@ app.get("/test", function(req, res, next){
   }
   else{
     //let result = model.searchPerson(req.query.name);
-    res.status(200).send("OK: " + JSON.stringify(result));
+    res.status(200); //.send("OK: " + JSON.stringify(result));
+    res.render('pages/imdb-result', {movie: model.getMovie("1")});
   }
 });
 

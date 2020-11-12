@@ -63,10 +63,9 @@ main(style='background-color: #243742;')
       each review in reviewList
         a(href="http://localhost:3000/reviews/"+review.id)
                 li.list-group-item 
-                    p 
-                    | #{review.title}
-                    |
-                    | #{review.content}
+                    b #{review.title}
+                    br
+                    p #{review.content}
 
   hr(style='border-width: 2px;')
   a(href="http://localhost:3000/users/"+requestedUser.id+"/people")

@@ -1,82 +1,81 @@
 {
-    "0": {
-        "id": "0",
-        "name": "Martin Freeman",
-        "about": "",
-        "followers": ["user1", "user2", "user3", "user4"],
-        "collaborators": ["1", "2"],
-        "movies": ["1", "2", "4"]
-      },
-    "1":{
-        "id": "1",
-        "name": "Tom Hanks",
-        "about": "",
-        "followers": ["user1", "user2", "user3"],
-        "collaborators": ["2"],
-        "movies": ["0", "2"]
-      },
-    "2":
-      {
-        "id": "2",
-        "name": "Brad Pitt",
-        "about": "",
-        "followers": ["user1", "user2", "user4"],
-        "collaborators": [],
-        "movies": ["0", "3", "4"]
-      },
-    "3":
-      {
-        "id": "3",
-        "name": "Quentin Tarantino",
-        "about": "",
-        "followers": ["user1", "user3", "user4"],
-        "collaborators": [],
-        "movies": ["0", "3"]
-      },
-    "4":
-      {
-        "id": "4",
-        "name": "Christopher Nolan",
-        "about": "",
-        "followers": ["user2"],
-        "collaborators": [],
-        "movies": ["1", "4"]
-      },
-    "5":
-      {
-        "id": "5",
-        "name": "Steven Spielberg",
-        "about": "",
-        "followers": ["user4"],
-        "collaborators": [],
-        "movies": ["2"]
-      },
-    "6":
-      {
-        "id": "6",
-        "name": "Charlie Kaufman",
-        "about": "",
-        "followers": ["user2", "user3"],
-        "collaborators": [],
-        "movies": ["0", "2", "4"]
-      },
-    "7":
-      {
-        "id": "7",
-        "name": "Woody Allen",
-        "about": "",
-        "followers": ["user1", "user2", "user3", "user4"],
-        "collaborators": [],
-        "movies": ["1", "2", "3", "4"]
-      },
-    "8":
-      {
-        "id": "8",
-        "name": "Ethan Coen",
-        "about": "",
-        "followers": ["user1", "user2", "user4"],
-        "collaborators": [],
-        "movies": ["0", "3", "4"]
-      }
-  }
-  
+  "0": {
+      "id": "0",
+      "name": "Martin Freeman",
+      "about": "",
+      "followers": ["user1", "user2", "user3", "user4"],
+      "collaborators": ["1", "2"],
+      "movies": ["1", "2", "4"]
+    },
+  "1":{
+      "id": "1",
+      "name": "Tom Hanks",
+      "about": "",
+      "followers": ["user1", "user2", "user3"],
+      "collaborators": ["0", "2"],
+      "movies": ["0", "2", "5"]
+    },
+  "2":
+    {
+      "id": "2",
+      "name": "Brad Pitt",
+      "about": "",
+      "followers": ["user1", "user2"],
+      "collaborators": ["0", "1"],
+      "movies": ["0", "3", "4"]
+    },
+  "3":
+    {
+      "id": "3",
+      "name": "Quentin Tarantino",
+      "about": "",
+      "followers": ["user1", "user3", "user2"],
+      "collaborators": [],
+      "movies": ["0", "3"]
+    },
+  "4":
+    {
+      "id": "4",
+      "name": "Christopher Nolan",
+      "about": "",
+      "followers": ["user2"],
+      "collaborators": [],
+      "movies": ["1", "4"]
+    },
+  "5":
+    {
+      "id": "5",
+      "name": "Steven Spielberg",
+      "about": "",
+      "followers": ["user3"],
+      "collaborators": [],
+      "movies": ["2"]
+    },
+  "6":
+    {
+      "id": "6",
+      "name": "Charlie Kaufman",
+      "about": "",
+      "followers": ["user2", "user3"],
+      "collaborators": [],
+      "movies": ["0", "2", "4"]
+    },
+  "7":
+    {
+      "id": "7",
+      "name": "Woody Allen",
+      "about": "",
+      "followers": ["user1", "user2", "user3", "user4"],
+      "collaborators": [],
+      "movies": ["1", "2", "3", "4"]
+    },
+  "8":
+    {
+      "id": "8",
+      "name": "Ethan Coen",
+      "about": "",
+      "followers": ["user1", "user2", "user4"],
+      "collaborators": [],
+      "movies": ["0", "3", "4"]
+    }
+}

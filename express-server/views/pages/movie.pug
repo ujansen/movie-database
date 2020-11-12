@@ -13,7 +13,7 @@ body
     include ../partials/navBar
   .container.body_content
     div
-      h4 #{movie.title} 
+      h4 #{movie.title}
       if(movie.releaseYear)
         | (#{movie.releaseYear})
         //-small(style="font-size: 16px; font-style:italic;" class="text-secondary ml-2") PG-13
@@ -40,21 +40,31 @@ body
             li
               em Genre:
                 each genre in movie.genre
-                  a(class="active ml-1" href="#") #{genre},
+                  a(class="active ml-1" href="http://localhost:3000/movies?title=&genre="+genre) #{genre},
           if !(actorList === undefined || actorList.length === 0)
             li
               em Actors:
                 each actor in actorList
-                  a(class="active ml-1" href="http://localhost:3000/people/"+actor.id)  #{actor.name},
-          if !(director === undefined || director === "")
+                  if (actor === "N/A" || actor === null)
+                    em N/A
+                  else
+                    a(class="active ml-1" href="http://localhost:3000/people/"+actor.id)  #{actor.name},
+          if !(directorList === undefined || directorList.length === 0)
             li
               em Director:
-                a(class="active ml-1" href="http://localhost:3000/people/"+director.id) #{director.name}
+                each director in directorList
+                  if (director === "N/A" || director === null)
+                    em N/A
+                  else
+                    a(class="active ml-1" href="http://localhost:3000/people/"+director.id)  #{director.name},
           if !(writerList === undefined || writerList.length === 0)
             li
               em Writer:
                 each writer in writerList
-                  a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
+                  if (writer === "N/A" || writer === null)
+                    em N/A
+                  else
+                    a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
     div(class="container scrolling similar_movies")
       h4 Similar Movies
       div(class="row flex-nowrap")
@@ -65,18 +75,37 @@ body
                 img(src=similarMovie.poster class = "slider-img")
     div(class="review")
       h6(style="padding-top: 20px; padding-left: 4px;") Average Rating: #{movie.averageRating}
-      h6(style="padding-top: 20px; padding-left: 4px;") Add rating:
-        input(type='number' min='1' max='10')
-      h6(style="padding-top: 20px; padding-left: 4px;") Add review:
-      div
-        textarea(id="movieReview" name="movieReview" rows="4" cols="50")
-      button(type="submit" class="btn btn-outline-primary" id="submitReview") Submit
+      h6(style="padding-top: 20px; padding-left: 4px;") Add basic rating:
+        input#basicRating.ml-2(type='number' min='1' max='10')
+        if(user)
+          button#basicReview.ml-2(type="submit" class="btn btn-outline-primary") Submit
+        else
+          button#basicReview.ml-2(type="submit" class="btn btn-outline-primary" disabled='') Submit
+      h6.ml-2(style="padding-top: 20px;") Add review:
+      div.ml-2
+        label Add rating:
+        input#fullRating(type='number' min='1' max='10')
+        br
+        br
+        textarea(id="movieReviewTitle" name="movieReviewTitle" rows="1" cols="50" placeholder="Review Title")
+        br
+        textarea(id="movieReview" name="movieReview" rows="4" cols="50" placeholder="Review Content")
+        br
+        if(user)
+          button(type="submit" class="btn btn-outline-primary" id="submitReview") Submit
+        else
+          button(type="submit" class="btn btn-outline-primary" id="submitReview" disabled='') Submit
     div(class = "container reviews mt-4" id="reviews")
       h5 Reviews
       ul(class="list-group")
         each review in reviewList
-          li(class="list-group-item") #{review.content}
+          a(href="http://localhost:3000/reviews/"+review.id)
+            li(class="list-group-item") 
+              b #{review.title}
+              br
+              p #{review.content}
     br
     //-if(user)
     a(href="http://localhost:3000/movies/"+movie.id+"/edit")
       button#editMovie.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Movie
+script(src='/js/scriptMovie.js')

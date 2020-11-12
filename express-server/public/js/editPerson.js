@@ -16,15 +16,26 @@ function editPerson() {
         image: image,
         movies: movies
     }
-    
+
     let req = new XMLHttpRequest();
-    req.open("PUT", "http://localhost:3000/person/"+id);
-    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+    req.open("PUT", "http://localhost:3000/people/"+id);
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.onreadystatechange = function(){
+      if(req.readyState == 4 && req.status == 200){
+        window.location.href = req.responseText;
+     }
+   };
     req.send(JSON.stringify(personObj));
 }
 
 function deletePerson() {
+    let id = document.getElementById("id").textContent.toString();
     let req = new XMLHttpRequest();
-    req.open("DELETE", "http://localhost:3000/person/"+id);
+    req.open("DELETE", "http://localhost:3000/people/"+id);
+    req.onreadystatechange = function(){
+      if (req.status === 200){
+        window.location.href = req.responseText;
+      }
+    }
     req.send();
 }

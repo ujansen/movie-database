@@ -5,46 +5,49 @@ let movieYear = document.getElementById("movieYear");
 
 let searchDB = document.getElementById("submitSearch");
 searchDB.addEventListener("click", searchDatabaseRequest);
-let searchIMDB = document.getElementById("searchIMDB");
-searchIMDB.addEventListener("click", searchIMDBRequest);
+/* let searchIMDB = document.getElementById("searchIMDB");
+searchIMDB.addEventListener("click", searchIMDBRequest); */
 
 function searchDatabaseRequest() {
-  let searchQuery = "";
-
-  movieTitle = movieTitle.value;
-  if(movieTitle) {
+  let searchQuery = "?";
+  searchTitle = movieTitle.value.toString();
+  if(searchTitle) {
     searchQuery += "title=";
-    searchQuery += movieTitle.trim().split(" ").join("+");
+    searchQuery += searchTitle.trim().split(" ").join("+");
   }
 
-  movieGenre = movieGenre.value;
-  if(movieGenre) {
+  searchGenre = movieGenre.value.toString();
+  if(searchGenre) {
     searchQuery += "&";
     searchQuery += "genre=";
-    searchQuery += movieGenre.trim().split(" ").join("+");
+    searchQuery += searchGenre.trim().split(" ").join("+");
   }
 
-  movieMinRating = movieMinRating.value;
-  if(movieMinRating && Number(movieMinRating.trim()) > 0 && Number(movieMinRating.trim()) <= 10) {
+  searchMinRating = movieMinRating.value.toString();
+  if(searchMinRating && Number(searchMinRating.trim()) > 0 && Number(searchMinRating.trim()) <= 10) {
     searchQuery += "&";
     searchQuery += "minRating=";
-    searchQuery += movieMinRating.trim();
+    searchQuery += searchMinRating.trim();
   }
 
-  movieYear = movieYear.value;
-  if(movieYear && Number(movieYear.trim()) > 1600 && Number(movieMinRating.trim()) <= 2030) {
+  searchYear = movieYear.value.toString();
+  if(searchYear && Number(searchYear.trim()) > 1600 && Number(searchYear.trim()) <= 2030) {
     searchQuery += "&";
     searchQuery += "year=";
-    searchQuery += movieYear.trim();
+    searchQuery += searchYear.trim();
   }
-
   let req = new XMLHttpRequest();
-  req.open("GET", "http://localhost:3000/movies/query?"+searchQuery);
+  req.open("GET", "http://localhost:3000/movies/search/" + searchQuery);
+  req.onreadystatechange = function (){
+    if(req.readyState == 4 && req.status == 200){
+      console.log(req.responseText);
+      window.location.href = req.responseText;
+   }
+ };
   req.send();
 }
-
+/* 
 function searchIMDBRequest() {
-  console.log("Here");
   let searchQuery = "";
   if(movieTitle.value) {
     movieTitle = movieTitle.value.toString();
@@ -52,5 +55,12 @@ function searchIMDBRequest() {
   }
   let req = new XMLHttpRequest();
   req.open("GET", "http://localhost:3000/searchIMDB/"+searchQuery);
+  req.onreadystatechange = function (){
+    if(req.readyState == 4 && req.status == 200){
+      console.log(req.responseText);
+      window.location.href = req.responseText;
+   }
+ };
   req.send();
-}
+} 
+*/

@@ -17,6 +17,16 @@ body{
   color: #ffffff;
 }
 
+textarea {
+  background-color: #141e24;
+  color: #ffffff;
+}
+
+input {
+  background-color: #141e24;
+  color: #ffffff;
+}
+
 .navbar {
   padding-top: 10px;
   padding-bottom: 10px;

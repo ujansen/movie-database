@@ -1,5 +1,4 @@
 //- requires: user, likedMovies, resultReviews
-
 doctype html
 head
   //- Required meta tags
@@ -27,7 +26,7 @@ body
             .col-xs.ml-5.justify-content-end.align-self-center
                 a(href="http://localhost:3000/users/"+user.id+"/following") Following
             .col-xs.ml-4.justify-content-end.align-self-center
-                | Contributor 
+                | Contributor
                 label.switch
                     //- use if condition for this
                     if(user.userType)
@@ -58,11 +57,10 @@ body
                 //- let counter = 0;
                 each review in resultReviews
                     a(href="http://localhost:3000/reviews/"+review.id)
-                        li.list-group-item 
-                            p 
-                            | #{review.title}
-                            |
-                            | #{review.content}
+                        li.list-group-item
+                            b #{review.title}
+                            br
+                            p #{review.content}
                     //- counter++;
                     //- if(counter > 5) break
                 //-a(href="http://localhost:3000/user/"+user.id+"/reviews") See all reviews

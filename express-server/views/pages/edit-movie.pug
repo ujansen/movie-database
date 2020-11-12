@@ -19,37 +19,39 @@ main.block.container
     label Movie ID:
     label#id #{movie.id}
     br
-    label Title: 
+    label Title:
     br
     textarea#movieTitle(name='movieTitle' rows='1' cols='50' disabled) #{movie.title}
     br
-    label Runtime: 
+    label Runtime:
     br
     input#runtime(name='runtime' type='text' rows='1' cols='10' value=movie.runtime)
     br
-    label Year of Release: 
+    label Year of Release:
     br
     input#movieYear(name='movieYear' type='number' min='1600' max='2030' value=movie.releaseYear)
     br
     label Genre: (separated by commas, eg: comedy, family, adventure)
     br
-    textarea#genreList(name='genreList' rows='2' cols='50')
+    textarea#genreList(name='genreList' rows='2' cols='50' required) #{movie.genre}
     br
-    label Plot: 
+    label Plot:
     br
     textarea#plot(name='plot' rows='3' cols='50') #{movie.plot}
     br
-    label Poster URL: 
+    label Poster URL:
     br
-    textarea#poster(name='poster' rows='1' cols='50')
+    textarea#poster(name='poster' rows='1' cols='50' required) #{movie.poster}
     br
-    label Trailer URL: 
+    label Trailer URL:
     br
     textarea#trailer(name='trailer' rows='1' cols='50')
     br
     label List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)
     br
     textarea#actorList(name='actorList' rows='2' cols='50')
+      each actor in movie.actors
+        actor.name
     br
     label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
     br
