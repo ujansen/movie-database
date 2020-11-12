@@ -23,29 +23,30 @@ body
       hr(style='border-width: 2px;')
       #searchResults.container.mt-4
         if(movie)
+          .row.flex-wrap.mb-4.justify-content-center
+              img.user-img(src=movie.poster)
+          .row.flex-wrap.mb-4.justify-content-center
+            .col.ml-4.align-self-center
+              h4 #{movie.title}
+              br
+              p Synopsis: #{movie.synopsis}
+              br
+              p IMDB Rating: #{movie.rating}
+              br
+              if(movie.director)
+                p Directors: 
+                each person in movie.director
+                  p #{person}, 
+              if(movie.actors)
+                p Actors: 
+                each person in movie.actors
+                  p #{person}, 
+              if(movie.writers)
+                p Writers: 
+                each person in movie.writers
+                  p #{person}, 
           a(href=movie.url)
-            .row.flex-wrap.mb-4
-              .col-xs.cp-1.bg-secondary
-                  img.user-img(src=movie.poster)
-              .col.ml-4.align-self-center
-                  h4 #{movie.title}
-                  br
-                  p Synopsis: #{movie.synopsis}
-                  br
-                  p IMDB Rating: #{movie.rating}
-                  br
-                  if(movie.director)
-                    p Directors:
-                    each person in movie.director
-                      p #{person},
-                  if(movie.actors)
-                    p Actors:
-                    each person in movie.actors
-                      p #{person},
-                  if(movie.writers)
-                    p Writers:
-                    each person in movie.writers
-                      p #{person},
+            button.btn.btn-outline-primary(type='submit') View the movie on IMDB
         else
           p#wait Result will show here
 
@@ -100,4 +101,4 @@ body
                       em N/A
                     else
                       a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
-script(src='js/searchIMDB.js')
+script(src='/js/searchIMDB.js')
