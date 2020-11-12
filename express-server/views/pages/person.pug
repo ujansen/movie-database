@@ -19,7 +19,6 @@ body
                 div
                     if(person.image)
                         img.rounded(src=person.image)
-                //-button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Follow
                 if(userFollowsPerson)
                     button#followPerson.btn.btn-outline-primary(type='submit') Unfollow
                 else
@@ -30,10 +29,10 @@ body
                 each movie in movieList
                     .col-xs-4.cp-1
                         .card.card-block
-                        a(href="http://localhost:3000/movies/"+movie.id)
-                            img.slider-img(src=movie.poster)
+                            a(href="http://localhost:3000/movies/"+movie.id)
+                                img.slider-img(src=movie.poster)
         span(style='display:flex; justify-content:flex-end; width:100%; padding:0;')
-            button#fullList.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') See Full List
+            //-button#fullList.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') See Full List
         br
         if(user)
             a(href="http://localhost:3000/people/"+person.id+"/edit")

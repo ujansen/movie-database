@@ -9,7 +9,7 @@ head
   link(rel='stylesheet' type='text/css' href='/css/style.css')
   link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
 
-title Search
+title Edit movie #{movie.title}
 header
   include ../partials/navBar
 main.block.container
@@ -49,17 +49,17 @@ main.block.container
     br
     label List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)
     br
-    textarea#actorList(name='actorList' rows='2' cols='50')
+    textarea#actorList(name='actorList' rows='2' cols='50' required='')
       each actor in movie.actors
         actor.name
     br
     label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
     br
-    textarea#directorList(name='directorList' rows='2' cols='50')
+    textarea#directorList(name='directorList' rows='2' cols='50' required='')
     br
     label List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)
     br
-    textarea#writerList(name='writerList' type='text' rows='2' cols='50')
+    textarea#writerList(name='writerList' type='text' rows='2' cols='50' required='')
     br
     br
     if(user.userType)

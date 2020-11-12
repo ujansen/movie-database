@@ -48,8 +48,8 @@ body
                 each movie in likedMovies
                     .col-xs-4.cp-1.bg-secondary
                         .card.card-block
-                        a(href="http://localhost:3000/movies/"+movie.id)
-                            img.slider-img(src=movie.poster)
+                            a(href="http://localhost:3000/movies/"+movie.id)
+                                img.slider-img(src=movie.poster)
         //- image slider ends
         .container.reviews.mt-4
             h5 Reviews
@@ -58,15 +58,20 @@ body
                 each review in resultReviews
                     a(href="http://localhost:3000/reviews/"+review.id)
                         li.list-group-item
-                            p
-                            | #{review.title}
-                            |
-                            | #{review.content}
+                            b #{review.title}
+                            br
+                            p #{review.content}
                     //- counter++;
                     //- if(counter > 5) break
                 //-a(href="http://localhost:3000/user/"+user.id+"/reviews") See all reviews
         hr(style='border-width: 2px;')
-        a(href="http://localhost:3000/users/"+user.id+"/people")
-            h5 People that #{user.username} follows
+        a(href="http://localhost:3000/users/" + user.id + "/people")
+            button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{user.username} follows
+        a(href="http://localhost:3000/users/" + user.id + "/recommended")
+            button.btn.btn-outline-primary.ml-3(type='submit') #{user.username}'s recommended movies
+        br
+        br
+        a(href="http://localhost:3000/users/" + user.id + "/edit")
+            button.btn.btn-outline-primary.ml-3(type='submit') Edit User
         //- body ends
 script(src='/js/scriptUser.js')

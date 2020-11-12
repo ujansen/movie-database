@@ -1,0 +1,104 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title Search Result
+body
+    header
+        include ../partials/navBar
+    main.block.container
+      div
+        h4 Search Movie in IMDB
+      br
+      .d-flex.flex-row.justify-content-center
+        label.ml-2 Enter Movie Title:
+        textarea#movieTitle.ml-2.mr-2(name='movieTitle' type='text' rows='1' cols='25')
+        button#searchIMDB.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search on IMDB
+      hr(style='border-width: 2px;')
+      #searchResults.container.mt-4
+        if(movie)
+          .row.flex-wrap.mb-4.justify-content-center
+              img.user-img(src=movie.poster)
+          .row.flex-wrap.mb-4.justify-content-center
+            .col.ml-4.align-self-center
+              h4 #{movie.title}
+              br
+              p Synopsis: #{movie.synopsis}
+              br
+              p IMDB Rating: #{movie.rating}
+              br
+              if(movie.director)
+                p Directors:
+                each person in movie.director
+                  p #{person},
+              if(movie.actors)
+                p Actors:
+                each person in movie.actors
+                  p #{person},
+              if(movie.writers)
+                p Writers:
+                each person in movie.writers
+                  p #{person},
+          a(href=movie.url target='_blank')
+            button.btn.btn-outline-primary(type='submit') View the movie on IMDB
+        else
+          p#wait Result will show here
+
+    //-    if(movie.releaseYear)
+          | (#{movie.releaseYear})
+          //-small(style="font-size: 16px; font-style:italic;" class="text-secondary ml-2") PG-13
+      if(movie.poster)
+        div(class="row flex-nowrap poster container")
+          div(class="col-xs-4 cp-1")
+            div(class="card card-block")
+              img(src=movie.poster)
+        if(movie.trailer)
+          div(class="col-xs-4 cp-1")
+            div(class="card card-block ml-5")
+              iframe(width="600" height="400" style="border: 1.5px white solid;" src=movie.trailer)
+      div(class="details")
+        ul(style="list-style-type:none; padding-left: 4px;")
+          ul(style="list-style-type:none; padding-left: 4px;")
+            li(style="padding-top: 0;")
+              em Runtime: #{movie.runtime}
+            li
+              em Synopsis:
+                span(class="mb-0.5")
+                  br
+                  |#{movie.plot}
+            if !(movie.genre === undefined || movie.genre.length === 0)
+              li
+                em Genre:
+                  each genre in movie.genre
+                    a(class="active ml-1" href="#") #{genre},
+            if !(actorList === undefined || actorList.length === 0)
+              li
+                em Actors:
+                  each actor in actorList
+                    if (actor === "N/A" || actor === null)
+                      em N/A
+                    else
+                      a(class="active ml-1" href="http://localhost:3000/people/"+actor.id)  #{actor.name},
+            if !(directorList === undefined || directorList.length === 0)
+              li
+                em Director:
+                  each director in directorList
+                    if (director === "N/A" || director === null)
+                      em N/A
+                    else
+                      a(class="active ml-1" href="http://localhost:3000/people/"+director.id)  #{director.name},
+            if !(writerList === undefined || writerList.length === 0)
+              li
+                em Writer:
+                  each writer in writerList
+                    if (writer === "N/A" || writer === null)
+                      em N/A
+                    else
+                      a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
+script(src='/js/searchIMDB.js')

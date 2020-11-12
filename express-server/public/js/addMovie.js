@@ -28,11 +28,11 @@ function addMovie() {
 
     let req = new XMLHttpRequest();
     req.open("POST", "http://localhost:3000/movies");
+    req.onreadystatechange = function () {
+        if(req.readyState === 4 && req.status === 200) {
+            window.location.href = req.responseText;
+        }
+    };
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    req.onreadystatechange = function(){
-      if(req.readyState == 4 && req.status == 200){
-        window.location.href = req.responseText;
-     }
-   };
     req.send(JSON.stringify(movieObj));
 }

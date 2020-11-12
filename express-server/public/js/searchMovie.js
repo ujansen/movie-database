@@ -5,8 +5,8 @@ let movieYear = document.getElementById("movieYear");
 
 let searchDB = document.getElementById("submitSearch");
 searchDB.addEventListener("click", searchDatabaseRequest);
-let searchIMDB = document.getElementById("searchIMDB");
-searchIMDB.addEventListener("click", searchIMDBRequest);
+/* let searchIMDB = document.getElementById("searchIMDB");
+searchIMDB.addEventListener("click", searchIMDBRequest); */
 
 function searchDatabaseRequest() {
   let searchQuery = "?";
@@ -46,7 +46,7 @@ function searchDatabaseRequest() {
  };
   req.send();
 }
-
+/*
 function searchIMDBRequest() {
   let searchQuery = "";
   if(movieTitle.value) {
@@ -63,3 +63,4 @@ function searchIMDBRequest() {
  };
   req.send();
 }
+*/

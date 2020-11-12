@@ -38,7 +38,11 @@ body
                 //-.col.mr-2
                 button#submitSearch.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search in Database
                 //-.col.mr-2
-                button#searchIMDB.btn.btn-outline-primary.ml-4(type='submit') Search title in IMDB
+                //-button#searchIMDB.btn.btn-outline-primary.ml-4(type='submit') Search title in IMDB
+                a(href="http://localhost:3000/searchIMDB" target="_blank")
+                    button.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search title in IMDB
+                a(href="http://localhost:3000/addMovie")
+                    button#addMovie.btn.btn-outline-primary.ml-4(type='submit') Add Movie to Database
         hr(style='border-width: 2px;')
         #searchResults.container.mt-4
             h5 Search Results:
