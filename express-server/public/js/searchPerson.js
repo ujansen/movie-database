@@ -12,7 +12,7 @@ function searchDatabaseRequest() {
   }
 
   let req = new XMLHttpRequest();
-  req.open("GET", "http://localhost:3000/people/search/" + searchQuery);
+  req.open("GET", "/people/search/" + searchQuery);
   req.onreadystatechange = function (){
     if(req.readyState == 4 && req.status == 200){
       console.log(req.responseText);

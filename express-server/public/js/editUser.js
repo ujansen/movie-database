@@ -48,7 +48,7 @@ function editUser() {
 
 function sendRequest(userObj) {
   let req = new XMLHttpRequest();
-  req.open("PUT", "http://localhost:3000/users/" + id);
+  req.open("PUT", "/users/" + id);
   req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
   req.onreadystatechange = function(){
     if(req.readyState == 4 && req.status == 200){

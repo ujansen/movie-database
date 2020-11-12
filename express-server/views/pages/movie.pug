@@ -40,7 +40,7 @@ body
             li
               em Genre:
                 each genre in movie.genre
-                  a(class="active ml-1" href="http://localhost:3000/movies?title=&genre="+genre) #{genre},
+                  a(class="active ml-1" href="/movies?title=&genre="+genre) #{genre},
           if !(actorList === undefined || actorList.length === 0)
             li
               em Actors:
@@ -48,7 +48,7 @@ body
                   if (actor === "N/A" || actor === null)
                     em N/A
                   else
-                    a(class="active ml-1" href="http://localhost:3000/people/"+actor.id)  #{actor.name},
+                    a(class="active ml-1" href="/people/"+actor.id)  #{actor.name},
           if !(directorList === undefined || directorList.length === 0)
             li
               em Director:
@@ -56,7 +56,7 @@ body
                   if (director === "N/A" || director === null)
                     em N/A
                   else
-                    a(class="active ml-1" href="http://localhost:3000/people/"+director.id)  #{director.name},
+                    a(class="active ml-1" href="/people/"+director.id)  #{director.name},
           if !(writerList === undefined || writerList.length === 0)
             li
               em Writer:
@@ -64,14 +64,14 @@ body
                   if (writer === "N/A" || writer === null)
                     em N/A
                   else
-                    a(class="active ml-1" href="http://localhost:3000/people/"+writer.id)  #{writer.name},
+                    a(class="active ml-1" href="/people/"+writer.id)  #{writer.name},
     div(class="container scrolling similar_movies")
       h4 Similar Movies
       div(class="row flex-nowrap")
         each similarMovie in similarMovies
           div(class="col-xs-4 cp-1")
             div(class="card card-block")
-              a(href="http://localhost:3000/movies/"+similarMovie.id)
+              a(href="/movies/"+similarMovie.id)
                 img(src=similarMovie.poster class = "slider-img")
     div(class="review")
       h6(style="padding-top: 20px; padding-left: 4px;") Average Rating: #{movie.averageRating}
@@ -99,13 +99,13 @@ body
       h5 Reviews
       ul(class="list-group")
         each review in reviewList
-          a(href="http://localhost:3000/reviews/"+review.id)
+          a(href="/reviews/"+review.id)
             li(class="list-group-item")
               b #{review.title}
               br
               p #{review.content}
     br
     //-if(user)
-    a(href="http://localhost:3000/movies/"+movie.id+"/edit")
+    a(href="/movies/"+movie.id+"/edit")
       button#editMovie.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Movie
 script(src='/js/scriptMovie.js')

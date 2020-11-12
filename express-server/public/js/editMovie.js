@@ -30,7 +30,7 @@ function editMovie() {
     }
 
     let req = new XMLHttpRequest();
-    req.open("PUT", "http://localhost:3000/movies/"+id);
+    req.open("PUT", "/movies/"+id);
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.onreadystatechange = function(){
       if(req.readyState == 4 && req.status == 200){
@@ -43,7 +43,7 @@ function editMovie() {
 function deleteMovie() {
     let id = document.getElementById("id").textContent.toString();
     let req = new XMLHttpRequest();
-    req.open("DELETE", "http://localhost:3000/movies/"+id);
+    req.open("DELETE", "/movies/"+id);
     req.onreadystatechange = function(){
       if(req.readyState == 4 && req.status == 200){
         window.location.href = req.responseText;

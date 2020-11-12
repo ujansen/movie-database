@@ -14,5 +14,5 @@ function searchIMDBRequest() {
     movieTitle = movieTitle.value.toString();
     searchQuery = movieTitle.trim().split(" ").join("+");
   }
-  window.location.href = "http://localhost:3000/searchIMDB/"+searchQuery;
+  window.location.href = "/searchIMDB/"+searchQuery;
 }

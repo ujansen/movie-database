@@ -37,10 +37,9 @@ function searchDatabaseRequest() {
     searchQuery += searchYear.trim();
   }
   let req = new XMLHttpRequest();
-  req.open("GET", "http://localhost:3000/movies/search/" + searchQuery);
+  req.open("GET", "/movies/search/" + searchQuery);
   req.onreadystatechange = function (){
     if(req.readyState == 4 && req.status == 200){
-      console.log(req.responseText);
       window.location.href = req.responseText;
    }
  };

@@ -213,7 +213,7 @@ app.get("/users/:uid", function(req, res, next){
     else if (result && result.id !== req.session.user.id){
       let followBool = model.getUser(req.session.user.username).followingUsers.includes(result.username);
       res.status(200);
-      res.render('pages/other-user', {userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
+      res.render('pages/other-user', {user: req.session.user, userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
     }
     else{
       res.status(404).send("User " + req.params.uid + " does not exist.");
@@ -410,39 +410,42 @@ app.get("/movies/search/", function (req, res, next){
 app.get("/movies/:mid", function(req, res, next){
   let result = model.getMovie(req.params.mid);
   if(!result) {
+    console.log(result);
     res.status(404).send("Movie does not exist.");
   }
-  let actorList = [];
-  let writerList = [];
-  let directorList = [];
-  for (actorID of result.actors){
-    if (!actorList.includes(model.getPerson(actorID))){
-      actorList.push(model.getPerson(actorID));
-    }
-  }
-  for (writerID of result.writers){
-    if (!writerList.includes(model.getPerson(writerID))){
-      writerList.push(model.getPerson(writerID));
-    }
-  }
-  for (directorID of result.director){
-    if (!directorList.includes(model.getPerson(directorID))){
-      directorList.push(model.getPerson(directorID));
-    }
-  }
-  let movieReviewList = [];
-  if(result.reviews) {
-    for (reviewID of result.reviews){
-      if(!movieReviewList.includes(model.getReview(reviewID))){
-        movieReviewList.push(model.getReview(reviewID));
+    else{
+    let actorList = [];
+    let writerList = [];
+    let directorList = [];
+    for (actorID of result.actors){
+      if (!actorList.includes(model.getPerson(actorID))){
+        actorList.push(model.getPerson(actorID));
       }
     }
-  }
+    for (writerID of result.writers){
+      if (!writerList.includes(model.getPerson(writerID))){
+        writerList.push(model.getPerson(writerID));
+      }
+    }
+    for (directorID of result.director){
+      if (!directorList.includes(model.getPerson(directorID))){
+        directorList.push(model.getPerson(directorID));
+      }
+    }
+    let movieReviewList = [];
+    if(result.reviews) {
+      for (reviewID of result.reviews){
+        if(!movieReviewList.includes(model.getReview(reviewID))){
+          movieReviewList.push(model.getReview(reviewID));
+        }
+      }
+    }
 
-  if(result){
-    res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
-    res.status(200);
-  }
+    if(result){
+      res.render('pages/movie', {user: req.session.user, movie: result, similarMovies: model.similarMovies(req.params.mid), actorList: actorList, writerList: writerList, directorList: directorList, reviewList: movieReviewList});
+      res.status(200);
+    }
+}
 });
 
 app.post("/movies", function(req, res, next){

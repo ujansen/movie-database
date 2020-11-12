@@ -17,9 +17,9 @@ body
         h5 #{review.title}
         hr(style='border-width: 2px;')
         //-p by
-        a(href="http://localhost:3000/users/"+reviewUser.id) #{review.userID}
+        a(href="/users/"+reviewUser.id) #{review.userID}
         br
         p Rating: #{review.rating}
         p #{review.content}
         br
-        a(href="http://localhost:3000/movies/"+review.movieID) Go to movie
+        a(href="/movies/"+review.movieID) Go to movie

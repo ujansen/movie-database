@@ -14,7 +14,7 @@ let movieID = urlArray[urlArray.length -1];
 function submitBasicRequest() {
   ///movies/:mid/basicReview/:rating
   let req = new XMLHttpRequest();
-  req.open("POST", "http://localhost:3000/movies/" + movieID + "/basicReview/" + basicRating.value.toString());
+  req.open("POST", "/movies/" + movieID + "/basicReview/" + basicRating.value.toString());
 
   req.onreadystatechange = function () {
     if(req.readyState === 4 && req.status === 200) {
@@ -33,7 +33,7 @@ function submitFullRequest() {
     "rating": fullRating.value.toString()
   }
   let req = new XMLHttpRequest();
-  req.open("POST", "http://localhost:3000/movies/" + movieID + "/fullReview");
+  req.open("POST", "/movies/" + movieID + "/fullReview");
 
   req.onreadystatechange = function () {
     if(req.readyState === 4 && req.status === 200) {

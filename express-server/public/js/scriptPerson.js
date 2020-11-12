@@ -11,7 +11,7 @@ else {
 
 function postFollowReq() {
     let req = new XMLHttpRequest();
-    req.open("POST", "http://localhost:3000/people/"+personID+"/follow");
+    req.open("POST", "/people/"+personID+"/follow");
     req.onreadystatechange = function(){
       if (req.readyState === 4 && req.status === 200){
         window.location.href = req.responseText;
@@ -23,7 +23,7 @@ function postFollowReq() {
 
 function postUnfollowReq() {
     let req = new XMLHttpRequest();
-    req.open("POST", "http://localhost:3000/people/"+personID+"/unfollow");
+    req.open("POST", "/people/"+personID+"/unfollow");
     req.onreadystatechange = function(){
       if (req.readyState === 4 && req.status === 200){
         window.location.href = req.responseText;

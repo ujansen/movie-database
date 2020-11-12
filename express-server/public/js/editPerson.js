@@ -18,7 +18,7 @@ function editPerson() {
     }
 
     let req = new XMLHttpRequest();
-    req.open("PUT", "http://localhost:3000/people/"+id);
+    req.open("PUT", "/people/"+id);
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.onreadystatechange = function(){
       if(req.readyState == 4 && req.status == 200){
@@ -31,7 +31,7 @@ function editPerson() {
 function deletePerson() {
     let id = document.getElementById("id").textContent.toString();
     let req = new XMLHttpRequest();
-    req.open("DELETE", "http://localhost:3000/people/"+id);
+    req.open("DELETE", "/people/"+id);
     req.onreadystatechange = function(){
       if (req.status === 200){
         window.location.href = req.responseText;

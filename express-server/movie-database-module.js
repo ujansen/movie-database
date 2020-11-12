@@ -689,6 +689,9 @@ function editMovie(requesting, movieObject) {
     let oldActors = movies[movieObject.id].actors; // stores current actors
     let oldWriters = movies[movieObject.id].writers; // stores current writers
     let oldDirectors = movies[movieObject.id].director; // stores current director
+    movieObject.reviews = movies[movieObject.id].reviews;
+    movieObject.averageRating = movies[movieObject.id].averageRating;
+    movieObject.noOfRatings = movies[movieObject.id].noOfRatings;
     if (movieObject.actors !== ""){
       let movieObjectActors = movieObject.actors.trim().split(",");
       let movieActorsList = [];
@@ -1152,7 +1155,8 @@ function addPerson(requesting, personObject) {
 
     //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
-
+    personObject.followers = [];
+    personObject.collaborators = [];
     people[personObject.id] = personObject;
     nextPersonID++;
     return personObject.id;  // if addition is successful

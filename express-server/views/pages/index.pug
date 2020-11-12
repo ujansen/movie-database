@@ -23,7 +23,7 @@ body
                 each movie in resultUpcoming
                     div(class="col-xs-4 cp-1")
                         div(class="card card-block")
-                            a(href="http://localhost:3000/movies/"+movie.id)
+                            a(href="/movies/"+movie.id)
                                 //- link = "localhost .... /movie/#{movie.id}"
                                 img(src=movie.poster class = "slider-img")
         if !(resultYourList == undefined || resultYourList.length == 0)
@@ -36,7 +36,7 @@ body
                     each movie in resultYourList
                         div(class="col-xs-4 cp-1")
                             div(class="card card-block")
-                                a(href="http://localhost:3000/movies/"+movie.id)
+                                a(href="/movies/"+movie.id)
                                     img(src=movie.poster class = "slider-img")
         br
         br
@@ -46,5 +46,5 @@ body
                 each movie in resultFanPicks
                     div(class="col-xs-4 cp-1")
                         div(class="card card-block")
-                            a(href="http://localhost:3000/movies/"+movie.id)
+                            a(href="/movies/"+movie.id)
                                 img(src=movie.poster class = "slider-img")
