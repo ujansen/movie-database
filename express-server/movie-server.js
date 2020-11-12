@@ -338,6 +338,12 @@ app.get("/users/:uid/recommended", function(req, res, next){
   }
 });
 
+app.get("/searchIMDB", function(req, res, next){
+  let result = undefined;
+  res.render("pages/imdb-result", {movie:result});
+  res.status(200);
+})
+
 app.get("/searchIMDB/:sid", async function(req, res, next){
   let searchTerms = [];
   let searchTerm = req.params.sid;
@@ -350,7 +356,8 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
   }
   let result = await model.searchIMDB(searchTerm);
   if (result){
-    res.status(200).send("/searchIMDB" + searchTerm);
+    res.status(200).send("/searchIMDB/" + searchTerm);
+    res.render("pages/imdb-result", {movie:result});
   }
   else{
     res.status(500).send("Server could not access specified movie.");
