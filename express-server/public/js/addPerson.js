@@ -5,12 +5,22 @@ let image = document.getElementById("image");
 
 let button = document.getElementById("addPerson");
 button.addEventListener("click", addPerson);
+button.disabled = true;
+
+name.addEventListener("keyup", enableButton);
+movies.addEventListener("keyup", enableButton);
+
+function enableButton() {
+    if(name.value.toString() && movies.value.toString()) {
+        button.disabled = false;
+    }
+}
 
 function addPerson() {
-    let name = document.getElementById("name").value.toString();
-    let about = document.getElementById("about").value.toString();
-    let movies = document.getElementById("movies").value.toString();
-    let image = document.getElementById("image").value.toString();
+    name = document.getElementById("name").value.toString();
+    about = document.getElementById("about").value.toString();
+    movies = document.getElementById("movies").value.toString();
+    image = document.getElementById("image").value.toString();
 
     let personObj = {
         name: name,

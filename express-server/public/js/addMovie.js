@@ -1,29 +1,53 @@
+let movieTitle = document.getElementById("movieTitle");
+let runtime = document.getElementById("runtime");
+let movieYear = document.getElementById("movieYear");
+let genreList = document.getElementById("genreList");
+let plot = document.getElementById("plot");
+let poster = document.getElementById("poster");
+let trailer = document.getElementById("trailer");
+let actorList = document.getElementById("actorList");
+let directorList = document.getElementById("directorList");
+let writerList = document.getElementById("writerList");
+
 let button = document.getElementById("addMovie");
 button.addEventListener("click", addMovie);
+button.disabled = true;
+
+movieTitle.addEventListener("keyup", enableButton);
+genreList.addEventListener("keyup", enableButton);
+actorList.addEventListener("keyup", enableButton);
+directorList.addEventListener("keyup", enableButton);
+writerList.addEventListener("keyup", enableButton);
+
+function enableButton() {
+    if (movieTitle.value.toString() && genreList.value.toString() && actorList.value.toString() && directorList.value.toString() && writerList.value.toString()) {
+        button.disabled = false;
+    }
+}
 
 function addMovie() {
-    let movieTitle = document.getElementById("movieTitle").value.toString();
-    let runtime = document.getElementById("runtime").value.toString();
-    let movieYear = document.getElementById("movieYear").value.toString();
-    let genreList = document.getElementById("genreList").value.toString();
-    let plot = document.getElementById("plot").value.toString();
-    let poster = document.getElementById("poster").value.toString();
-    let trailer = document.getElementById("trailer").value.toString();
-    let actorList = document.getElementById("actorList").value.toString();
-    let directorList = document.getElementById("directorList").value.toString();
-    let writerList = document.getElementById("writerList").value.toString();
+    let movieTitleVal = movieTitle.value.toString();
+    let runtimeVal = runtime.value.toString();
+    let movieYearVal = movieYear.value.toString();
+    let genreListVal = genreList.value.toString();
+    let plotVal = plot.value.toString();
+    let posterVal = poster.value.toString();
+    let trailerVal = trailer.value.toString();
+    let actorListVal = actorList.value.toString();
+    let directorListVal = directorList.value.toString();
+    let writerListVal = writerList.value.toString();
 
     let movieObj = {
-        title: movieTitle,
-        runtime: runtime,
-        releaseYear: movieYear,
-        genre: genreList,
-        plot: plot,
-        poster: poster,
-        trailer: trailer,
-        actors: actorList,
-        director: directorList,
-        writers: writerList
+        title: movieTitleVal,
+        runtime: runtimeVal,
+        releaseYear: movieYearVal,
+        genre: genreListVal,
+        plot: plotVal,
+        poster: posterVal,
+        trailer: trailerVal,
+        actors: actorListVal,
+        director: directorListVal,
+        writers: writerListVal
     }
     
     let req = new XMLHttpRequest();
