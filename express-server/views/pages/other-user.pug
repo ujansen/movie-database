@@ -70,7 +70,5 @@ main(style='background-color: #243742;')
   hr(style='border-width: 2px;')
   a(href="/users/" + requestedUser.id + "/people")
     button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{requestedUser.username} follows
-  a(href="/users/" + requestedUser.id + "/recommended")
-    button.btn.btn-outline-primary.ml-3(type='submit') #{requestedUser.username}'s recommended movies
   //- body ends
 script(src='/js/scriptOtherUser.js')

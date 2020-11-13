@@ -9,7 +9,7 @@
       "followers": ["user1", "user3"],
       "followingUsers":  ["user1", "user2"],
       "followingPeople": ["0"],
-      "reviews": ["0"],
+      "reviews": ["0", "4", "8"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -23,7 +23,7 @@
       "followers": ["user0", "user2", "user3"],
       "followingUsers":  ["user0", "user2", "user3"],
       "followingPeople": ["1", "2"],
-      "reviews": ["1", "2"],
+      "reviews": ["1", "5", "9"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -37,7 +37,7 @@
       "followers": ["user0", "user1", "user3"],
       "followingUsers":  ["user3", "user1"],
       "followingPeople": ["1", "4"],
-      "reviews": ["4", "1"],
+      "reviews": ["2", "6", "10"],
       "recommendedMovies": [],
       "contributedMovies": []
     },
@@ -51,7 +51,7 @@
       "followers": ["user1", "user2"],
       "followingUsers":  ["user0", "user1", "user2"],
       "followingPeople": ["1", "4"],
-      "reviews": ["3", "2"],
+      "reviews": ["3", "7", "11"],
       "recommendedMovies": [],
       "contributedMovies": []
     }
