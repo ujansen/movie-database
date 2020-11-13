@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 const model = require("./movie-database-module.js");
-let requestingUser = "";
 
 const session = require('express-session');
 app.use(session({ secret: 'some secret here', resave: true, saveUninitialized: true, cookie: { maxAge: 24 * 60 * 60 * 1000}}));
@@ -22,9 +21,15 @@ app.use("/", function(req, res, next){
 
 // tested
 app.get("/", function(req, res, next){
-  let resultUpcoming = model.upcoming(requestingUser);
-  let resultFanPicks = model.fanPicks(requestingUser);
-  let resultYourList = model.yourList(requestingUser);
+  let resultUpcoming = model.upcoming();
+  let resultFanPicks = model.fanPicks();
+  let resultYourList = [];
+  if (req.session.user){
+    resultYourList = model.yourList(req.session.user.username);
+  }
+  else{
+    resultYourList = [];
+  }
   if (resultUpcoming && resultFanPicks){
     res.render('pages/index', {user: req.session.user, resultUpcoming: resultUpcoming, resultYourList: resultYourList, resultFanPicks: resultFanPicks});
     res.status(200);
@@ -58,8 +63,6 @@ app.get("/register", function(req, res, next){
 app.post("/login", function(req, res, next){
   if (model.login(req.body)){
     req.session.user = model.users[req.body.username];
-    req.session.username = req.session.user.username;
-    requestingUser = req.session.user.username;
     res.status(302);
     res.redirect("/users/" + req.session.user.id);
   }
@@ -75,8 +78,6 @@ app.get("/logout", function(req, res, next){
   }
   else{
     req.session.user = null;
-    req.session.username = "";
-    requestingUser = "";
     res.redirect("/");
   }
 });
@@ -117,8 +118,6 @@ app.post("/users", function(req, res, next){
   let result = model.registerUser(req.body);
   if(result){
     req.session.user = result;
-    req.session.username = req.session.user.username;
-    requestingUser = req.session.user.username;
     res.status(200);
     res.redirect("/users/" + req.session.user.id);
   }
@@ -143,7 +142,7 @@ app.put("/users/:uid", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== requestingUser){
+    if (("user" + req.params.uid) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
@@ -169,7 +168,7 @@ app.post("/users/:uid/toggle", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== requestingUser){
+    if (("user" + req.params.uid) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
@@ -195,7 +194,7 @@ app.get("/users/:uid", function(req, res, next){
   else
   {
     let result = model.getUser("user" + req.params.uid);
-    let resultReviews = model.viewReviewsOtherUser(requestingUser, "user" + req.params.uid);
+    let resultReviews = model.viewReviewsOtherUser(req.session.user.username, "user" + req.params.uid);
     console.log(resultReviews);
     let reviewedMovies = [];
     if (resultReviews && resultReviews.length > 0){
@@ -228,7 +227,7 @@ app.get("/users/:uid/followers", function(req, res, next){
   else
   {
     if (model.getUser("user" + req.params.uid)){
-      let result = model.viewFollowersOtherUser(requestingUser, "user" + req.params.uid);
+      let result = model.viewFollowersOtherUser(req.session.user.username, "user" + req.params.uid);
       if (result){
         res.render("pages/followers", {user: req.session.user, followerList: result});
         res.status(200);
@@ -250,7 +249,7 @@ app.get("/users/:uid/following", function(req, res, next){
   else
   {
     if (model.getUser("user" + req.params.uid)){
-      let result = model.viewFollowingOtherUser(requestingUser, "user" + req.params.uid);
+      let result = model.viewFollowingOtherUser(req.session.user.username, "user" + req.params.uid);
       if (result){
         res.render("pages/following", {user: req.session.user, followingList: result});
         res.status(200);
@@ -272,7 +271,7 @@ app.get("/users/:uid/people", function(req, res, next){
   else
   {
     if (model.getUser("user" + req.params.uid)){
-      let result = model.viewPeopleOtherUser(requestingUser, "user" + req.params.uid);
+      let result = model.viewPeopleOtherUser(req.session.user.username, "user" + req.params.uid);
       if (result){
         res.render("pages/following-people", {user: req.session.user, peopleList: result});
         res.status(200)
@@ -296,7 +295,7 @@ app.post("/users/:uid/follow", function(req, res, next){
     if (req.session.user.id === req.params.uid){
       res.status(404).send("You can't follow yourself.");
     }
-    let result = model.followUser(requestingUser, "user" + req.params.uid);
+    let result = model.followUser(req.session.user.username, "user" + req.params.uid);
     if(result){
       res.status(200);
       res.send("/users/"+req.params.uid);
