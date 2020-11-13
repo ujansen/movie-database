@@ -715,7 +715,7 @@ app.get("/reviews/:rid", function(req, res, next){
 
 app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
   if (!req.session.user){
-    res.redirect("/login");
+    res.send("/login");
   }
   else{
     let result = model.addBasicReview(req.session.user.username, req.params.mid, req.params.rating);
@@ -731,7 +731,7 @@ app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
 
 app.post("/movies/:mid/fullReview", function(req, res, next){
   if (!req.session.user){
-    res.redirect("/login");
+    res.send("/login");
   }
   else{
     if (req.params.mid === req.body.movieID){
