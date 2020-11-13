@@ -50,17 +50,19 @@ main(style='background-color: #243742;')
     //- image slider starts
     .row.flex-nowrap.ml-1.mr-1
       each movie in likedMovies
-        .col-xs-4.cp-1.bg-secondary
+        if(movie)
+          .col-xs-4.cp-1.bg-secondary
             .card.card-block
               a(href='/movies/'+movie.id)
-                  img.slider-img(src=movie.poster)
+                img.slider-img(src=movie.poster)
   //- image slider ends
   .container.reviews.mt-4
     h5 Reviews
     ul.list-group
       each review in reviewList
-        a(href="/reviews/"+review.id)
-          li.list-group-item
+        if(review)
+          a(href="/reviews/"+review.id)
+            li.list-group-item
               b #{review.title}
               br
               p #{review.content}

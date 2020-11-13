@@ -21,13 +21,17 @@ body
                 label.ml-2 Enter Name:
                 textarea#personName.ml-2.mr-2(name='personName' type='text' rows='1' cols='25')
                 button#submitSearch.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search in Database
+            br
+            .d-flex.flex-row.justify-content-center
+                a(href="./addPerson")
+                    button#addPerson.btn.btn-outline-primary.ml-3(type='submit') Add Person to Database
 
         hr(style='border-width: 2px;')
         #searchResults.container.mt-4
             h5 Search Results:
             ul.list-group
                 each person in personObjects
-                    a(href="http://localhost:3000/people/"+person.id)
+                    a(href="./people/"+person.id)
                         li.list-group-item
                             .row.flex-wrap.mb-4
                                 if(person.image)

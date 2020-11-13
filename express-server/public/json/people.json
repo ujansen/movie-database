@@ -3,7 +3,7 @@
         "id": "0",
         "name": "Martin Freeman",
         "about": "",
-        "followers": ["user1", "user2", "user3", "user4"],
+        "followers": ["user0"],
         "collaborators": ["1", "2"],
         "movies": ["1", "2", "4"]
       },
@@ -65,7 +65,7 @@
         "id": "7",
         "name": "Woody Allen",
         "about": "",
-        "followers": ["user1", "user2", "user3", "user4"],
+        "followers": ["user1", "user2", "user3"],
         "collaborators": [],
         "movies": ["1", "2", "3", "4"]
       },
@@ -74,7 +74,7 @@
         "id": "8",
         "name": "Ethan Coen",
         "about": "",
-        "followers": ["user1", "user2", "user4"],
+        "followers": ["user1", "user2"],
         "collaborators": [],
         "movies": ["0", "3", "4"]
       }

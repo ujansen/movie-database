@@ -46,21 +46,23 @@ body
             //- image slider starts
             .row.flex-nowrap.ml-1.mr-1
                 each movie in likedMovies
-                    .col-xs-4.cp-1.bg-secondary
-                        .card.card-block
-                            a(href="/movies/"+movie.id)
-                                img.slider-img(src=movie.poster)
+                    if(movie)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
+                                a(href="/movies/"+movie.id)
+                                    img.slider-img(src=movie.poster)
         //- image slider ends
         .container.reviews.mt-4
             h5 Reviews
             ul.list-group
                 //- let counter = 0;
                 each review in resultReviews
-                    a(href="/reviews/"+review.id)
-                        li.list-group-item
-                            b #{review.title}
-                            br
-                            p #{review.content}
+                    if(review)
+                        a(href="/reviews/"+review.id)
+                            li.list-group-item
+                                b #{review.title}
+                                br
+                                p #{review.content}
                     //- counter++;
                     //- if(counter > 5) break
                 //-a(href="/user/"+user.id+"/reviews") See all reviews

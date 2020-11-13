@@ -1,15 +1,35 @@
 let basicRating = document.getElementById("basicRating");
 let submitBasic = document.getElementById("basicReview")
 submitBasic.addEventListener("click", submitBasicRequest);
+submitBasic.disabled = true;
+
+basicRating.addEventListener("keyup", enableBasicButton);
 
 let fullRating = document.getElementById("fullRating");
 let fullTitle = document.getElementById("movieReviewTitle");
 let fullContent = document.getElementById("movieReview");
 let submitFull = document.getElementById("submitReview");
 submitFull.addEventListener("click", submitFullRequest);
+submitFull.disabled = true;
+
+fullRating.addEventListener("keyup", enableFullButton);
+fullTitle.addEventListener("keyup", enableFullButton);
+fullContent.addEventListener("keyup", enableFullButton);
 
 let urlArray = window.location.href.split("/");
 let movieID = urlArray[urlArray.length -1];
+
+function enableBasicButton() {
+  if (basicRating.value.toString()) {
+      submitBasic.disabled = false;
+  }
+}
+
+function enableFullButton() {
+  if (fullRating.value.toString() && fullTitle.value.toString() && fullContent.value.toString()) {
+      submitFull.disabled = false;
+  }
+}
 
 function submitBasicRequest() {
   ///movies/:mid/basicReview/:rating

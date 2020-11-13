@@ -21,10 +21,9 @@ body
             h3 New and Upcoming
             #upcoming.row.flex-nowrap
                 each movie in resultUpcoming
-                    div(class="col-xs-4 cp-1")
-                        div(class="card card-block")
-                            a(href="/movies/"+movie.id)
-                                //- link = "localhost .... /movie/#{movie.id}"
+                    a(href="/movies/"+movie.id)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
                                 img(src=movie.poster class = "slider-img")
         if !(resultYourList == undefined || resultYourList.length == 0)
             //- resultYourList === []
@@ -34,9 +33,9 @@ body
                 h3 Your List
                 #your_list.row.flex-nowrap
                     each movie in resultYourList
-                        div(class="col-xs-4 cp-1")
-                            div(class="card card-block")
-                                a(href="/movies/"+movie.id)
+                        a(href="/movies/"+movie.id)
+                            .col-xs-4.cp-1.bg-secondary
+                                .card.card-block
                                     img(src=movie.poster class = "slider-img")
         br
         br
@@ -44,7 +43,7 @@ body
             h3 Fan Picks
             #your_list.row.flex-nowrap
                 each movie in resultFanPicks
-                    div(class="col-xs-4 cp-1")
-                        div(class="card card-block")
-                            a(href="/movies/"+movie.id)
+                    a(href="/movies/"+movie.id)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
                                 img(src=movie.poster class = "slider-img")

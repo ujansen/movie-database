@@ -1,15 +1,31 @@
+let id = document.getElementById("id").textContent.toString();
+let name = document.getElementById("name");
+let about = document.getElementById("about");
+let movies = document.getElementById("movies");
+let image = document.getElementById("image");
+
 let editButton = document.getElementById("editPerson");
 editButton.addEventListener("click", editPerson);
+editButton.disabled = true;
+
 let deleteButton = document.getElementById("deletePerson");
 deleteButton.addEventListener("click", deletePerson);
 
+name.addEventListener("keyup", enableButton);
+movies.addEventListener("keyup", enableButton);
+
+function enableButton() {
+    if(name.value.toString() && movies.value.toString()) {
+        editButton.disabled = false;
+    }
+}
+
 function editPerson() {
-    let id = document.getElementById("id").textContent.toString();
-    let name = document.getElementById("name").value.toString();
-    let about = document.getElementById("about").value.toString();
-    let movies = document.getElementById("movies").value.toString();
-    let image = document.getElementById("image").value.toString();
-    let personObj = {
+    name = document.getElementById("name").value.toString();
+    about = document.getElementById("about").value.toString();
+    movies = document.getElementById("movies").value.toString();
+    image = document.getElementById("image").value.toString();
+    personObj = {
         id: id,
         name: name,
         about: about,
@@ -33,7 +49,7 @@ function deletePerson() {
     let req = new XMLHttpRequest();
     req.open("DELETE", "/people/"+id);
     req.onreadystatechange = function(){
-      if (req.status === 200){
+      if (req.readyState == 4 && req.status === 200){
         window.location.href = req.responseText;
       }
     }

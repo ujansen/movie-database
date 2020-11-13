@@ -16,6 +16,6 @@ body
         h5 People #{user.id} Follows
         br
         ul.list-group
-        each person in peopleList
-            a(href="/people/"+person.id)
-                li.list-group-item #{person.name}
+            each person in peopleList
+                a(href="/people/"+person.id)
+                    li.list-group-item #{person.name}

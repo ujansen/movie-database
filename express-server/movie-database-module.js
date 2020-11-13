@@ -871,7 +871,9 @@ function removeMovie(requesting, movieID) {
     let reviewList = movies[movieID].reviews;
     if (reviewList && reviewList.length > 0){
       for (reviewID of reviewList){ // removes reviews associated with movie and removes reviews from users
-        users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+        if(reviews[reviewID]) {
+          users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+        }
         delete reviews[reviewID]; // remove the key reviewID from reviews list
       }
     }
@@ -977,7 +979,9 @@ function yourList(requesting){
   let reviewList = users[requesting].reviews;
   if (reviewList.length > 0){
     for (reviewID of reviewList){
-      moviesList.push(movies[reviews[reviewID].movieID]);
+      if(reviews[reviewID]) {
+        moviesList.push(movies[reviews[reviewID].movieID]);
+      }
     }
   }
   return moviesList;
