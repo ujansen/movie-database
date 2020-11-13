@@ -1018,8 +1018,8 @@ function addFullReview(requestingUser, reviewObject){
 
 // tested
 // add a basic review by only specifying a score out of 10
-function addBasicReview(requestingUser, movieID, rating){
-  if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
+function addBasicReview(movieID, rating){
+  if (!movies.hasOwnProperty(movieID)){
     return false; // could not add review
   }
   updateMovieRating(movieID, rating); // movie rating is updated
