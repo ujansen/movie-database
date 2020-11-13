@@ -17,6 +17,17 @@ body{
   color: #ffffff;
 }
 
+textarea {
+  background-color: #141e24;
+  color: #ffffff;
+  resize: none;
+}
+
+input {
+  background-color: #141e24;
+  color: #ffffff;
+}
+
 .block{
   padding-top: 30px !important;
   padding-left: 150px;

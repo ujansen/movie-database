@@ -714,11 +714,7 @@ app.get("/reviews/:rid", function(req, res, next){
 });
 
 app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
-  if (!req.session.user){
-    res.redirect("/login");
-  }
-  else{
-    let result = model.addBasicReview(req.session.user.username, req.params.mid, req.params.rating);
+    let result = model.addBasicReview(req.params.mid, req.params.rating);
     if (result){
       res.status(200).send("/movies/"+req.params.mid);
       // window location href in client side js
@@ -726,12 +722,11 @@ app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
     else{
       res.status(404).send("Movie does not exist.");
     }
-  }
 });
 
 app.post("/movies/:mid/fullReview", function(req, res, next){
   if (!req.session.user){
-    res.redirect("/login");
+    res.send("/login");
   }
   else{
     if (req.params.mid === req.body.movieID){

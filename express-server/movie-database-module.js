@@ -871,7 +871,9 @@ function removeMovie(requesting, movieID) {
     let reviewList = movies[movieID].reviews;
     if (reviewList && reviewList.length > 0){
       for (reviewID of reviewList){ // removes reviews associated with movie and removes reviews from users
-        users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+        if(reviews[reviewID]) {
+          users[reviews[reviewID].userID].reviews = users[reviews[reviewID].userID].reviews.filter(review => review !== reviewID);
+        }
         delete reviews[reviewID]; // remove the key reviewID from reviews list
       }
     }
@@ -977,7 +979,9 @@ function yourList(requesting){
   let reviewList = users[requesting].reviews;
   if (reviewList.length > 0){
     for (reviewID of reviewList){
-      moviesList.push(movies[reviews[reviewID].movieID]);
+      if(reviews[reviewID] && !moviesList.includes(movies[reviews[reviewID].movieID])) {
+        moviesList.push(movies[reviews[reviewID].movieID]);
+      }
     }
   }
   return moviesList;
@@ -1014,8 +1018,8 @@ function addFullReview(requestingUser, reviewObject){
 
 // tested
 // add a basic review by only specifying a score out of 10
-function addBasicReview(requestingUser, movieID, rating){
-  if (!users.hasOwnProperty(requestingUser) || !movies.hasOwnProperty(movieID)){
+function addBasicReview(movieID, rating){
+  if (!movies.hasOwnProperty(movieID)){
     return false; // could not add review
   }
   updateMovieRating(movieID, rating); // movie rating is updated
@@ -1048,7 +1052,7 @@ function followPerson(requesting, requested){   // requesting user follows reque
   let requestingUser = users[requesting];
   let requestingID = requestingUser.id;
   let requestedPerson = people[requested];
-
+  console.log(requestedPerson);
   if(!requestingUser.followingPeople.includes(requested) && !requestedPerson.followers.includes(requestingID)) {
     requestingUser.followingPeople.push(requested);
     requestedPerson.followers.push(requesting);
@@ -1187,9 +1191,14 @@ function editPerson(requesting, personObject) {
         }
         for (movieID in movies){
           if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase()){
+            if (!personMovies.includes(movies[movieID].id)){
+              movies[movieID].actors = movies[movieID].actors.filter(personID => personID !== personObject.id);
+              movies[movieID].director = movies[movieID].director.filter(personID => personID !== personObject.id);
+              movies[movieID].writers = movies[movieID].writers.filter(personID => personID !== personObject.id);
+            }
             personMovies.push(movies[movieID].id);
             if (movieRole === "actor"){
-              movies[movieID].actors = movies[movieID].actors.filter(personID => personID !== personObject.id);
+
               if (movies[movieID].actors.includes("N/A") || movies[movieID].actors.length == 0){
                 movies[movieID].actors = [];
               }
@@ -1198,7 +1207,7 @@ function editPerson(requesting, personObject) {
               }
             }
             else if (movieRole === "director"){
-              movies[movieID].director = movies[movieID].director.filter(personID => personID !== personObject.id);
+
               if (movies[movieID].director.includes("N/A") || movies[movieID].director.length == 0){
                 movies[movieID].director = [];
               }
@@ -1207,7 +1216,7 @@ function editPerson(requesting, personObject) {
               }
             }
             else if (movieRole === "writer"){
-              movies[movieID].writers = movies[movieID].writers.filter(personID => personID !== personObject.id);
+
               if (movies[movieID].writers.includes("N/A") || movies[movieID].writers.length == 0){
                 movies[movieID].writers = [];
               }
@@ -1230,6 +1239,8 @@ function editPerson(requesting, personObject) {
     else{
       personObject.movies = ["N/A"];
     }
+    personObject.followers = people[personObject.id].followers;
+    personObject.collaborators = people[personObject.id].collaborators;
     people[personObject.id] = personObject;
     let uniqueMovies = oldMovies.filter(function(movieID) { return people[personObject.id].movies.indexOf(movieID) == -1; });
     for (movieID of uniqueMovies){

@@ -16,6 +16,6 @@ body
         h5 Users that #{user.username} Follows
         br
         ul.list-group
-        each following in followingList
-            a(href="/users/"+following.id)
-                li.list-group-item #{following.username}
+            each following in followingList
+                a(href="/users/"+following.id)
+                    li.list-group-item #{following.username}

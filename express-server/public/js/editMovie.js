@@ -1,7 +1,31 @@
+let movieTitle = document.getElementById("movieTitle");
+let runtime = document.getElementById("runtime");
+let movieYear = document.getElementById("movieYear");
+let genreList = document.getElementById("genreList");
+let plot = document.getElementById("plot");
+let poster = document.getElementById("poster");
+let trailer = document.getElementById("trailer");
+let actorList = document.getElementById("actorList");
+let directorList = document.getElementById("directorList");
+let writerList = document.getElementById("writerList");
+
 let editButton = document.getElementById("editMovie");
 editButton.addEventListener("click", editMovie);
+editButton.disabled = true;
 let deleteButton = document.getElementById("deleteMovie");
 deleteButton.addEventListener("click", deleteMovie);
+
+movieTitle.addEventListener("keyup", enableButton);
+genreList.addEventListener("keyup", enableButton);
+actorList.addEventListener("keyup", enableButton);
+directorList.addEventListener("keyup", enableButton);
+writerList.addEventListener("keyup", enableButton);
+
+function enableButton() {
+  if (movieTitle.value.toString() && genreList.value.toString() && actorList.value.toString() && directorList.value.toString() && writerList.value.toString()) {
+      editButton.disabled = false;
+  }
+}
 
 function editMovie() {
     let id = document.getElementById("id").textContent.toString();

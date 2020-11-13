@@ -16,6 +16,6 @@ body
         h5 #{user.username}'s Followers
         br
         ul.list-group
-        each follower in followerList
-            a(href="/users/"+follower.id)
-                li.list-group-item #{follower.username}
+            each follower in followerList
+                a(href="/users/"+follower.id)
+                    li.list-group-item #{follower.username}

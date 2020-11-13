@@ -21,6 +21,7 @@ function editUser() {
           "username": username,
           "about": about,
           "profilePic": profilePic,
+          "oldPassword": oldPassword,
           "password": oldPassword
         }
         sendRequest(userObj);
