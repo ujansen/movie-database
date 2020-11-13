@@ -230,7 +230,7 @@ app.get("/users/:uid/followers", function(req, res, next){
     if (model.getUser("user" + req.params.uid)){
       let result = model.viewFollowersOtherUser(requestingUser, "user" + req.params.uid);
       if (result){
-        res.render("pages/followers", {user: model.getUser("user" + req.params.uid), followerList: result});
+        res.render("pages/followers", {user: req.session.user, followerList: result});
         res.status(200);
       }
       else{
@@ -252,7 +252,7 @@ app.get("/users/:uid/following", function(req, res, next){
     if (model.getUser("user" + req.params.uid)){
       let result = model.viewFollowingOtherUser(requestingUser, "user" + req.params.uid);
       if (result){
-        res.render("pages/following", {user: model.getUser("user" + req.params.uid), followingList: result});
+        res.render("pages/following", {user: req.session.user, followingList: result});
         res.status(200);
       }
       else{
@@ -274,7 +274,7 @@ app.get("/users/:uid/people", function(req, res, next){
     if (model.getUser("user" + req.params.uid)){
       let result = model.viewPeopleOtherUser(requestingUser, "user" + req.params.uid);
       if (result){
-        res.render("pages/following-people", {user: model.getUser("user" + req.params.uid), peopleList: result});
+        res.render("pages/following-people", {user: req.session.user, peopleList: result});
         res.status(200)
       }
       else{
@@ -706,7 +706,7 @@ app.get("/reviews/:rid", function(req, res, next){
   let result = model.getReview(req.params.rid);
   if (result){
     res.status(200); //.send(JSON.stringify(result));
-    res.render('pages/review', {review: result, reviewUser: model.getUser(result.userID)});
+    res.render('pages/review', {user: req.session.user, review: result, reviewUser: model.getUser(result.userID)});
   }
   else{
     res.status(404).send("Review does not exist.");
@@ -743,19 +743,6 @@ app.post("/movies/:mid/fullReview", function(req, res, next){
     }
   }
 });
-
-// testing method
-app.get("/test", function(req, res, next){
-  if (!req.query.name){
-    req.query.name = "";
-  }
-  else{
-    //let result = model.searchPerson(req.query.name);
-    res.status(200); //.send("OK: " + JSON.stringify(result));
-    res.render('pages/imdb-result', {movie: model.getMovie("1")});
-  }
-});
-
 
 app.listen(3000);
 console.log("Server listening at http://localhost:3000");
