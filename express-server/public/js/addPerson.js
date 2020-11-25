@@ -36,6 +36,9 @@ function addPerson() {
         if(req.readyState === 4 && req.status === 200) {
             window.location.href = req.responseText;
         }
+        else if(req.readyState == 4 && req.status == 500) {
+            alert(req.responseText);
+        }
     };
     req.send(JSON.stringify(personObj));
 }

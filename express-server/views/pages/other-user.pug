@@ -31,9 +31,11 @@ main(style='background-color: #243742;')
     .col.ml-4.align-self-center
       h4#username #{requestedUser.username}
     .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="/users/"+requestedUser.id+"/followers") Followers
+      //- a(href="/users/"+requestedUser.id+"/followers") 
+      //- label#followerList Followers
+      a#followerList(href="") Followers
     .col-xs.ml-5.justify-content-end.align-self-center
-      a(href="/users/"+requestedUser.id+"/following") Following
+      a#followingList(href="") Following
     //- Follow button
     .col-xs.ml-5.justify-content-end.align-self-center
       if(userFollowsOtherUser)

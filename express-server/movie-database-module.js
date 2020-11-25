@@ -123,6 +123,15 @@ function getUser(requested){    // gets the user object when supplied with usern
   return null;
 }
 
+function getUserByID(requestedID) {
+  for(username in users) {
+    if(users[username].id === requestedID) {
+      return users[username];
+    }
+  }
+  return null;
+}
+
 function editUser(requesting, userObject) {
   if (!users.hasOwnProperty(requesting) && !(requesting === userObject.username)){
     return null;
@@ -1109,8 +1118,11 @@ function addPerson(requesting, personObject) {
         }
         let movieRole = "";
         let movieRoleString = movie.trim().split(" ")[movie.trim().split(" ").length - 1];
-        for (let i = 1; i < movieRoleString.length - 1; i++){
-          movieRole += movieRoleString[i];
+        movieRole = movieRoleString.substring(movieRoleString.indexOf('(') +1, movieRoleString.indexOf(')'));
+
+        movieRole = movieRole.trim().toLowerCase();
+        if(movieRole !== "actor" && movieRole !== "director" && movieRole !== "writer") {
+          continue;
         }
         for (movieID in movies){
           if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase()){
@@ -1186,8 +1198,11 @@ function editPerson(requesting, personObject) {
         }
         let movieRole = "";
         let movieRoleString = movie.trim().split(" ")[movie.trim().split(" ").length - 1];
-        for (let i = 1; i < movieRoleString.length - 1; i++){
-          movieRole += movieRoleString[i];
+        movieRole = movieRoleString.substring(movieRoleString.indexOf('(') +1, movieRoleString.indexOf(')'));
+
+        movieRole = movieRole.trim().toLowerCase();
+        if(movieRole !== "actor" && movieRole !== "director" && movieRole !== "writer") {
+          continue;
         }
         for (movieID in movies){
           if (movieName.trim().toLowerCase() === movies[movieID].title.toLowerCase()){
@@ -1375,6 +1390,7 @@ module.exports = {
   viewFollowersOtherUser,
   viewFollowingOtherUser,
   getUser,
+  getUserByID,
   editUser,
   viewRecommendedMovies,
   toggleContributing,

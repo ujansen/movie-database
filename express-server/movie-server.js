@@ -55,8 +55,10 @@ app.get("/register", function(req, res, next){
   if (req.session.user){
     res.status(401).send("You are already logged in.");
   }
-  res.render('pages/register');
-  res.status(200);
+  else {
+    res.render('pages/register');
+    res.status(200);
+  }
 });
 
 // tested
@@ -122,7 +124,7 @@ app.post("/users", function(req, res, next){
     res.redirect("/users/" + req.session.user.id);
   }
   else{
-    res.status(500).send("Failed to add user.");
+    res.status(500).send("Failed to add user: User already exists.");
   }
 });
 
@@ -142,7 +144,7 @@ app.put("/users/:uid", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== req.session.user.username){
+    if ((model.getUserByID(req.params.uid).username) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
@@ -168,11 +170,11 @@ app.post("/users/:uid/toggle", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== req.session.user.username){
+    if ((model.getUserByID(req.params.uid).username) !== req.session.user.username){
       res.status(403).send("Unauthorized");
     }
     else{
-      let result = model.toggleContributing("user" + req.params.uid);
+      let result = model.toggleContributing(model.getUserByID(req.params.uid).username);
       //console.log(req.session.user);
       if (result){
         res.status(200);
@@ -193,8 +195,8 @@ app.get("/users/:uid", function(req, res, next){
   }
   else
   {
-    let result = model.getUser("user" + req.params.uid);
-    let resultReviews = model.viewReviewsOtherUser(req.session.user.username, "user" + req.params.uid);
+    let result = model.getUserByID(req.params.uid);
+    let resultReviews = model.viewReviewsOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
     console.log(resultReviews);
     let reviewedMovies = [];
     if (resultReviews && resultReviews.length > 0){
@@ -220,20 +222,60 @@ app.get("/users/:uid", function(req, res, next){
   }
 });
 
+app.get("/users/:uid/getFollowers", function(req, res, next){
+  if (!req.session.user){
+    res.redirect("/login");
+  }
+  else
+  {
+    if (model.getUserByID(req.params.uid)){
+      let result = model.viewFollowersOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
+      if (result){
+        //res.render("pages/followers", {user: req.session.user, followerList: result});
+        res.status(200);
+        res.send(req.params.uid + "/followers");
+      }
+      else{
+        res.status(401).send("Cannot access followers of " + model.getUserByID(req.params.uid).username + " as you don't follow them.");
+      }
+    }
+    else{
+      res.status(404).send("User does not exist.");
+    }
+  }
+});
+
 app.get("/users/:uid/followers", function(req, res, next){
   if (!req.session.user){
     res.redirect("/login");
   }
   else
   {
-    if (model.getUser("user" + req.params.uid)){
-      let result = model.viewFollowersOtherUser(req.session.user.username, "user" + req.params.uid);
+    if (model.getUserByID(req.params.uid)){
+      let result = model.viewFollowersOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
       if (result){
         res.render("pages/followers", {user: req.session.user, followerList: result});
         res.status(200);
       }
+    }
+  }
+});
+
+app.get("/users/:uid/getFollowing", function(req, res, next){
+  if (!req.session.user){
+    res.redirect("/login");
+  }
+  else
+  {
+    if (model.getUserByID(req.params.uid)){
+      let result = model.viewFollowingOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
+      if (result){
+        //res.render("pages/following", {user: req.session.user, followingList: result});
+        res.status(200);
+        res.send(req.params.uid + "/following");
+      }
       else{
-        res.status(401).send("Cannot access followers of user" + req.params.uid + " as you don't follow them.");
+        res.status(401).send("Cannot access following of " + model.getUserByID(req.params.uid).username + " as you don't follow them.");
       }
     }
     else{
@@ -248,18 +290,12 @@ app.get("/users/:uid/following", function(req, res, next){
   }
   else
   {
-    if (model.getUser("user" + req.params.uid)){
-      let result = model.viewFollowingOtherUser(req.session.user.username, "user" + req.params.uid);
+    if (model.getUserByID(req.params.uid)){
+      let result = model.viewFollowingOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
       if (result){
         res.render("pages/following", {user: req.session.user, followingList: result});
         res.status(200);
       }
-      else{
-        res.status(401).send("Cannot access following of user" + req.params.uid + " as you don't follow them.");
-      }
-    }
-    else{
-      res.status(404).send("User does not exist.");
     }
   }
 });
@@ -270,8 +306,8 @@ app.get("/users/:uid/people", function(req, res, next){
   }
   else
   {
-    if (model.getUser("user" + req.params.uid)){
-      let result = model.viewPeopleOtherUser(req.session.user.username, "user" + req.params.uid);
+    if (model.getUserByID(req.params.uid)){
+      let result = model.viewPeopleOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
       if (result){
         res.render("pages/following-people", {user: req.session.user, peopleList: result});
         res.status(200)
@@ -295,13 +331,13 @@ app.post("/users/:uid/follow", function(req, res, next){
     if (req.session.user.id === req.params.uid){
       res.status(404).send("You can't follow yourself.");
     }
-    let result = model.followUser(req.session.user.username, "user" + req.params.uid);
+    let result = model.followUser(req.session.user.username, model.getUserByID(req.params.uid).username);
     if(result){
       res.status(200);
       res.send("/users/"+req.params.uid);
     }
     else{
-      res.status(404).send("User" + req.params.uid + " does not exist or you already follow them.");
+      res.status(404).send(model.getUserByID(req.params.uid).username + " does not exist or you already follow them.");
     }
   }
 });
@@ -311,13 +347,13 @@ app.post("/users/:uid/unfollow", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    let result = model.unfollowUser(req.session.user.username, "user" + req.params.uid);
+    let result = model.unfollowUser(req.session.user.username, model.getUserByID(req.params.uid).username);
     if (result){
       res.status(200);
       res.send("/users/"+req.params.uid);
     }
     else{
-      res.status(404).send("User" + req.params.uid + " does not exist or you do not follow them.");
+      res.status(404).send(model.getUserByID(req.params.uid).username + " does not exist or you do not follow them.");
     }
   }
 });
@@ -327,7 +363,7 @@ app.get("/users/:uid/recommended", function(req, res, next){
     res.redirect("/login");
   }
   else{
-    if (("user" + req.params.uid) !== req.session.user.username){
+    if (req.params.uid !== req.session.user.id){
       res.status(403).send("Unauthorized");
     }
     else{
@@ -338,7 +374,7 @@ app.get("/users/:uid/recommended", function(req, res, next){
         res.render('pages/recommended-movies', {user: req.session.user, movieObjects: result});
       }
       else{
-        res.status(404).send("User" + req.params.uid + " does not exist.");
+        res.status(404).send(model.getUserByID(req.params.uid).username + " does not exist.");
       }
     }
   }
@@ -460,7 +496,7 @@ app.post("/movies", function(req, res, next){
       //res.redirect("/movies/" + result);
     }
     else{
-      res.status(500).send("Failed to add movie.");
+      res.status(500).send("Failed to add movie. Please check the input and try again.");
     }
   }
 });
@@ -591,7 +627,7 @@ app.post("/people", function(req, res, next){
       res.send("/people/" + result);
     }
     else{
-      res.status(500).send("Failed to add person.");
+      res.status(500).send("Failed to add person. Please check the input and try again.");
     }
   }
 });
