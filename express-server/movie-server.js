@@ -730,7 +730,10 @@ app.delete("/people/:pid", function(req, res, next){
 app.get("/people/:pid/collaborators", function(req, res, next){
   let result = model.getFrequentCollaborator(req.params.pid);
   if (result){
-    res.status(200).send("Frequent Collaborators are: " + JSON.stringify(result));
+    console.log(model.getPerson(req.params.pid));
+    console.log(result);
+    res.status(200);
+    res.render('pages/collaborators', {person: model.getPerson(req.params.pid), collaborators: result, user: req.session.user});
   }
   else{
     res.status(404).send("Person does not exist.");

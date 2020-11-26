@@ -35,6 +35,9 @@ body
         span(style='display:flex; justify-content:flex-end; width:100%; padding:0;')
             //-button#fullList.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') See Full List
         br
+        a(href="/people/"+person.id+"/collaborators")
+            button#frequentCollab.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Frequent Collaborators
+        br
         if(user)
             a(href="/people/"+person.id+"/edit")
                 button#editPerson.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Person
