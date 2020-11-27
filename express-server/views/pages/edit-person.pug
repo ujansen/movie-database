@@ -27,9 +27,12 @@ main.block.container
     br
     textarea#about(name='about' rows='3' cols='50') #{person.about}
     br
+    br
     label
       | Movies they worked in: (separated by commas, role in brackets)
       | Eg: Pink Panther (actor), The Grand Budapest Hotel (director)
+    br
+    small Note: Only valid movies for valid cast roles in correct format will be added.
     br
     textarea#movies(name='movies' rows='2' cols='50')
     br

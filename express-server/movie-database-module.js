@@ -576,6 +576,12 @@ function addMovie(requesting, movieObject) {
     movieObject.noOfRatings = 1;
     movieObject.id = (nextMovieID).toString();
     movieObject.reviews = [];
+    if(!movieObject.poster.trim()) {
+      movieObject.poster = "https://flukyfeed.com/wp-content/uploads/2020/07/wait-a-minute-696x523.jpg";
+    }
+    if(!movieObject.trailer.trim()) {
+      movieObject.trailer = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+    }
     movies[movieObject.id] = movieObject;
     // adding object to moviesCopy array
     moviesCopy.push(movieObject);
@@ -596,29 +602,26 @@ function addMovie(requesting, movieObject) {
 
     // pushes movie to new director's movie list
     for (directorID of movies[movieObject.id].director){
-      if(directorID !== "N/A" && !people[movies[movieObject.id].director].movies.includes(movieObject.id)){
-        people[movies[movieObject.id].director].movies.push(movieObject.id);
+      if(directorID !== "N/A" && !people[directorID].movies.includes(movieObject.id)){
+        people[directorID].movies.push(movieObject.id);
       }
     }
 
-    let movieCastMembers = movieObject.actors.concat(movieObject.director, movieObject.writers);
+    let movieCastMembers = new Set(movieObject.actors.concat(movieObject.director, movieObject.writers));
+    movieCastMembers = [...movieCastMembers];
 
     // during movie addition
-    let repeatedMember = [];
     for (let i = 0; i < movieCastMembers.length - 1; i++){
       for (let j = i + 1; j < movieCastMembers.length; j++){
-        if (movieCastMembers[i] !== movieCastMembers[j] && !repeatedMember.includes(movieCastMembers[j])){
-          if (people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
+        if (movieCastMembers[i] !== movieCastMembers[j]){
+          if (people[movieCastMembers[i]] && people[movieCastMembers[j]] && people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] += 1;
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] += 1;
           }
-          else{
+          else if(people[movieCastMembers[i]] && people[movieCastMembers[j]] && !people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] = 1;
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] = 1;
           }
-        }
-        else{
-          repeatedMember.push(movieCastMembers[j]);
         }
       }
     }
@@ -627,7 +630,6 @@ function addMovie(requesting, movieObject) {
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     nextMovieID++;
-    console.log(movieObject);
     return true;  // if addition is successful
   }
   return false;
@@ -717,25 +719,28 @@ function editMovie(requesting, movieObject) {
     let oldWriters = movies[movieObject.id].writers; // stores current writers
     let oldDirectors = movies[movieObject.id].director; // stores current director
 
-    let repeatedMember = [];
     // before updating movie, get the old actors, directors, and writers
-    let movieOldCastMembers = oldActors.concat(oldDirectors, oldWriters);
+    let movieOldCastMembers = new Set(oldActors.concat(oldDirectors, oldWriters));
+    movieOldCastMembers = [...movieOldCastMembers];
 
     // remove each person from every other person's frequent collaborators once
     for (let i = 0; i < movieOldCastMembers.length - 1; i++){
       for (let j = i + 1; j < movieOldCastMembers.length; j++){
-        if (movieOldCastMembers[i] !== movieOldCastMembers[j] && !repeatedMember.includes(movieOldCastMembers[j])){
-          if (people[movieOldCastMembers[i]].collaborators.hasOwnProperty(movieOldCastMembers[j])){
+        if (movieOldCastMembers[i] !== movieOldCastMembers[j]){
+          if (people[movieOldCastMembers[i]] && people[movieOldCastMembers[j]] && people[movieOldCastMembers[i]].collaborators.hasOwnProperty(movieOldCastMembers[j])){
             people[movieOldCastMembers[i]].collaborators[movieOldCastMembers[j]] -= 1;
+            if (people[movieOldCastMembers[i]].collaborators[movieOldCastMembers[j]] < 0){
+              people[movieOldCastMembers[i]].collaborators[movieOldCastMembers[j]] = 0;
+            }
             people[movieOldCastMembers[j]].collaborators[movieOldCastMembers[i]] -= 1;
+            if (people[movieOldCastMembers[j]].collaborators[movieOldCastMembers[i]] < 0){
+              people[movieOldCastMembers[j]].collaborators[movieOldCastMembers[i]] = 0;
+            }
           }
-          else{
+          else if(people[movieOldCastMembers[i]] && people[movieOldCastMembers[j]] && !people[movieOldCastMembers[i]].collaborators.hasOwnProperty(movieOldCastMembers[j])){
             people[movieOldCastMembers[i]].collaborators[movieOldCastMembers[j]] = 0;
             people[movieOldCastMembers[j]].collaborators[movieOldCastMembers[i]] = 0;
           }
-        }
-        else{
-          repeatedMember.push(movieOldCastMembers[j]);
         }
       }
     }
@@ -827,21 +832,21 @@ function editMovie(requesting, movieObject) {
 
     // removes movie from old actors' movie list
     for (uniqueActorID of uniqueActors){
-      if (uniqueActorID !== "N/A"){
+      if (people[uniqueActorID] && uniqueActorID !== "N/A"){
         people[uniqueActorID].movies = people[uniqueActorID].movies.filter(movie => movie !== movieObject.id);
       }
     }
 
     // removes movie from old writers' movie list
     for (uniqueWriterID of uniqueWriters){
-      if (uniqueWriterID !== "N/A"){
+      if (people[uniqueWriterID] && uniqueWriterID !== "N/A"){
         people[uniqueWriterID].movies = people[uniqueWriterID].movies.filter(movie => movie !== movieObject.id);
       }
     }
 
     // removes movie from old director's movie list
     for (uniqueDirectorID of uniqueDirectors){
-      if (uniqueDirectorID !== "N/A"){
+      if (people[uniqueDirectorID] && uniqueDirectorID !== "N/A"){
         people[uniqueDirectorID].movies = people[uniqueDirectorID].movies.filter(movie => movie !== movieObject.id);
       }
     }
@@ -867,26 +872,22 @@ function editMovie(requesting, movieObject) {
       }
     }
 
-    repeatedMember = [];
-
     // get new list of actors, director, and writers
-    let movieCastMembers = movies[movieObject.id].actors.concat(movies[movieObject.id].director, movies[movieObject.id].writers);
+    let movieCastMembers = new Set(movies[movieObject.id].actors.concat(movies[movieObject.id].director, movies[movieObject.id].writers));
+    movieCastMembers = [...movieCastMembers];
 
     // increase frequent collaborators by 1
     for (let i = 0; i < movieCastMembers.length - 1; i++){
       for (let j = i + 1; j < movieCastMembers.length; j++){
-        if (movieCastMembers[i] !== movieCastMembers[j] && !repeatedMember.includes(movieCastMembers[j])){
-          if (people[movieCastMembers[i]] && people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
+        if (movieCastMembers[i] !== movieCastMembers[j]){
+          if (people[movieCastMembers[i]] && people[movieCastMembers[j]] && people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] += 1;
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] += 1;
           }
-          else if(people[movieCastMembers[i]] && !people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
+          else if(people[movieCastMembers[i]] && people[movieCastMembers[j]] && !people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] = 1;
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] = 1;
           }
-        }
-        else{
-          repeatedMember.push(movieCastMembers[j]);
         }
       }
     }
@@ -916,23 +917,27 @@ function removeMovie(requesting, movieID) {
       nextMovieID--;
     }
 
-    let movieCastMembers = movies[movieID].actors.concat(movies[movieID].director, movies[movieID].writers);
+    let movieCastMembers = new Set(movies[movieID].actors.concat(movies[movieID].director, movies[movieID].writers));
+    movieCastMembers = [...movieCastMembers];
+
     //during movie deletion
-    let repeatedMember = [];
     for (let i = 0; i < movieCastMembers.length - 1; i++){
       for (let j = i + 1; j < movieCastMembers.length; j++){
-        if (movieCastMembers[i] !== movieCastMembers[j] && !repeatedMember.includes(movieCastMembers[j])){
-          if (people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
+        if (movieCastMembers[i] !== movieCastMembers[j]){
+          if (people[movieCastMembers[i]] && people[movieCastMembers[j]] && people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] -= 1;
+            if (people[movieCastMembers[i]].collaborators[movieCastMembers[j]] < 0){
+              people[movieCastMembers[i]].collaborators[movieCastMembers[j]] = 0;
+            }
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] -= 1;
+            if (people[movieCastMembers[j]].collaborators[movieCastMembers[i]] < 0){
+              people[movieCastMembers[j]].collaborators[movieCastMembers[i]] = 0;
+            }
           }
-          else{
+          else if(people[movieCastMembers[i]] && people[movieCastMembers[j]] && !people[movieCastMembers[i]].collaborators.hasOwnProperty(movieCastMembers[j])){
             people[movieCastMembers[i]].collaborators[movieCastMembers[j]] = 0;
             people[movieCastMembers[j]].collaborators[movieCastMembers[i]] = 0;
           }
-        }
-        else{
-          repeatedMember.push(movieCastMembers[j]);
         }
       }
     }
@@ -1253,13 +1258,31 @@ function addPerson(requesting, personObject) {
       personObject.movies = ["N/A"];
     }
 
-    //where to add that person in movie - actors/writers/director?
-
-    //let lastID = people[(Object.keys(people).length-1).toString()]["id"]
     // adding object to movies object
     personObject.followers = [];
-    personObject.collaborators = [];
+    personObject.collaborators = {};
     people[personObject.id] = personObject;
+
+    // add person
+    let personObjectMovies = people[personObject.id].movies;
+    console.log("person movies:");
+    console.log(people[personObject.id].movies);
+    let movieCastMembers = [];
+    let repeatedMember = [];
+    for (let i = 0; i < personObjectMovies.length; i++){
+      repeatedMember = [];
+      if(movies[personObjectMovies[i]]) {
+        movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
+        for (let j = 0; j < movieCastMembers.length; j++){
+          if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id) && !(movieCastMembers[j] == personObject.id)){
+            people[movieCastMembers[j]].collaborators[personObject.id] = 1;
+            people[personObject.id].collaborators[people[movieCastMembers[j]].id] = 1;
+            repeatedMember.push(people[movieCastMembers[j]].id);
+          }
+        }
+      }
+    }
+
     nextPersonID++;
     return personObject.id;  // if addition is successful
   }
@@ -1274,6 +1297,29 @@ function editPerson(requesting, personObject) {
     // search if person with same name exists
     let person = people[personObject.id];
     let oldMovies = person.movies;
+
+    // edit person
+    let personObjectOldMovies = oldMovies; // before making any edits to the person
+    let movieOldCastMembers = [];
+    let repeatedMember = [];
+    for (let i = 0; i < personObjectOldMovies.length; i++){
+      repeatedMember = [];
+      movieOldCastMembers = movies[personObjectOldMovies[i]].actors.concat(movies[personObjectOldMovies[i]].director, movies[personObjectOldMovies[i]].writers);
+      for (let j = 0; j < movieOldCastMembers.length; j++){
+        if (people[movieOldCastMembers[j]] && !repeatedMember.includes(people[movieOldCastMembers[j]].id)  && people[movieOldCastMembers[j]].collaborators.hasOwnProperty(personObject.id) && !(movieOldCastMembers[j] == personObject.id)){
+          people[movieOldCastMembers[j]].collaborators[personObject.id] -= 1;
+          if (people[movieOldCastMembers[j]].collaborators[personObject.id] < 0){
+            people[movieOldCastMembers[j]].collaborators[personObject.id] = 0;
+          }
+          people[personObject.id].collaborators[people[movieOldCastMembers[j]].id] -= 1;
+          if (people[personObject.id].collaborators[people[movieOldCastMembers[j]].id] < 0){
+            people[personObject.id].collaborators[people[movieOldCastMembers[j]].id] = 0;
+          }
+          repeatedMember.push(people[movieOldCastMembers[j]].id);
+        }
+      }
+    }
+
     if (personObject.movies !== ""){
       let personObjectMovies = personObject.movies.trim().split(",");
       let personMovies = [];
@@ -1349,6 +1395,25 @@ function editPerson(requesting, personObject) {
       movies[movieID].director = movies[movieID].director.filter(personID => personID !== personObject.id);
       movies[movieID].writers = movies[movieID].writers.filter(personID => personID !== personObject.id);
     }
+
+    let personObjectMovies = personObject.movies; // new movies, after adding person back in
+    let movieCastMembers = [];
+    repeatedMember = [];
+    for (let i = 0; i < personObjectMovies.length; i++){
+      repeatedMember = [];
+      movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
+      for (let j = 0; j < movieCastMembers.length; j++){
+        if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id) && people[movieCastMembers[j]].collaborators.hasOwnProperty(personObject.id) && !(movieCastMembers[j] == personObject.id)){
+          people[movieCastMembers[j]].collaborators[personObject.id] += 1;
+          people[personObject.id].collaborators[people[movieCastMembers[j]].id] += 1;
+        }
+        else if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id) && !people[movieCastMembers[j]].collaborators.hasOwnProperty(personObject.id) && !(movieCastMembers[j] == personObject.id)){
+          people[movieCastMembers[j]].collaborators[personObject.id] = 1;
+          people[personObject.id].collaborators[people[movieCastMembers[j]].id] = 1;
+        }
+        repeatedMember.push(people[movieCastMembers[i]].id);
+      }
+    }
     // followers, collaborators, and movies are determined by the system
     return true;  // if edit is successful
 }
@@ -1366,10 +1431,23 @@ function removePerson(requesting, requested) {
     // remove from corresponding collaborators, followers, movies
 
     // removing from collaborator's collaborator list
-    let collabIDList = requestedPerson.collaborators;
-    for(let i = 0; i < collabIDList.length; i++) {
-      let collaborator = people[collabIDList[i]];
-      collaborator.collaborators = collaborator.collaborators.filter(personID => personID !== requestedPerson.id);
+    let personObjectMovies = requestedPerson.movies;
+    let movieCastMembers = [];
+    let repeatedMember = [];
+    for (let i = 0; i < personObjectMovies.length; i++){
+      repeatedMember = [];
+      movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
+      console.log("movie cast members: ");
+      console.log(movieCastMembers);
+      for (let j = 0; j < movieCastMembers.length; j++){
+        if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id)  &&
+             people[movieCastMembers[j]].collaborators.hasOwnProperty(requestedPerson.id) && !(movieCastMembers[j] == requestedPerson.id)){
+          console.log("deleting: ");
+          console.log(people[movieCastMembers[j]].collaborators[requestedPerson.id]);
+          delete people[movieCastMembers[j]].collaborators[requestedPerson.id];
+          repeatedMember.push(people[movieCastMembers[j]].id);
+        }
+      }
     }
 
     // removing from followers' followingPeople list
@@ -1440,11 +1518,12 @@ function searchPerson(keyWord) {
 function getFrequentCollaborator(personID) {
   let collaborators = [];
   if (people.hasOwnProperty(personID)){
-    let collabIDList = people[personID].collaborators;
+    let collabIDObj = people[personID].collaborators;
+    let collabIDList = Object.keys(people[personID].collaborators).sort(function(a,b){return people[personID].collaborators[b]-people[personID].collaborators[a]});
     //console.log(collabIDList);
-    for(collaborator in collabIDList){//(let i=0; i<collabIDList.length; i++) {
+    for(collaborator of collabIDList){//(let i=0; i<collabIDList.length; i++) {
       //let collabID = collabIDList[i];
-      if(collabIDList[collaborator] != 0) {
+      if(collabIDObj[collaborator] != 0) {
         collaborators.push(people[collaborator]);
       }
       /* if(people[collabID]) {
