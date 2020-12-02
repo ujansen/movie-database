@@ -1,0 +1,25 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title Search Result
+body
+    header
+        include ../partials/navBar
+    main.block.container
+      div
+        h5 #{review.title}
+        hr(style='border-width: 2px;')
+        //-p by
+        a(href="/users/"+reviewUser.id) #{review.userID}
+        br
+        p Rating: #{review.rating}
+        p #{review.content}
+        br
+        a(href="/movies/"+review.movieID) Go to movie

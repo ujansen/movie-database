@@ -1,0 +1,85 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+
+title Edit movie #{movie.title}
+header
+  include ../partials/navBar
+main.block.container
+  div
+    h4 Edit movie #{movie.title}:
+    hr(style='border-width: 2px;')
+    label Movie ID:
+    label#id #{movie.id}
+    br
+    label Title:
+    br
+    textarea#movieTitle(name='movieTitle' rows='1' cols='50' disabled) #{movie.title}
+    br
+    label Runtime (in minutes):
+    br
+    input#runtime(name='runtime' type='number' min='1')
+    br
+    label Year of Release:
+    br
+    input#movieYear(name='movieYear' type='number' min='1600' max='2030' value=movie.releaseYear)
+    br
+    label Genre: (separated by commas, eg: comedy, family, adventure)
+    br
+    textarea#genreList(name='genreList' rows='2' cols='50' required) #{movie.genre}
+    br
+    label Plot:
+    br
+    textarea#plot(name='plot' rows='3' cols='50') #{movie.plot}
+    br
+    label Poster URL:
+    br
+    textarea#poster(name='poster' rows='1' cols='50' required) #{movie.poster}
+    br
+    label Trailer URL:
+    br
+    textarea#trailer(name='trailer' rows='1' cols='50')
+    br
+    br
+    label List of Actors: (separated by commas, eg: Matt Damon, Brad Pitt, George Clooney)
+    br
+    small Note: Only valid actors will be added to the movie cast.
+    br
+    textarea#actorList(name='actorList' rows='2' cols='50' required='')
+    br
+    br
+    label List of Directors: (separated by commas, eg: Steven Spielberg, Christopher Nolan, Zack Snyder)
+    br
+    small Note: Only valid directors will be added to the movie cast.
+    br
+    textarea#directorList(name='directorList' rows='2' cols='50' required='')
+    br
+    br
+    label List of Writers: (separated by commas, eg: Christopher Nolan, Quentin Tarantino, Martin Scorsese)
+    br
+    small Note: Only valid writers will be added to the movie cast.
+    br
+    textarea#writerList(name='writerList' type='text' rows='2' cols='50' required='')
+    br
+    br
+    if(user.userType)
+      button#editMovie.btn.btn-outline-primary(type='submit') Update in Database
+      br
+      br
+      button#deleteMovie.btn.btn-outline-primary(type='submit') Delete from Database
+    else
+      button#editMovie.btn.btn-outline-primary(type='submit' disabled) Update in Database
+      br
+      br
+      button#deleteMovie.btn.btn-outline-primary(type='submit' disabled) Delete from Database
+      br
+      br
+      p You must be a contributing user to edit a movie in the Database.
+script(src='/js/editMovie.js')

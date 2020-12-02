@@ -1,0 +1,62 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title Search
+body
+    header
+        include ../partials/navBar
+    main.block.container
+        div
+            h4 Search movies:
+            br
+            //- one search button
+            .d-flex.flex-row
+                label.ml-2 Search by Title:
+                textarea#movieTitle.ml-2.mr-2(name='movieTitle' type='text' rows='1' cols='25')
+                //-button#submitTitle.btn.btn-outline-primary(type='submit') Search title
+                label.ml-2 Search by Genre:
+                textarea#movieGenre.ml-2(name='movieGenre' type='text' rows='1' cols='15')
+                //-button#submitGenre.btn.btn-outline-primary(type='submit') Search genre
+            br
+            .d-flex.flex-row
+                //-.col.mr-4
+                label.ml-2 Search by Minimum Rating:
+                input#movieMinRating.ml-2.mr-2(name='movieMinRating' type='number' min='1' max='10')
+                //-button#submitMinRating.btn.btn-outline-primary(type='submit') Search by minimum rating
+                //-.col.mr-4
+                label.ml-2 Search by Year of Release:
+                input#movieYear.ml-2(name='movieYear' type='number' min='1600' max='2030')
+                //-button#submitYear.btn.btn-outline-primary(type='submit') Search by year
+            .d-flex.flex-row.mt-3
+                //-.col.mr-2
+                button#submitSearch.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search in Database
+                //-.col.mr-2
+                //-button#searchIMDB.btn.btn-outline-primary.ml-4(type='submit') Search title in IMDB
+                a(href="./searchIMDB" target="_blank")
+                    button.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search title in IMDB
+                a(href="./addMovie")
+                    button#addMovie.btn.btn-outline-primary.ml-4(type='submit') Add Movie to Database
+        hr(style='border-width: 2px;')
+        #searchResults.container.mt-4
+            h5 Search Results:
+            ul.list-group
+                each movie in movieObjects
+                    a(href="/movies/"+movie.id)
+                        li.list-group-item
+                            .row.flex-wrap.mb-4
+                                .col-xs.cp-1.bg-secondary
+                                    img.user-img(src=movie.poster)
+                                .col.ml-4.align-self-center
+                                    h4 #{movie.title}
+                                    br
+                                    p #{movie.plot}
+                    //- list item (link /movie/movieID): poster, title, synopsis
+            //- make buttons <prev , next> for pagination x- first 10 results
+script(src='/js/searchMovie.js')

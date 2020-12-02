@@ -1,0 +1,79 @@
+//- requires: user, likedMovies, resultReviews
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+  //- Title of the tab
+  title #{user.username}
+body
+    header
+        include ../partials/navBar
+    .container.body_content
+        //- row 1 starts
+        .row.flex-wrap.mb-4
+            .col-xs.cp-1.bg-secondary
+                img.user-img(src=user.profilePic)
+            .col.ml-4.align-self-center
+                h4#username #{user.username}
+            .col-xs.ml-5.justify-content-end.align-self-center
+                a(href="/users/"+user.id+"/followers") Followers
+            //- create a new followers, following page
+            .col-xs.ml-5.justify-content-end.align-self-center
+                a(href="/users/"+user.id+"/following") Following
+            .col-xs.ml-4.justify-content-end.align-self-center
+                | Contributor
+                label.switch
+                    //- use if condition for this
+                    if(user.userType)
+                        input#toggleContributing(type='checkbox', checked)
+                        span.slider.round
+                    else
+                        input#toggleContributing(type='checkbox')
+                        span.slider.round
+            //- row 1 ends
+        .mt-3
+            p.about-user
+            | #{user.about}
+        hr(style='border-width: 2px;')
+
+        .container.scrolling.liked-movies
+            h5 Liked Movies
+            //- image slider starts
+            .row.flex-nowrap.ml-1.mr-1
+                each movie in likedMovies
+                    if(movie)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
+                                a(href="/movies/"+movie.id)
+                                    img.slider-img(src=movie.poster)
+        //- image slider ends
+        .container.reviews.mt-4
+            h5 Reviews
+            ul.list-group
+                //- let counter = 0;
+                each review in resultReviews
+                    if(review)
+                        a(href="/reviews/"+review.id)
+                            li.list-group-item
+                                b #{review.title}
+                                br
+                                p #{review.content}
+                    //- counter++;
+                    //- if(counter > 5) break
+                //-a(href="/user/"+user.id+"/reviews") See all reviews
+        hr(style='border-width: 2px;')
+        a(href="/users/" + user.id + "/people")
+            button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{user.username} follows
+        a(href="/users/" + user.id + "/recommended")
+            button.btn.btn-outline-primary.ml-3(type='submit') #{user.username}'s recommended movies
+        br
+        br
+        a(href="/users/" + user.id + "/edit")
+            button.btn.btn-outline-primary.ml-3(type='submit') Edit User
+        //- body ends
+script(src='/js/scriptUser.js')

@@ -1,0 +1,110 @@
+{
+    "0":
+    {
+      "id": "0",
+      "userID": "user0",
+      "movieID": "0",
+      "title": "Kids loved it!",
+      "content": "Fun little movie to watch with my little ones. Very creative concept.",
+      "rating": "9"
+    },
+    "1":
+    {
+      "id": "1",
+      "userID": "user1",
+      "movieID": "0",
+      "title": "My toys scare me now",
+      "content": "The movie was great but now I can't sleep at night thinking that my toys might murder me in my sleep. Might need to see a therapist for my insomnia.",
+      "rating": "6"
+    },
+    "2":
+    {
+      "id": "2",
+      "userID": "user2",
+      "movieID": "1",
+      "title": "A wonderful adventure!",
+      "content": "It was engaging and thrilling, inspired me to turn my house into a jungle! My wife and kids left me thinking I was crazy but I'm just living out the ultimate dream!",
+      "rating": "10"
+    },
+    "3":
+    {
+      "id": "3",
+      "userID": "user3",
+      "movieID": "1",
+      "title": "Ruins lives!",
+      "content": "Watched it with husband and kids, now my husband is possessed and I'm filing a divorce.",
+      "rating": "1"
+    },
+    "4":
+    {
+      "id": "4",
+      "userID": "user0",
+      "movieID": "2",
+      "title": "Sweet and Sour",
+      "content": "Has its moments but they're too few and far between.",
+      "rating": "5"
+    },
+    "5":
+    {
+      "id": "5",
+      "userID": "user1",
+      "movieID": "2",
+      "title": "Exceeded Expectations",
+      "content": "Great movie. Pretty sweet acting. Loved it. 8/10",
+      "rating": "8"
+    },
+    "6":
+    {
+      "id": "6",
+      "userID": "user2",
+      "movieID": "3",
+      "title": "Slept through it",
+      "content": "Mom took me to watch it, my insomnia is now cured.",
+      "rating": "8"
+    },
+    "7":
+    {
+      "id": "7",
+      "userID": "user3",
+      "movieID": "3",
+      "title": "Watch alone!",
+      "content": "Beautiful movie but I regret watching it with my daughter, she started snoring halfway through it. Infuriating.",
+      "rating": "10"
+    },
+    "8":
+    {
+      "id": "8",
+      "userID": "user0",
+      "movieID": "4",
+      "title": "DO NOT WATCH THIS.",
+      "content": "Hated the movie. Complete waste of time and money.",
+      "rating": "1"
+    },
+    "9":
+    {
+      "id": "9",
+      "userID": "user1",
+      "movieID": "4",
+      "title": "Would not recommend",
+      "content": "This is the kind of movie that makes me thankful that I'm blind.",
+      "rating": "1"
+    },
+    "10":
+    {
+      "id": "10",
+      "userID": "user2",
+      "movieID": "5",
+      "title": "Really did feel the Heat",
+      "content": "Watched this alone with headphones on while half my house burned down because I forgot to take the turkey out of the oven. Nice movie tho, might turn gay for the cast ;)",
+      "rating": "9"
+    },
+    "11":
+    {
+      "id": "11",
+      "userID": "user3",
+      "movieID": "5",
+      "title": "Masterpiece",
+      "content": "It's a must watch. Go with family and watch this. Incredibly enjoyable.",
+      "rating": "9"
+    }
+  }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang = "en" dir = "ltr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg" type="image/x-icon">
+  </head>
+  <title>Search</title>
+  <body>
+    <header>
+      
+    </header>
+    <main class="block container">
+        <div>
+            <h4>
+                Search movies:
+            </h4>
+
+            <br>
+
+            <div class="d-flex flex-row">
+
+                <div class = "col mr-4">
+                    <input id="movieTitle" name="movieTitle" type="text" rows="1" cols="20" />
+                    <button class="btn btn-outline-primary" type="submit" id="submitTitle">Search title</button>
+                </div>
+                
+                <div class = "col mr-4">
+                    <input id="movieGenre" name="movieGenre" type="text" rows="1" cols="10" />
+                    <button class="btn btn-outline-primary" type="submit" id="submitGenre">Search genre</button>
+                </div>
+                
+            </div>
+            
+            <br>
+            <div class="d-flex flex-row">
+                <div class = "col mr-4">
+                    <input id="movieMinRating" name="movieMinRating" type="number" min="1" max="10" />
+                    <button class="btn btn-outline-primary" type="submit" id="submitMinRating">Search by minimum rating</button>
+                </div>
+                
+                <div class = "col mr-4">
+                    <input id="movieYear" name="movieYear" type="number" min="1600" max="2030" />
+                    <button class="btn btn-outline-primary" type="submit" id="submitYear">Search by year</button>
+                </div>
+
+            </div>
+            
+        </div>
+
+        <hr style = "border-width: 2px;">
+
+        <div id="searchResults" class="container mt-4">
+            <h5>Search Results:</h5>
+            <ul class="list-group">
+                <!-- <li class="list-group-item">Review 1</li> -->
+            </ul>
+        </div>
+        
+    </main>
+</body>
+<script src = "./js/navBar.js"></script>
+</html>

@@ -1,0 +1,104 @@
+{
+    "0": {
+        "id": "0",
+        "title": "Toy Story",
+        "runtime": "81 min",
+        "releaseYear": "1995",
+        "averageRating": 8.3,
+        "noOfRatings": 10,
+        "genre": ["animation", "adventure", "comedy", "family", "fantasy"],
+        "plot": "A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg",
+        "actors": ["1", "2"],
+        "director": ["3"],
+        "writers": ["6", "8"],
+        "reviews": ["0", "1"],
+        "trailer": ""
+    },
+
+    "1": {
+        "id": "1",
+        "title": "Jumanji",
+        "runtime": "104 min",
+        "releaseYear": "1995",
+        "averageRating": 7.0,
+        "noOfRatings": 3,
+        "genre": ["adventure", "comedy", "family", "fantasy"],
+        "plot": "When two kids find and play a magical board game, they release a man trapped in it for decades - and a host of dangers that can only be stopped by finishing the game.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BZTk2ZmUwYmEtNTcwZS00YmMyLWFkYjMtNTRmZDA3YWExMjc2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+        "actors": ["0"],
+        "director": ["4"],
+        "writers": ["7"],
+        "reviews": ["2", "3"],
+        "trailer": ""
+    },
+
+    "2": {
+        "id": "2",
+        "title": "Grumpier Old Men",
+        "runtime": "101 min",
+        "releaseYear": "1995",
+        "averageRating": 6.7,
+        "noOfRatings": 5,
+        "genre": ["adventure", "comedy", "family", "fantasy"],
+        "plot": "When two kids find and play a magical board game, they release a man trapped in it for decades - and a host of dangers that can only be stopped by finishing the game.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMjQxM2YyNjMtZjUxYy00OGYyLTg0MmQtNGE2YzNjYmUyZTY1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL__QL50.jpg",
+        "actors": ["0", "1"],
+        "director": ["5"],
+        "writers": ["6", "7"],
+        "reviews": ["4", "5"],
+        "trailer": ""
+    },
+
+    "3": {
+        "id": "3",
+        "title": "Waiting to Exhale",
+        "runtime": "124 min",
+        "releaseYear": "1995",
+        "averageRating": 5.9,
+        "noOfRatings": 7,
+        "genre": ["comedy", "drama", "romance"],
+        "plot": "Based on Terry McMillan's novel, this film follows four very different African-American women and their relationships with the male gender.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BYzcyMDY2YWQtYWJhYy00OGQ2LTk4NzktYWJkNDYwZWJmY2RjXkEyXkFqcGdeQXVyMTA0MjU0Ng@@._V1_SX300.jpg",
+        "actors": ["2"],
+        "director": ["3"],
+        "writers": ["7", "8"],
+        "reviews": ["6", "7"],
+        "trailer": ""
+    },
+
+    "4": {
+        "id": "4",
+        "title": "Father of the Bride Part II",
+        "runtime": "106 min",
+        "releaseYear": "1995",
+        "averageRating": 6.0,
+        "noOfRatings": 9,
+        "genre": ["comedy", "family", "romance"],
+        "plot": "George Banks must deal not only with the pregnancy of his daughter, but also with the unexpected pregnancy of his wife.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BOTEyNzg5NjYtNDU4OS00MWYxLWJhMTItYWU4NTkyNDBmM2Y0XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+        "actors": ["0", "2"],
+        "director": ["4"],
+        "writers": ["6", "7", "8"],
+        "reviews": ["8", "9"],
+        "trailer": ""
+    },
+
+    "5": {
+        "id": "5",
+        "title": "Heat",
+        "runtime": "170 min",
+        "releaseYear": "1995",
+        "averageRating": 8.2,
+        "noOfRatings": 2,
+        "genre": ["comedy", "family", "romance"],
+        "plot": "A group of professional bank robbers start to feel the heat from police when they unknowingly leave a clue at their latest heist.",
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDJjNWE5MTEtMDk2Mi00ZjczLWIwYjAtNzM2ZTdhNzcwOGZjXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_SX300.jpg",
+        "actors": ["0", "1", "2"],
+        "director": ["3"],
+        "writers": ["8"],
+        "reviews": ["10", "11"],
+        "trailer": ""
+    }
+
+}

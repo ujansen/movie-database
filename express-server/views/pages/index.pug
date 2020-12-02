@@ -1,0 +1,49 @@
+//- let content = {
+//-     resultUpcoming: x,
+//-     resultYourList: y,
+//-     resultFanPicks: z
+//- }
+//- no script required
+doctype html
+head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+    link(rel='stylesheet' type='text/css' href='/css/style.css')
+    link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title MDB
+
+body
+    header
+        include ../partials/navBar
+    .container.body_content
+        .container.scrolling.upcoming
+            h3 New and Upcoming
+            #upcoming.row.flex-nowrap
+                each movie in resultUpcoming
+                    a(href="/movies/"+movie.id)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
+                                img(src=movie.poster class = "slider-img")
+        if !(resultYourList == undefined || resultYourList.length == 0)
+            //- resultYourList === []
+            br
+            br
+            .container.scrolling.your_list
+                h3 Your List
+                #your_list.row.flex-nowrap
+                    each movie in resultYourList
+                        a(href="/movies/"+movie.id)
+                            .col-xs-4.cp-1.bg-secondary
+                                .card.card-block
+                                    img(src=movie.poster class = "slider-img")
+        br
+        br
+        .container.scrolling.fan_picks
+            h3 Fan Picks
+            #your_list.row.flex-nowrap
+                each movie in resultFanPicks
+                    a(href="/movies/"+movie.id)
+                        .col-xs-4.cp-1.bg-secondary
+                            .card.card-block
+                                img(src=movie.poster class = "slider-img")

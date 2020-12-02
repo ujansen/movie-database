@@ -1,0 +1,76 @@
+//- let content = renderOtherUser({
+//-     requestingUser: requestingUser,
+//-     requestedUser: otherUser,
+//-
+//- });
+//- result: otherUser
+//- their reviews
+//- followers, following, people - separate page with links
+//- reviewed movie objects
+//- SCRIPT REMAINING
+doctype html
+head
+  //-Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  //-Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title #{requestedUser.username}
+main(style='background-color: #243742;')
+  header
+    include ../partials/navBar
+.container.body_content
+  //- row 1 starts
+  .row.flex-wrap.mb-4
+    .col-xs.cp-1.bg-secondary
+      img.user-img(src= requestedUser.profilePic)
+      //- add user image property to user objects
+      //- img.user-img(src= requestedUser.image)
+    .col.ml-4.align-self-center
+      h4#username #{requestedUser.username}
+    .col-xs.ml-5.justify-content-end.align-self-center
+      //- a(href="/users/"+requestedUser.id+"/followers") 
+      //- label#followerList Followers
+      a#followerList(href="") Followers
+    .col-xs.ml-5.justify-content-end.align-self-center
+      a#followingList(href="") Following
+    //- Follow button
+    .col-xs.ml-5.justify-content-end.align-self-center
+      if(userFollowsOtherUser)
+        button#follow-user.btn.btn-outline-primary(type='submit') Unfollow
+      else
+        button#follow-user.btn.btn-outline-primary(type='submit') Follow
+    //- row 1 ends
+  .mt-3
+    p.about-user
+      | #{requestedUser.about}
+  hr(style='border-width: 2px;')
+  .container.scrolling.liked-movies
+    h5 Liked Movies
+    //- image slider starts
+    .row.flex-nowrap.ml-1.mr-1
+      each movie in likedMovies
+        if(movie)
+          .col-xs-4.cp-1.bg-secondary
+            .card.card-block
+              a(href='/movies/'+movie.id)
+                img.slider-img(src=movie.poster)
+  //- image slider ends
+  .container.reviews.mt-4
+    h5 Reviews
+    ul.list-group
+      each review in reviewList
+        if(review)
+          a(href="/reviews/"+review.id)
+            li.list-group-item
+              b #{review.title}
+              br
+              p #{review.content}
+
+  hr(style='border-width: 2px;')
+  a(href="/users/" + requestedUser.id + "/people")
+    button.btn.btn-outline-primary.ml-3.mr-3(type='submit') People that #{requestedUser.username} follows
+  //- body ends
+script(src='/js/scriptOtherUser.js')

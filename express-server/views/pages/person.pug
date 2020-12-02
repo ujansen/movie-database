@@ -1,0 +1,44 @@
+doctype html
+head
+  //- Required meta tags
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  //- Bootstrap CSS
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+  link(rel='stylesheet' type='text/css' href='/css/style.css')
+  link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
+title #{person.name}
+body
+    header
+        include ../partials/navBar
+    main.block.container
+        div
+            h4.text-center #{person.name}
+        div
+            .actorImage.text-center
+                div
+                    if(person.image)
+                        img.rounded(src=person.image)
+                if(userFollowsPerson)
+                    button#followPerson.btn.btn-outline-primary(type='submit') Unfollow
+                else
+                    button#followPerson.btn.btn-outline-primary(type='submit') Follow
+        .container.scrolling.personMovies
+            h4(style='padding-top: 2; padding-left: 4px;') Works
+            .row.flex-nowrap
+                each movie in movieList
+                    if(movie)
+                        .col-xs-4.cp-1
+                            .card.card-block
+                                a(href="/movies/"+movie.id)
+                                    img.slider-img(src=movie.poster)
+        span(style='display:flex; justify-content:flex-end; width:100%; padding:0;')
+            //-button#fullList.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') See Full List
+        br
+        a(href="/people/"+person.id+"/collaborators")
+            button#frequentCollab.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Frequent Collaborators
+        br
+        if(user)
+            a(href="/people/"+person.id+"/edit")
+                button#editPerson.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Person
+script(src='/js/scriptPerson.js')
