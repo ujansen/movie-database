@@ -23,9 +23,9 @@ main.block.container
     br
     textarea#movieTitle(name='movieTitle' rows='1' cols='50' disabled) #{movie.title}
     br
-    label Runtime:
+    label Runtime (in minutes):
     br
-    input#runtime(name='runtime' type='text' rows='1' cols='10' value=movie.runtime)
+    input#runtime(name='runtime' type='number' min='1')
     br
     label Year of Release:
     br

@@ -22,7 +22,7 @@ directorList.addEventListener("keyup", enableButton);
 writerList.addEventListener("keyup", enableButton);
 
 function enableButton() {
-  if (movieTitle.value.toString() && genreList.value.toString() && actorList.value.toString() && directorList.value.toString() && writerList.value.toString()) {
+  if (movieTitle.value.toString().trim() && genreList.value.toString().trim() && actorList.value.toString().trim() && directorList.value.toString().trim() && writerList.value.toString().trim() && movieYear.value.toString()) {
       editButton.disabled = false;
   }
 }
@@ -39,29 +39,40 @@ function editMovie() {
     let actorList = document.getElementById("actorList").value.toString();
     let directorList = document.getElementById("directorList").value.toString();
     let writerList = document.getElementById("writerList").value.toString();
-    let movieObj = {
-        id: id,
-        title: movieTitle,
-        runtime: runtime,
-        releaseYear: movieYear,
-        genre: genreList,
-        plot: plot,
-        poster: poster,
-        trailer: trailer,
-        actors: actorList,
-        director: directorList,
-        writers: writerList
-    }
 
-    let req = new XMLHttpRequest();
-    req.open("PUT", "/movies/"+id);
-    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-    req.onreadystatechange = function(){
-      if(req.readyState == 4 && req.status == 200){
-        window.location.href = req.responseText;
-     }
-   };
-    req.send(JSON.stringify(movieObj));
+    if(movieYear && Number(movieYear) <= 2030 && Number(movieYear) >= 1895) {
+      if(runtime && Number(runtime) >= 1) {
+        let movieObj = {
+            id: id,
+            title: movieTitle,
+            runtime: runtime + " min",
+            releaseYear: movieYear,
+            genre: genreList,
+            plot: plot,
+            poster: poster,
+            trailer: trailer,
+            actors: actorList,
+            director: directorList,
+            writers: writerList
+        }
+
+        let req = new XMLHttpRequest();
+        req.open("PUT", "/movies/"+id);
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.onreadystatechange = function(){
+          if(req.readyState == 4 && req.status == 200){
+            window.location.href = req.responseText;
+        }
+      };
+        req.send(JSON.stringify(movieObj));
+    }
+    else {
+      alert("Please enter a valid runtime!");
+    }
+  }
+  else {
+    alert("Please enter a valid year!");
+  }
 }
 
 function deleteMovie() {

@@ -33,33 +33,44 @@ function enableFullButton() {
 
 function submitBasicRequest() {
   ///movies/:mid/basicReview/:rating
-  let req = new XMLHttpRequest();
-  req.open("POST", "/movies/" + movieID + "/basicReview/" + basicRating.value.toString());
 
-  req.onreadystatechange = function () {
-    if(req.readyState === 4 && req.status === 200) {
-      window.location.href = req.responseText;
-    }
-  };
-  req.send();
+  if(basicRating.value.toString().trim() && Number(basicRating.value.toString()) <= 10 && Number(basicRating.value.toString()) >= 0) {
+    let req = new XMLHttpRequest();
+    req.open("POST", "/movies/" + movieID + "/basicReview/" + basicRating.value.toString());
+
+    req.onreadystatechange = function () {
+      if(req.readyState === 4 && req.status === 200) {
+        window.location.href = req.responseText;
+      }
+    };
+    req.send();
+  }
+  else {
+    alert("Please enter a rating between 0 and 10!");
+  }
 }
 
 function submitFullRequest() {
   ///movies/:mid/fullReview
-  let reviewObject = {
-    "movieID": movieID.toString(),
-    "title": fullTitle.value.toString(),
-    "content": fullContent.value.toString(),
-    "rating": fullRating.value.toString()
-  }
-  let req = new XMLHttpRequest();
-  req.open("POST", "/movies/" + movieID + "/fullReview");
-
-  req.onreadystatechange = function () {
-    if(req.readyState === 4 && req.status === 200) {
-      window.location.href = req.responseText;
+  if(fullRating.value.toString().trim() && Number(fullRating.value.toString()) <= 10 && Number(fullRating.value.toString()) >=0) {
+    let reviewObject = {
+      "movieID": movieID.toString(),
+      "title": fullTitle.value.toString(),
+      "content": fullContent.value.toString(),
+      "rating": fullRating.value.toString()
     }
-  };
-  req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-  req.send(JSON.stringify(reviewObject));
+    let req = new XMLHttpRequest();
+    req.open("POST", "/movies/" + movieID + "/fullReview");
+
+    req.onreadystatechange = function () {
+      if(req.readyState === 4 && req.status === 200) {
+        window.location.href = req.responseText;
+      }
+    };
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.send(JSON.stringify(reviewObject));
+  }
+  else {
+    alert("Please enter a rating between 0 and 10!");
+  }
 }

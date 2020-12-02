@@ -1,14 +1,18 @@
 let users = require("./public/json/users.json");
-let movies = require("./public/json/movies.json");
+let movies = require("./public/json/extracted-movie-data-id.json");
 let moviesCopy = Object.keys(movies).map(key => {
     return movies[key];
-});
+}); 
 let reviews = require("./public/json/reviews.json");
-let people = require("./public/json/people.json");
+let people = require("./public/json/extracted-person-data.json");
 const puppeteer = require('puppeteer');
 
-
-//console.log(users);
+let sortedByYear = moviesCopy.sort(function(a, b){
+  return Number(b.releaseYear) - Number(a.releaseYear);
+  });
+let sortedByRating = moviesCopy.sort(function(a, b){
+  return Number(b.averageRating) - Number(a.averageRating);
+  });
 
 let nextUserID = -1;
 for(uid in users){
@@ -572,8 +576,8 @@ function addMovie(requesting, movieObject) {
 
     //let lastID = movies[(Object.keys(movies).length-1).toString()]["id"];
     // adding object to movies object
-    movieObject.averageRating = 1;
-    movieObject.noOfRatings = 1;
+    movieObject.averageRating = 0;
+    movieObject.noOfRatings = 0;
     movieObject.id = (nextMovieID).toString();
     movieObject.reviews = [];
     if(!movieObject.poster.trim()) {
@@ -1043,10 +1047,9 @@ function updateMovieRating(movieID, rating) {
 // tested
 // sort movies according to releaseYear (descending order)
 function sortMovieYear(){
-  let sortedMovies = [];
-  sortedMovies =   moviesCopy.sort(function(a, b){
-                     return Number(b.releaseYear) - Number(a.releaseYear);
-                     });
+  let sortedMovies = moviesCopy.sort(function(a, b){
+                        return Number(b.releaseYear) - Number(a.releaseYear);
+                        });
   return sortedMovies;
 }
 

@@ -76,15 +76,15 @@ body
     div(class="review")
       h6(style="padding-top: 20px; padding-left: 4px;") Average Rating: #{movie.averageRating}
       h6(style="padding-top: 20px; padding-left: 4px;") Add basic rating:
-        input#basicRating.ml-2(type='number' min='1' max='10')
+        input#basicRating.ml-2(type='number' min='0' max='10')
         if(user)
           button#basicReview.ml-2(type="submit" class="btn btn-outline-primary") Submit
         else
           button#basicReview.ml-2(type="submit" class="btn btn-outline-primary" disabled='') Submit
       h6.ml-2(style="padding-top: 20px;") Add review:
       div.ml-2
-        label Add rating:
-        input#fullRating(type='number' min='1' max='10')
+        label Add rating: 
+        input#fullRating.ml-2(type='number' min='0' max='10')
         br
         br
         textarea(id="movieReviewTitle" name="movieReviewTitle" rows="1" cols="50" placeholder="Review Title")

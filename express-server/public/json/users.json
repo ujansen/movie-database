@@ -36,7 +36,7 @@
       "about": "My favourite genre is every Christopher Nolan movie ever created",
       "followers": ["user0", "user1", "user3"],
       "followingUsers":  ["user3", "user1"],
-      "followingPeople": ["1", "4"],
+      "followingPeople": ["1", "3", "4"],
       "reviews": ["2", "6", "10"],
       "recommendedMovies": [],
       "contributedMovies": []

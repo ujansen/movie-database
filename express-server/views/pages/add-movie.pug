@@ -20,13 +20,13 @@ main.block.container
     br
     textarea#movieTitle(name='movieTitle' rows='1' cols='50' required='')
     br
-    label Runtime:
+    label Runtime (in minutes):
     br
-    input#runtime(name='runtime' type='text' rows='1' cols='10')
+    input#runtime(name='runtime' type='number' min='1')
     br
     label Year of Release:
     br
-    input#movieYear(name='movieYear' type='number' min='1600' max='2030')
+    input#movieYear(name='movieYear' type='number' min='1895' max='2030')
     br
     label Genre: (separated by commas, eg: comedy, family, adventure)
     br
