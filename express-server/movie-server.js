@@ -89,12 +89,21 @@ app.get("/users", function(req, res, next){
     res.redirect("/login");
   }
   else {
-    if (!req.query.username){
-      req.query.username = "";
+    if (!req.query.hasOwnProperty("page")){
+      req.query.page = 1;
     }
     let result = model.searchUsers(req.session.user.username, req.query.username);
+    console.log(result);
+    let paginatedResult = model.paginate(req.query.page, result);
+    if(paginatedResult) {
+      res.status(200); 
+      res.render('pages/search-user', {user: req.session.user, userObjects: paginatedResult.result, 
+        prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+    }
+    else {
+      res.status(404).send("Page does not exist");
+    }
     res.status(200);
-    res.render('pages/search-user', {user: req.session.user, userObjects: result});
   }
 });
 
@@ -102,7 +111,6 @@ app.get("/users/search/", function (req, res, next){
   if (!req.query){
     req.query.name = "";
   }
-  //let result = model.searchPerson(req.query.name);
   let searchQuery = ""
   if (req.query.username){
       searchQuery += "?username=" + req.query.username;
@@ -110,6 +118,14 @@ app.get("/users/search/", function (req, res, next){
   else{
     searchQuery += "?username=";
   }
+  
+  if(req.query.page) {
+    searchQuery += "&page=" + req.query.page;
+  }
+  else if(!req.query.page) {
+    searchQuery += "&page=1";
+  }
+  
   res.status(200);
   res.send("/users" + searchQuery);
 });
@@ -407,13 +423,20 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
 });
 
 app.get("/movies", function(req, res, next){
-  if (!req.query){
-    req.query = {};
+  if (!req.query.hasOwnProperty("page")){
+    req.query.page = 1;
   }
   let result = model.searchMovie(req.query);
-  res.status(200); //.send("Movies found: " + JSON.stringify(result));
-  res.render('pages/search-movie', {user: req.session.user, movieObjects: result});
-  //res.send("/movies");
+  //console.log(result);
+  let paginatedResult = model.paginate(req.query.page, result);
+  if(paginatedResult) {
+    res.status(200); //.send("Movies found: " + JSON.stringify(result));
+    res.render('pages/search-movie', {user: req.session.user, movieObjects: paginatedResult.result, 
+      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+  }
+  else {
+    res.status(404).send("Page does not exist");
+  }
 });
 
 app.get("/movies/search/", function (req, res, next){
@@ -437,6 +460,14 @@ app.get("/movies/search/", function (req, res, next){
   if (req.query.year){
     searchQuery += "&year=" + req.query.year;
   }
+
+  if(req.query.page) {
+    searchQuery += "&page=" + req.query.page;
+  }
+  else if(!req.query.page) {
+    searchQuery += "&page=1";
+  }
+
   res.status(200);
   res.send("/movies" + searchQuery);
 });
@@ -565,12 +596,20 @@ app.delete("/movies/:mid", function(req, res, next){
 });
 
 app.get("/people", function(req, res, next){
-  if (!req.query.name){
-    req.query.name = "";
+  if (!req.query.hasOwnProperty("page")){
+    req.query.page = 1;
   }
   let result = model.searchPerson(req.query.name);
-  res.status(200);
-  res.render('pages/search-person', {user: req.session.user, personObjects: result});
+  console.log(result);
+  let paginatedResult = model.paginate(req.query.page, result);
+  if(paginatedResult) {
+    res.status(200); 
+    res.render('pages/search-person', {user: req.session.user, personObjects: paginatedResult.result, 
+      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+  }
+  else {
+    res.status(404).send("Page does not exist");
+  }
 });
 
 app.get("/people/search/", function (req, res, next){
@@ -585,6 +624,14 @@ app.get("/people/search/", function (req, res, next){
   else{
     searchQuery += "?name=";
   }
+  
+  if(req.query.page) {
+    searchQuery += "&page=" + req.query.page;
+  }
+  else if(!req.query.page) {
+    searchQuery += "&page=1";
+  }
+  
   res.status(200);
   res.send("/people" + searchQuery);
 });

@@ -3,10 +3,32 @@ let movieGenre = document.getElementById("movieGenre");
 let movieMinRating = document.getElementById("movieMinRating");
 let movieYear = document.getElementById("movieYear");
 
+let url = window.location.href;
+
+//let pageNum = document.getElementById("pageNum"); // easier to get this since the page number is being passed from the server directly
+let pageNum;
+if(url.lastIndexOf("page=") == -1) {
+  pageNum = 1;
+}
+else {
+  pageNum = Number(url.slice(url.lastIndexOf("page=") + 5, url.length));
+}
+console.log(pageNum);
+let remainingQuery = url.slice(url.lastIndexOf("?"), url.lastIndexOf("page="));
+if(remainingQuery == "") {
+  remainingQuery = "?";
+}
+console.log(remainingQuery);
+let prev = document.getElementById("previous");
+let next = document.getElementById("next");
+
 let searchDB = document.getElementById("submitSearch");
 searchDB.addEventListener("click", searchDatabaseRequest);
 /* let searchIMDB = document.getElementById("searchIMDB");
 searchIMDB.addEventListener("click", searchIMDBRequest); */
+
+prev.addEventListener("click", previousPage);
+next.addEventListener("click", nextPage);
 
 function searchDatabaseRequest() {
   let searchQuery = "?";
@@ -45,6 +67,29 @@ function searchDatabaseRequest() {
  };
   req.send();
 }
+
+function previousPage() {
+  let req = new XMLHttpRequest();
+  req.open("GET", "/movies/search/" + remainingQuery + "page=" + (pageNum - 1).toString());
+  req.onreadystatechange = function (){
+    if(req.readyState == 4 && req.status == 200){
+      window.location.href = req.responseText;
+   }
+ };
+  req.send();
+}
+
+function nextPage() {
+  let req = new XMLHttpRequest();
+  req.open("GET", "/movies/search/" + remainingQuery + "page=" + (pageNum + 1).toString());
+  req.onreadystatechange = function (){
+    if(req.readyState == 4 && req.status == 200){
+      window.location.href = req.responseText;
+   }
+ };
+  req.send();
+}
+
 /*
 function searchIMDBRequest() {
   let searchQuery = "";
