@@ -40,7 +40,7 @@ body
             li
               em Genre:
                 each genre in movie.genre
-                  a(class="active ml-1" href="/movies?title=&genre="+genre) #{genre},
+                  a(class="active ml-1" href="/movies?title=&genre="+genre+"&page=1") #{genre},
           if !(actorList === undefined || actorList.length === 0)
             li
               em Actors:
