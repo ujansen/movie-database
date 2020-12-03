@@ -12,7 +12,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use("/", function(req, res, next){
-  console.log(req.session);
   if (req.session.user){
     req.session.user = model.getUser(req.session.user.username);
   }
@@ -93,17 +92,15 @@ app.get("/users", function(req, res, next){
       req.query.page = 1;
     }
     let result = model.searchUsers(req.session.user.username, req.query.username);
-    console.log(result);
     let paginatedResult = model.paginate(req.query.page, result);
-    if(paginatedResult) {
-      res.status(200); 
-      res.render('pages/search-user', {user: req.session.user, userObjects: paginatedResult.result, 
+    if(paginatedResult && result.length > 0) {
+      res.status(200);
+      res.render('pages/search-user', {user: req.session.user, userObjects: paginatedResult.result,
         prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
     }
-    else {
+    else{
       res.status(404).send("Page does not exist");
     }
-    res.status(200);
   }
 });
 
@@ -118,14 +115,14 @@ app.get("/users/search/", function (req, res, next){
   else{
     searchQuery += "?username=";
   }
-  
+
   if(req.query.page) {
     searchQuery += "&page=" + req.query.page;
   }
   else if(!req.query.page) {
     searchQuery += "&page=1";
   }
-  
+
   res.status(200);
   res.send("/users" + searchQuery);
 });
@@ -191,7 +188,6 @@ app.post("/users/:uid/toggle", function(req, res, next){
     }
     else{
       let result = model.toggleContributing(model.getUserByID(req.params.uid).username);
-      //console.log(req.session.user);
       if (result){
         res.status(200);
         res.send("/users/" + req.params.uid);
@@ -213,7 +209,6 @@ app.get("/users/:uid", function(req, res, next){
   {
     let result = model.getUserByID(req.params.uid);
     let resultReviews = model.viewReviewsOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
-    console.log(resultReviews);
     let reviewedMovies = [];
     if (resultReviews && resultReviews.length > 0){
       for (review of resultReviews){
@@ -222,7 +217,6 @@ app.get("/users/:uid", function(req, res, next){
           }
         }
     }
-    console.log(reviewedMovies);
     if (result && result.id === req.session.user.id){
       res.status(200);
       res.render('pages/user', {user: result, likedMovies: reviewedMovies, resultReviews: resultReviews});
@@ -384,7 +378,6 @@ app.get("/users/:uid/recommended", function(req, res, next){
     }
     else{
       let result = model.viewRecommendedMovies(req.session.user.username);
-      console.log(result);
       if (result){
         res.status(200); //.send("Recommended movies are: " + JSON.stringify(result));
         res.render('pages/recommended-movies', {user: req.session.user, movieObjects: result});
@@ -427,12 +420,16 @@ app.get("/movies", function(req, res, next){
     req.query.page = 1;
   }
   let result = model.searchMovie(req.query);
-  //console.log(result);
   let paginatedResult = model.paginate(req.query.page, result);
-  if(paginatedResult) {
+  if(paginatedResult && result.length > 0) {
     res.status(200); //.send("Movies found: " + JSON.stringify(result));
-    res.render('pages/search-movie', {user: req.session.user, movieObjects: paginatedResult.result, 
+    res.render('pages/search-movie', {user: req.session.user, movieObjects: paginatedResult.result,
       prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+  }
+  else if (result.length == 0){
+    res.status(200);
+    res.render('pages/search-movie', {user: req.session.user, movieObjects: result,
+      prev: false, next: false, pageNum: req.query.page});
   }
   else {
     res.status(404).send("Page does not exist");
@@ -440,8 +437,8 @@ app.get("/movies", function(req, res, next){
 });
 
 app.get("/movies/search/", function (req, res, next){
-  if (!req.query){
-    req.query = {};
+  if (!req.query.hasOwnProperty("page")){
+    req.query.page = 1;
   }
   let result = model.searchMovie(req.query);
   let searchQuery = ""
@@ -476,7 +473,6 @@ app.get("/movies/search/", function (req, res, next){
 app.get("/movies/:mid", function(req, res, next){
   let result = model.getMovie(req.params.mid);
   if(!result) {
-    console.log(result);
     res.status(404).send("Movie does not exist.");
   }
     else{
@@ -521,7 +517,6 @@ app.post("/movies", function(req, res, next){
   else{
     let result = model.addMovie(req.session.user.username, req.body);
     if (result){
-      console.log(model.movies);
       res.status(200);
       res.send("/movies");
       //res.redirect("/movies/" + result);
@@ -600,11 +595,10 @@ app.get("/people", function(req, res, next){
     req.query.page = 1;
   }
   let result = model.searchPerson(req.query.name);
-  console.log(result);
   let paginatedResult = model.paginate(req.query.page, result);
   if(paginatedResult) {
-    res.status(200); 
-    res.render('pages/search-person', {user: req.session.user, personObjects: paginatedResult.result, 
+    res.status(200);
+    res.render('pages/search-person', {user: req.session.user, personObjects: paginatedResult.result,
       prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
   }
   else {
@@ -624,14 +618,14 @@ app.get("/people/search/", function (req, res, next){
   else{
     searchQuery += "?name=";
   }
-  
+
   if(req.query.page) {
     searchQuery += "&page=" + req.query.page;
   }
   else if(!req.query.page) {
     searchQuery += "&page=1";
   }
-  
+
   res.status(200);
   res.send("/people" + searchQuery);
 });
@@ -668,7 +662,6 @@ app.post("/people", function(req, res, next){
   }
   else{
     let result = model.addPerson(req.session.user.username, req.body);
-    console.log(req.body);
     if (result){
       res.status(200);
       res.send("/people/" + result);
@@ -777,8 +770,6 @@ app.delete("/people/:pid", function(req, res, next){
 app.get("/people/:pid/collaborators", function(req, res, next){
   let result = model.getFrequentCollaborator(req.params.pid);
   if (result){
-    console.log(model.getPerson(req.params.pid));
-    console.log(result);
     res.status(200);
     res.render('pages/collaborators', {person: model.getPerson(req.params.pid), collaborators: result, user: req.session.user});
   }

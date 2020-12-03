@@ -2,7 +2,7 @@ let users = require("./public/json/users.json");
 let movies = require("./public/json/extracted-movie-data-id.json");
 let moviesCopy = Object.keys(movies).map(key => {
     return movies[key];
-}); 
+});
 let reviews = require("./public/json/reviews.json");
 let people = require("./public/json/extracted-person-data.json");
 const puppeteer = require('puppeteer');
@@ -52,7 +52,7 @@ function paginate(pageNum, data) {
   if(pageNum == 1) prev = false;
   if(pageNum*10 > data.length) next = false;
   // slicing and stuff (all input data is in array format)
-  let result = data.slice((pageNum-1)*10, next? pageNum*10 : data.length); 
+  let result = data.slice((pageNum-1)*10, next? pageNum*10 : data.length);
   return {prev: prev, next: next, result: result};
 }
 
@@ -646,7 +646,7 @@ function addMovie(requesting, movieObject) {
         }
       }
     }
-    
+
 
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
@@ -672,6 +672,12 @@ function searchMovie(searchObject) {
   if (searchObject.genre){
     searchgenre = searchObject.genre.trim().toLowerCase();
     searchgenre = searchgenre.charAt(0).toUpperCase() + searchgenre.slice(1);
+    if (searchgenre === "Sci-fi"){
+      searchgenre = searchgenre.slice(0, 4) + searchgenre.charAt(4).toUpperCase() + searchgenre.slice(5);
+    }
+    else if (searchgenre === "Film-noir"){
+      searchgenre = searchgenre.slice(0, 5) + searchgenre.charAt(5).toUpperCase() + searchgenre.slice(6);
+    }
   }
   else{
     searchgenre = "";
@@ -1558,7 +1564,10 @@ function getFrequentCollaborator(personID) {
       } */
     }
   }
-  return collaborators;
+  if (collaborators.length >= 5)
+    return collaborators.slice(0, 5);
+  else
+    return collaborators;
 }
 
 //let userA = registerUser({username: "user4", password: "password"});
