@@ -45,7 +45,12 @@ body
                     button#addMovie.btn.btn-outline-primary.ml-4(type='submit') Add Movie to Database
         hr(style='border-width: 2px;')
         #searchResults.container.mt-4
-            h5 Search Results:
+            .d-flex.flex-row
+                .col.justify-content-start.align-items-start
+                    h5 Search Results:
+                .col.justify-content-end.align-items-end
+                    h5#pageNum Page #{pageNum}
+            
             ul.list-group
                 each movie in movieObjects
                     a(href="/movies/"+movie.id)
@@ -59,4 +64,15 @@ body
                                     p #{movie.plot}
                     //- list item (link /movie/movieID): poster, title, synopsis
             //- make buttons <prev , next> for pagination x- first 10 results
+            .d-flex.flex-row.mt-3
+                .col
+                    if(prev)
+                        button#previous.btn.btn-outline-primary.ml-4(type='submit') Previous
+                    else
+                        button#previous.btn.btn-outline-primary.ml-4(type='submit' disabled) Previous
+                .col
+                    if(next)
+                        button#next.btn.btn-outline-primary.ml-4.justify-content-end(type='submit') Next
+                    else
+                        button#next.btn.btn-outline-primary.ml-4.justify-content-end(type='submit' disabled) Next
 script(src='/js/searchMovie.js')

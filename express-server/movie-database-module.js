@@ -42,6 +42,20 @@ for (rid in reviews){
   }
 }
 
+function paginate(pageNum, data) {
+  // check if page exists - if not then send null
+  if(pageNum < 1 || data.length - pageNum*10 <= -10) {
+    return false;
+  }
+  let prev = true;
+  let next = true;
+  if(pageNum == 1) prev = false;
+  if(pageNum*10 > data.length) next = false;
+  // slicing and stuff (all input data is in array format)
+  let result = data.slice((pageNum-1)*10, next? pageNum*10 : data.length); 
+  return {prev: prev, next: next, result: result};
+}
+
 // -------------------------------------------------USER----------------------------------------------
 
 function isValidUser(userObj){    // checks if the user exists
@@ -371,7 +385,10 @@ function searchUsers(requesting, keyWord){    // searches user by given keyword
   }
   for (username in users){
     let user = users[username];
-    if (user.username.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
+    if (keyWord && user.username.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
+      results.push(user);
+    }
+    else if(keyWord == undefined || keyWord == "") {
       results.push(user);
     }
   }
@@ -653,7 +670,8 @@ function searchMovie(searchObject) {
     searchtitle = "";
   }
   if (searchObject.genre){
-    searchgenre = searchObject.genre;
+    searchgenre = searchObject.genre.trim().toLowerCase();
+    searchgenre = searchgenre.charAt(0).toUpperCase() + searchgenre.slice(1);
   }
   else{
     searchgenre = "";
@@ -672,7 +690,9 @@ function searchMovie(searchObject) {
   }
   let results = [];
   if (searchtitle == "" && searchgenre == "" && searchminRating == 0 && searchyear == ""){
-    results = movies;
+    results = Object.keys(movies).map(key => {
+      return movies[key];
+    }); ;
     return results;
   }
   for (movieID in movies){
@@ -1508,9 +1528,13 @@ function getPerson(personID) { // gets the person object when supplied with pers
 // search for a person - returns a list
 function searchPerson(keyWord) {
   let results = [];
+  console.log(keyWord);
   for (personID in people){
     let person = people[personID];
-    if (person.name.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
+    if (keyWord && person.name.toLowerCase().indexOf(keyWord.toLowerCase()) >= 0){
+      results.push(person);
+    }
+    else if(keyWord == undefined || keyWord == "") {
       results.push(person);
     }
   }
@@ -1555,6 +1579,7 @@ module.exports = {
   moviesCopy,
   reviews,
   people,
+  paginate,
   registerUser,
   login,
   viewReviewsOtherUser,
