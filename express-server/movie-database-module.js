@@ -1467,13 +1467,9 @@ function removePerson(requesting, requested) {
     for (let i = 0; i < personObjectMovies.length; i++){
       repeatedMember = [];
       movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
-      console.log("movie cast members: ");
-      console.log(movieCastMembers);
       for (let j = 0; j < movieCastMembers.length; j++){
         if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id)  &&
              people[movieCastMembers[j]].collaborators.hasOwnProperty(requestedPerson.id) && !(movieCastMembers[j] == requestedPerson.id)){
-          console.log("deleting: ");
-          console.log(people[movieCastMembers[j]].collaborators[requestedPerson.id]);
           delete people[movieCastMembers[j]].collaborators[requestedPerson.id];
           repeatedMember.push(people[movieCastMembers[j]].id);
         }
@@ -1482,7 +1478,6 @@ function removePerson(requesting, requested) {
 
     // removing from followers' followingPeople list
     let followerIDList = requestedPerson.followers;
-    console.log(followerIDList);
     for(let i = 0; i < followerIDList.length; i++) {
       users[followerIDList[i]].followingPeople = users[followerIDList[i]].followingPeople.filter(personID => personID !== requestedPerson.id);
     }
