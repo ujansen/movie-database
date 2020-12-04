@@ -48,8 +48,8 @@ body
             .d-flex.flex-row
                 .col.justify-content-start.align-items-start
                     h5 Search Results:
-                .col.justify-content-end.align-items-end
-                    h5#pageNum Page #{pageNum}
+                .col-xs.justify-content-end.align-items-end.mr-3
+                    h5#pageNum Page #{pageNum} of #{totalPages}
             
             ul.list-group
                 each movie in movieObjects
@@ -67,12 +67,12 @@ body
             .d-flex.flex-row.mt-3
                 .col
                     if(prev)
-                        button#previous.btn.btn-outline-primary.ml-4(type='submit') Previous
+                        button#previous.btn.btn-outline-primary(type='submit') Previous
                     else
-                        button#previous.btn.btn-outline-primary.ml-4(type='submit' disabled) Previous
-                .col
+                        button#previous.btn.btn-outline-primary(type='submit' disabled) Previous
+                .col-xs
                     if(next)
-                        button#next.btn.btn-outline-primary.ml-4.justify-content-end(type='submit') Next
+                        button#next.btn.btn-outline-primary.mr-3.justify-content-end(type='submit') Next
                     else
-                        button#next.btn.btn-outline-primary.ml-4.justify-content-end(type='submit' disabled) Next
+                        button#next.btn.btn-outline-primary.mr-3.justify-content-end(type='submit' disabled) Next
 script(src='/js/searchMovie.js')

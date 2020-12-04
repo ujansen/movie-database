@@ -18,4 +18,9 @@ body
         ul.list-group
             each collaborator in collaborators
                 a(href="/people/"+collaborator.id)
-                    li.list-group-item #{collaborator.name}
+                    li.list-group-item 
+                        .d-flex.flex-row
+                            .col
+                                label #{collaborator.name}
+                            .col-xs.justify-content-end.align-items-end
+                                label #{person.collaborators[collaborator.id]} collaborations

@@ -53,7 +53,8 @@ function paginate(pageNum, data) {
   if(pageNum*10 > data.length) next = false;
   // slicing and stuff (all input data is in array format)
   let result = data.slice((pageNum-1)*10, next? pageNum*10 : data.length);
-  return {prev: prev, next: next, result: result};
+  let totalPages = Math.floor(data.length / 10) + (data.length % 10 == 0? 0 : 1);
+  return {prev: prev, next: next, result: result, totalPages: totalPages};
 }
 
 // -------------------------------------------------USER----------------------------------------------
