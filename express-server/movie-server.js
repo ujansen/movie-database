@@ -96,7 +96,13 @@ app.get("/users", function(req, res, next){
     if(paginatedResult && result.length > 0) {
       res.status(200);
       res.render('pages/search-user', {user: req.session.user, userObjects: paginatedResult.result,
-        prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+        prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+        totalPages: paginatedResult.totalPages});
+    }
+    else if(result.length == 0) {
+      res.status(200);
+      res.render('pages/search-user', {user: req.session.user, userObjects: result,
+        prev: false, next: false, pageNum: req.query.page, totalPages: 1});
     }
     else{
       res.status(404).send("Page does not exist");
@@ -241,9 +247,8 @@ app.get("/users/:uid/getFollowers", function(req, res, next){
     if (model.getUserByID(req.params.uid)){
       let result = model.viewFollowersOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
       if (result){
-        //res.render("pages/followers", {user: req.session.user, followerList: result});
         res.status(200);
-        res.send(req.params.uid + "/followers");
+        res.send(req.params.uid + "/followers?page=1");
       }
       else{
         res.status(401).send("Cannot access followers of " + model.getUserByID(req.params.uid).username + " as you don't follow them.");
@@ -262,10 +267,24 @@ app.get("/users/:uid/followers", function(req, res, next){
   else
   {
     if (model.getUserByID(req.params.uid)){
+      if (!req.query.hasOwnProperty("page")){
+        req.query.page = 1;
+      }
       let result = model.viewFollowersOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
-      if (result){
-        res.render("pages/followers", {user: req.session.user, followerList: result});
+      let paginatedResult = model.paginate(req.query.page, result);
+      if(paginatedResult && result.length > 0) {
         res.status(200);
+        res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
+          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page, 
+          totalPages: paginatedResult.totalPages});
+      }
+      else if(result.length == 0) {
+        res.status(200);
+        res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: result,
+          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+      }
+      else{
+        res.status(404).send("Page does not exist");
       }
     }
   }
@@ -282,7 +301,7 @@ app.get("/users/:uid/getFollowing", function(req, res, next){
       if (result){
         //res.render("pages/following", {user: req.session.user, followingList: result});
         res.status(200);
-        res.send(req.params.uid + "/following");
+        res.send(req.params.uid + "/following?page=1");
       }
       else{
         res.status(401).send("Cannot access following of " + model.getUserByID(req.params.uid).username + " as you don't follow them.");
@@ -301,10 +320,24 @@ app.get("/users/:uid/following", function(req, res, next){
   else
   {
     if (model.getUserByID(req.params.uid)){
+      if (!req.query.hasOwnProperty("page")){
+        req.query.page = 1;
+      }
       let result = model.viewFollowingOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
-      if (result){
-        res.render("pages/following", {user: req.session.user, followingList: result});
+      let paginatedResult = model.paginate(req.query.page, result);
+      if(paginatedResult && result.length > 0) {
         res.status(200);
+        res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: paginatedResult.result,
+          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+          totalPages: paginatedResult.totalPages});
+      }
+      else if(result.length == 0) {
+        res.status(200);
+        res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: result,
+          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+      }
+      else{
+        res.status(404).send("Page does not exist");
       }
     }
   }
@@ -318,9 +351,17 @@ app.get("/users/:uid/people", function(req, res, next){
   {
     if (model.getUserByID(req.params.uid)){
       let result = model.viewPeopleOtherUser(req.session.user.username, model.getUserByID(req.params.uid).username);
-      if (result){
-        res.render("pages/following-people", {user: req.session.user, peopleList: result});
-        res.status(200)
+      let paginatedResult = model.paginate(req.query.page, result);
+      if(paginatedResult && result.length > 0) {
+        res.status(200);
+        res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: paginatedResult.result,
+          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+          totalPages: paginatedResult.totalPages});
+      }
+      else if(result.length == 0) {
+        res.status(200);
+        res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: result,
+          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
       }
       else{
         res.status(401).send("Cannot access people that user " + req.params.uid + " follows as you don't follow them.");
@@ -424,12 +465,13 @@ app.get("/movies", function(req, res, next){
   if(paginatedResult && result.length > 0) {
     res.status(200); //.send("Movies found: " + JSON.stringify(result));
     res.render('pages/search-movie', {user: req.session.user, movieObjects: paginatedResult.result,
-      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+      totalPages: paginatedResult.totalPages});
   }
   else if (result.length == 0){
     res.status(200);
     res.render('pages/search-movie', {user: req.session.user, movieObjects: result,
-      prev: false, next: false, pageNum: req.query.page});
+      prev: false, next: false, pageNum: req.query.page, totalPages: 1});
   }
   else {
     res.status(404).send("Page does not exist");
@@ -599,7 +641,13 @@ app.get("/people", function(req, res, next){
   if(paginatedResult) {
     res.status(200);
     res.render('pages/search-person', {user: req.session.user, personObjects: paginatedResult.result,
-      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page});
+      prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+      totalPages: paginatedResult.totalPages});
+  }
+  else if(result.length == 0) {
+    res.status(200);
+    res.render('pages/search-person', {user: req.session.user, personObjects: result,
+      prev: false, next: false, pageNum: req.query.page, totalPages: 1});
   }
   else {
     res.status(404).send("Page does not exist");

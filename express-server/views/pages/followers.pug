@@ -13,9 +13,25 @@ body
     header
         include ../partials/navBar
     .container.body_content
-        h5 #{user.username}'s Followers
+        .d-flex.flex-row
+            .col
+                h5 #{user.username}'s Followers
+            .col-xs.justify-content-end.align-items-end.mr-3
+                h5#pageNum Page #{pageNum} of #{totalPages}
         br
         ul.list-group
             each follower in followerList
                 a(href="/users/"+follower.id)
                     li.list-group-item #{follower.username}
+        .d-flex.flex-row.mt-3
+            .col
+                if(prev)
+                    button#previous.btn.btn-outline-primary(type='submit') Previous
+                else
+                    button#previous.btn.btn-outline-primary(type='submit' disabled) Previous
+            .col-xs
+                if(next)
+                    button#next.btn.btn-outline-primary.mr-3.justify-content-end(type='submit') Next
+                else
+                    button#next.btn.btn-outline-primary.mr-3.justify-content-end(type='submit' disabled) Next
+script(src='/js/followers.js')
