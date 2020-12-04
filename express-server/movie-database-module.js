@@ -358,7 +358,6 @@ async function searchIMDB(searchTerm){
   movieDetails.url = page.url();
 
   browser.close();
-  console.log(movieDetails);
   return movieDetails;
 }
 
@@ -647,12 +646,10 @@ function addMovie(requesting, movieObject) {
         }
       }
     }
-
-
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
     nextMovieID++;
-    return true;  // if addition is successful
+    return {status: true, id: movieObject.id};  // if addition is successful
   }
   return false;
 }
@@ -1314,7 +1311,7 @@ function addPerson(requesting, personObject) {
     }
 
     nextPersonID++;
-    return personObject.id;  // if addition is successful
+    return {status: true, id: personObject.id}; // if addition is successful
   }
   return false;
 }
