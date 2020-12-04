@@ -275,7 +275,7 @@ app.get("/users/:uid/followers", function(req, res, next){
       if(paginatedResult && result.length > 0) {
         res.status(200);
         res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
-          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page, 
+          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
           totalPages: paginatedResult.totalPages});
       }
       else if(result.length == 0) {
@@ -446,10 +446,14 @@ app.get("/searchIMDB/:sid", async function(req, res, next){
       searchTerm += " " + searchTerms[i];
     }
   }
+  let timeoutID = setTimeout(function(){
+    res.render("pages/imdb-result", {user: req.session.user, movie:"No result"});
+  }, 15000);
   let result = await model.searchIMDB(searchTerm);
   if (result){
     res.status(200);
     res.render("pages/imdb-result", {user: req.session.user, movie:result});
+    clearTimeout(timeoutID);
   }
   else{
     res.status(500).send("Server could not access specified movie.");
