@@ -80,7 +80,7 @@ function registerUser(newUser){
 
   newUser.id = String(nextUserID);
   newUser.userType = false;
-  newUser.profilePic = "";
+  newUser.profilePic = "https://cdn2.iconfinder.com/data/icons/user-people-4/48/6-512.png";
   newUser.followers = [];
   newUser.followingUsers = [];
   newUser.followingPeople = [];
