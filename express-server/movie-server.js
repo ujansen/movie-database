@@ -153,7 +153,7 @@ app.post("/users", function(req, res, next){
   let result = model.registerUser(req.body);
   if(result){
     req.session.user = result;
-    res.status(200);
+    res.status(302);
     res.redirect("/users/" + req.session.user.id);
   }
   else{
