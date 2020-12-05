@@ -288,14 +288,28 @@ app.get("/users/:uid/followers", function(req, res, next){
       let paginatedResult = model.paginate(req.query.page, result);
       if(paginatedResult && result.length > 0) {
         res.status(200);
-        res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
-          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
-          totalPages: paginatedResult.totalPages});
+        res.format({
+          html: function(){
+            res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
+              prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+              totalPages: paginatedResult.totalPages});
+          },
+          json: function(){
+            res.send(paginatedResult.result);
+          }
+        });
       }
       else if(result.length == 0) {
         res.status(200);
-        res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: result,
-          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+        res.format({
+          html: function(){
+            res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: result,
+              prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+          },
+          json: function(){
+            res.send(result);
+          }
+        });
       }
       else{
         res.status(404).send("Page does not exist");
@@ -341,14 +355,28 @@ app.get("/users/:uid/following", function(req, res, next){
       let paginatedResult = model.paginate(req.query.page, result);
       if(paginatedResult && result.length > 0) {
         res.status(200);
-        res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: paginatedResult.result,
-          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
-          totalPages: paginatedResult.totalPages});
+        res.format({
+          html: function(){
+            res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: paginatedResult.result,
+              prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+              totalPages: paginatedResult.totalPages});
+          },
+          json: function(){
+            res.send(paginatedResult.result);
+          }
+        });
       }
       else if(result.length == 0) {
         res.status(200);
-        res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: result,
-          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+        res.format({
+          html: function(){
+            res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: result,
+              prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+          },
+          json: function(){
+            res.send(result);
+          }
+        });
       }
       else{
         res.status(404).send("Page does not exist");
@@ -368,14 +396,28 @@ app.get("/users/:uid/people", function(req, res, next){
       let paginatedResult = model.paginate(req.query.page, result);
       if(paginatedResult && result.length > 0) {
         res.status(200);
-        res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: paginatedResult.result,
-          prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
-          totalPages: paginatedResult.totalPages});
+        res.format({
+          html: function(){
+            res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: paginatedResult.result,
+              prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
+              totalPages: paginatedResult.totalPages});
+          },
+          json: function(){
+            res.send(paginatedResult.result);
+          }
+        });
       }
       else if(result.length == 0) {
         res.status(200);
-        res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: result,
-          prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+        res.format({
+          html: function(){
+            res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: result,
+              prev: false, next: false, pageNum: req.query.page, totalPages: 1});
+          },
+          json: function(){
+            res.send(result);
+          }
+        });
       }
       else{
         res.status(401).send("Cannot access people that user " + req.params.uid + " follows as you don't follow them.");
@@ -448,8 +490,15 @@ app.get("/users/:uid/recommended", function(req, res, next){
     else{
       let result = model.viewRecommendedMovies(req.session.user.username);
       if (result){
-        res.status(200); //.send("Recommended movies are: " + JSON.stringify(result));
-        res.render('pages/recommended-movies', {user: req.session.user, movieObjects: result});
+        res.status(200);
+        res.format({
+          html: function(){
+            res.render('pages/recommended-movies', {user: req.session.user, movieObjects: result});
+          },
+          json: function(){
+            res.send(result);
+          }
+        });
       }
       else{
         res.status(404).send(model.getUserByID(req.params.uid).username + " does not exist.");
@@ -897,7 +946,7 @@ app.put("/people/:pid", function(req, res, next){
           json: function(){
             res.send(model.getPerson(req.params.pid));
           }
-        })
+        });
 
       }
       else{
@@ -930,7 +979,14 @@ app.get("/people/:pid/collaborators", function(req, res, next){
   let result = model.getFrequentCollaborator(req.params.pid);
   if (result){
     res.status(200);
-    res.render('pages/collaborators', {person: model.getPerson(req.params.pid), collaborators: result, user: req.session.user});
+    res.format({
+      html: function(){
+        res.render('pages/collaborators', {person: model.getPerson(req.params.pid), collaborators: result, user: req.session.user});
+      },
+      json: function(){
+        res.send(result);
+      }
+    });
   }
   else{
     res.status(404).send("Person does not exist.");
@@ -940,8 +996,15 @@ app.get("/people/:pid/collaborators", function(req, res, next){
 app.get("/reviews/:rid", function(req, res, next){
   let result = model.getReview(req.params.rid);
   if (result){
-    res.status(200); //.send(JSON.stringify(result));
-    res.render('pages/review', {user: req.session.user, review: result, reviewUser: model.getUser(result.userID)});
+    res.status(200); 
+    res.format({
+      html: function(){
+        res.render('pages/review', {user: req.session.user, review: result, reviewUser: model.getUser(result.userID)});
+      },
+      json: function(){
+        res.send(result);
+      }
+    });
   }
   else{
     res.status(404).send("Review does not exist.");
@@ -951,8 +1014,16 @@ app.get("/reviews/:rid", function(req, res, next){
 app.post("/movies/:mid/basicReview/:rating", function(req, res, next){
     let result = model.addBasicReview(req.params.mid, req.params.rating);
     if (result){
-      res.status(200).send("/movies/"+req.params.mid);
+      res.status(200);
       // window location href in client side js
+      res.format({
+        json: function () {
+          res.send(model.getMovie(req.params.mid));
+        },
+        html: function () {
+          res.status(200).send("/movies/"+req.params.mid);
+        }
+      });
     }
     else{
       res.status(404).send("Movie does not exist.");

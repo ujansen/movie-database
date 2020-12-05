@@ -43,6 +43,8 @@ function submitBasicRequest() {
         window.location.href = req.responseText;
       }
     };
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.setRequestHeader('Accept', 'text/html, application/json');
     req.send();
   }
   else {
