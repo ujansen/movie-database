@@ -56,6 +56,8 @@ function getFollowerList() {
       alert(req.responseText);
     }
   };
+  req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+  req.setRequestHeader('Accept', 'text/html, application/json');
   req.send();
 }
 
@@ -73,5 +75,7 @@ function getFollowingList() {
       alert(req.responseText);
     }
   };
+  req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+  req.setRequestHeader('Accept', 'text/html, application/json');
   req.send();
 }

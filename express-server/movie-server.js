@@ -185,9 +185,17 @@ app.put("/users/:uid", function(req, res, next){
         res.status(500).send("Old password does not match.");
       }
       else{
+        res.status(200);
         let result = model.editUser(req.session.user.username, req.body);
         if(result) {
-          res.status(200).send('/users/' + req.session.user.id);
+          res.format({
+            html: function(){
+              res.send('/users/' + req.session.user.id);
+            },
+            json: function(){
+              res.send(model.getUserByID(req.session.user.id));
+            }
+          });
         }
         else {
           res.status(500).send("Something went wrong. Please try again.");
@@ -210,7 +218,14 @@ app.post("/users/:uid/toggle", function(req, res, next){
       let result = model.toggleContributing(model.getUserByID(req.params.uid).username);
       if (result){
         res.status(200);
-        res.send("/users/" + req.params.uid);
+        res.format({
+          html: function(){
+            res.send("/users/" + req.params.uid);
+          },
+          json: function(){
+            res.send(model.getUserByID(req.params.uid));
+          }
+        });
       }
       else{
         res.status(404).send("User does not exist.");
@@ -239,12 +254,26 @@ app.get("/users/:uid", function(req, res, next){
     }
     if (result && result.id === req.session.user.id){
       res.status(200);
-      res.render('pages/user', {user: result, likedMovies: reviewedMovies, resultReviews: resultReviews});
+      res.format({
+        html: function(){
+          res.render('pages/user', {user: result, likedMovies: reviewedMovies, resultReviews: resultReviews});
+        },
+        json: function(){
+          res.send(result);
+        }
+      });
     }
     else if (result && result.id !== req.session.user.id){
       let followBool = model.getUser(req.session.user.username).followingUsers.includes(result.username);
       res.status(200);
-      res.render('pages/other-user', {user: req.session.user, userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
+      res.format({
+        html: function(){
+          res.render('pages/other-user', {user: req.session.user, userFollowsOtherUser: followBool, requestedUser: result, likedMovies: reviewedMovies, reviewList: resultReviews});
+        },
+        json: function(){
+          res.send(result);
+        }
+      });
     }
     else{
       res.status(404).send("User " + req.params.uid + " does not exist.");
@@ -837,7 +866,14 @@ app.get("/people/:pid", function(req, res, next){
       if (req.session.user){
         followBool = model.getUser(req.session.user.username).followingPeople.includes(result.id);
       }
-      res.render("pages/person", {userFollowsPerson: followBool, person: result, movieList: movieList, user: req.session.user});
+      res.format({
+        html: function(){
+          res.render("pages/person", {userFollowsPerson: followBool, person: result, movieList: movieList, user: req.session.user});
+        },
+        json: function(){
+          res.send(result);
+        }
+      });
       res.status(200);
     }
     else{
@@ -880,7 +916,14 @@ app.post("/people/:pid/follow", function(req, res, next){
     let result = model.followPerson(req.session.user.username, req.params.pid);
     if(result){
       res.status(200);
-      res.send("/people/"+req.params.pid);
+      res.format({
+        html: function(){
+          res.send("/people/"+req.params.pid);
+        },
+        json: function(){
+          res.send(model.getPerson(req.params.pid));
+        }
+      });
     }
     else{
       res.status(404).send("Person with id" + req.params.pid + " does not exist or you already follow them.");
@@ -896,7 +939,14 @@ app.post("/people/:pid/unfollow", function(req, res, next){
     let result = model.unfollowPerson(req.session.user.username, req.params.pid);
     if (result){
       res.status(200);
-      res.send("/people/"+req.params.pid);
+      res.format({
+        html: function(){
+          res.send("/people/"+req.params.pid);
+        },
+        json: function(){
+          res.send(model.getPerson(req.params.pid));
+        }
+      });
     }
     else{
       res.status(404).send("Person with id" + req.params.pid + " does not exist or you do not follow them.");
