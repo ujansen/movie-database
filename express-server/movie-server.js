@@ -153,7 +153,7 @@ app.post("/users", function(req, res, next){
   let result = model.registerUser(req.body);
   if(result){
     req.session.user = result;
-    res.status(200);
+    res.status(302);
     res.redirect("/users/" + req.session.user.id);
   }
   else{
@@ -1046,7 +1046,7 @@ app.get("/people/:pid/collaborators", function(req, res, next){
 app.get("/reviews/:rid", function(req, res, next){
   let result = model.getReview(req.params.rid);
   if (result){
-    res.status(200); 
+    res.status(200);
     res.format({
       html: function(){
         res.render('pages/review', {user: req.session.user, review: result, reviewUser: model.getUser(result.userID)});
