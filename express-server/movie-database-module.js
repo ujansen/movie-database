@@ -164,7 +164,12 @@ function editUser(requesting, userObject) {
   // do not allow change of username
   user.password = userObject.password;
   user.about = userObject.about;
-  user["profilePic"] = userObject.profilePic;
+  if (!userObject.profilePic){
+    user.profilePic = "https://cdn2.iconfinder.com/data/icons/user-people-4/48/6-512.png"
+  }
+  else{
+    user.profilePic = userObject.profilePic;
+  }
   return true;
 }
 
@@ -920,6 +925,12 @@ function editMovie(requesting, movieObject) {
       }
     }
 
+    if (movies[movieObject.id].poster.trim() === ""){
+      movies[movieObject.id].poster = "https://flukyfeed.com/wp-content/uploads/2020/07/wait-a-minute-696x523.jpg";
+    }
+    else{
+      movies[movieObject.id].poster = movieObject.poster.trim();
+    }
     moviesCopy = sortMovieYear();
     moviesCopy = sortMovieRating();
 
