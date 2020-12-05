@@ -58,12 +58,13 @@ function editMovie() {
 
         let req = new XMLHttpRequest();
         req.open("PUT", "/movies/"+id);
-        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         req.onreadystatechange = function(){
           if(req.readyState == 4 && req.status == 200){
             window.location.href = req.responseText;
         }
       };
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.setRequestHeader('Accept', 'text/html, application/json');
         req.send(JSON.stringify(movieObj));
     }
     else {
@@ -84,5 +85,7 @@ function deleteMovie() {
         window.location.href = req.responseText;
      }
    };
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.setRequestHeader('Accept', 'text/html, application/json');
     req.send();
 }

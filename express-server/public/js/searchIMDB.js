@@ -5,7 +5,6 @@ let searchIMDB = document.getElementById("searchIMDB");
 searchIMDB.addEventListener("click", searchIMDBRequest);
 
 function searchIMDBRequest() {
-  console.log("clicked");
   if (wait){
     wait.innerText = "Please wait for a few moments until the results load...";
   }

@@ -28,10 +28,9 @@ function addPerson() {
         image: image,
         movies: movies
     }
-    
+
     let req = new XMLHttpRequest();
     req.open("POST", "/people");
-    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.onreadystatechange = function () {
         if(req.readyState === 4 && req.status === 200) {
             window.location.href = req.responseText;
@@ -40,5 +39,7 @@ function addPerson() {
             alert(req.responseText);
         }
     };
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.setRequestHeader('Accept', 'text/html, application/json');
     req.send(JSON.stringify(personObj));
 }

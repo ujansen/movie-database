@@ -51,7 +51,7 @@ function addMovie() {
                 director: directorListVal,
                 writers: writerListVal
             }
-            
+
             let req = new XMLHttpRequest();
             req.open("POST", "/movies");
             req.onreadystatechange = function () {
@@ -63,6 +63,7 @@ function addMovie() {
                 }
             };
             req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            req.setRequestHeader('Accept', 'text/html, application/json');
             req.send(JSON.stringify(movieObj));
         }
         else {

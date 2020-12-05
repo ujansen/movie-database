@@ -37,7 +37,6 @@ function postUser() {
     alert("Passwords do not match. Please try again!");
   }
 }
-
 let req = new XMLHttpRequest();
 req.open("POST", "http://localhost:3000/users");
 req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
