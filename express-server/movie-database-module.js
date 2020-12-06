@@ -567,7 +567,7 @@ function addMovie(requesting, movieObject) {
       let movieObjectGenres = movieObject.genre.trim().split(",");
       let movieGenreList = [];
       for (genre of movieObjectGenres){
-        if (!movieGenreList.includes(genre.trim().toLowerCase())){
+        if (!movieGenreList.includes(genre.trim().charAt(0).toUpperCase() + genre.trim().slice(1, genre.length).toLowerCase())){
           movieGenreList.push(genre.trim().charAt(0).toUpperCase() + genre.trim().slice(1, genre.length).toLowerCase());
         }
       }
@@ -837,7 +837,7 @@ function editMovie(requesting, movieObject) {
       let movieObjectGenres = movieObject.genre.trim().split(",");
       let movieGenreList = [];
       for (genre of movieObjectGenres){
-        if (!movieGenreList.includes(genre.trim().toLowerCase())){
+        if (!movieGenreList.includes(genre.trim().charAt(0).toUpperCase() + genre.trim().slice(1, genre.length).toLowerCase())){
           movieGenreList.push(genre.trim().charAt(0).toUpperCase() + genre.trim().slice(1, genre.length).toLowerCase());
         }
       }
@@ -1468,12 +1468,14 @@ function removePerson(requesting, requested) {
     let repeatedMember = [];
     for (let i = 0; i < personObjectMovies.length; i++){
       repeatedMember = [];
-      movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
-      for (let j = 0; j < movieCastMembers.length; j++){
-        if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id)  &&
-             people[movieCastMembers[j]].collaborators.hasOwnProperty(requestedPerson.id) && !(movieCastMembers[j] == requestedPerson.id)){
-          delete people[movieCastMembers[j]].collaborators[requestedPerson.id];
-          repeatedMember.push(people[movieCastMembers[j]].id);
+      if(movies[personObjectMovies[i]]) {
+        movieCastMembers = movies[personObjectMovies[i]].actors.concat(movies[personObjectMovies[i]].director, movies[personObjectMovies[i]].writers);
+        for (let j = 0; j < movieCastMembers.length; j++){
+          if (people[movieCastMembers[j]] && !repeatedMember.includes(people[movieCastMembers[j]].id)  &&
+              people[movieCastMembers[j]].collaborators.hasOwnProperty(requestedPerson.id) && !(movieCastMembers[j] == requestedPerson.id)){
+            delete people[movieCastMembers[j]].collaborators[requestedPerson.id];
+            repeatedMember.push(people[movieCastMembers[j]].id);
+          }
         }
       }
     }
