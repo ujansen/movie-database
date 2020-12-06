@@ -23,7 +23,7 @@ body
       hr(style='border-width: 2px;')
       #searchResults.container.mt-4
         if movie == "No result"
-          p#wait No results found
+          p#wait Request timed out, please try again!
         else if movie && movie != "No Result"
           .row.flex-wrap.mb-4.justify-content-center
               img.user-img(src=movie.poster)

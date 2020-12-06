@@ -13,12 +13,10 @@ if(url.lastIndexOf("page=") == -1) {
 else {
   pageNum = Number(url.slice(url.lastIndexOf("page=") + 5, url.length));
 }
-console.log(pageNum);
 let remainingQuery = url.slice(url.lastIndexOf("?"), url.lastIndexOf("page="));
 if(remainingQuery == "") {
   remainingQuery = "?";
 }
-console.log(remainingQuery);
 let prev = document.getElementById("previous");
 let next = document.getElementById("next");
 
@@ -38,7 +36,6 @@ function searchDatabaseRequest() {
   req.open("GET", "/users/search/" + searchQuery);
   req.onreadystatechange = function (){
     if(req.readyState == 4 && req.status == 200){
-      console.log(req.responseText);
       window.location.href = req.responseText;
    }
  };

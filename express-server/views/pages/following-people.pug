@@ -8,14 +8,14 @@ head
   link(rel='stylesheet' type='text/css' href='/css/style.css')
   link(rel='icon' href='https://www.flaticon.com/svg/static/icons/svg/3507/3507102.svg' type='image/x-icon')
   //- Title of the tab
-  title #{user.username}'s People List
+  title #{otherUser.username}'s People List
 body
     header
         include ../partials/navBar
     .container.body_content
         .d-flex.flex-row
             .col
-                h5 People #{user.username} Follows
+                h5 People #{otherUser.username} Follows
             .col-xs.justify-content-end.align-items-end.mr-3
                 h5#pageNum Page #{pageNum} of #{totalPages}
         br

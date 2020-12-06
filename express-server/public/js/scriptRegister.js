@@ -13,7 +13,6 @@ confirmPasswordBox.addEventListener("keyup", check);
 termsAndConditions.addEventListener("change", enableButton);
 
 function enableButton(){
-  console.log("Button Enabled");
   if (emailBox.value.toString() !== '' && passwordBox.value.toString() !== '' && confirmPasswordBox.value.toString() !== '' && termsAndConditions.checked){
     button.disabled = false;
   }

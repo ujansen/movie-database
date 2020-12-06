@@ -319,7 +319,7 @@ app.get("/users/:uid/followers", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
+            res.render('pages/followers', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), followerList: paginatedResult.result,
               prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
               totalPages: paginatedResult.totalPages});
           },
@@ -332,7 +332,7 @@ app.get("/users/:uid/followers", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/followers', {user: model.getUserByID(req.params.uid), followerList: result,
+            res.render('pages/followers', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), followerList: result,
               prev: false, next: false, pageNum: req.query.page, totalPages: 1});
           },
           json: function(){
@@ -386,7 +386,7 @@ app.get("/users/:uid/following", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: paginatedResult.result,
+            res.render('pages/following', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), followingList: paginatedResult.result,
               prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
               totalPages: paginatedResult.totalPages});
           },
@@ -399,7 +399,7 @@ app.get("/users/:uid/following", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/following', {user: model.getUserByID(req.params.uid), followingList: result,
+            res.render('pages/following', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), followingList: result,
               prev: false, next: false, pageNum: req.query.page, totalPages: 1});
           },
           json: function(){
@@ -427,7 +427,7 @@ app.get("/users/:uid/people", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: paginatedResult.result,
+            res.render('pages/following-people', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), peopleList: paginatedResult.result,
               prev: paginatedResult.prev, next: paginatedResult.next, pageNum: req.query.page,
               totalPages: paginatedResult.totalPages});
           },
@@ -440,7 +440,7 @@ app.get("/users/:uid/people", function(req, res, next){
         res.status(200);
         res.format({
           html: function(){
-            res.render('pages/following-people', {user: model.getUserByID(req.params.uid), peopleList: result,
+            res.render('pages/following-people', {user: req.session.user, otherUser: model.getUserByID(req.params.uid), peopleList: result,
               prev: false, next: false, pageNum: req.query.page, totalPages: 1});
           },
           json: function(){

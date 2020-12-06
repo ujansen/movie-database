@@ -1,13 +1,3 @@
-//- let content = renderOtherUser({
-//-     requestingUser: requestingUser,
-//-     requestedUser: otherUser,
-//-
-//- });
-//- result: otherUser
-//- their reviews
-//- followers, following, people - separate page with links
-//- reviewed movie objects
-//- SCRIPT REMAINING
 doctype html
 head
   //-Required meta tags
@@ -27,12 +17,9 @@ main(style='background-color: #243742;')
     .col-xs.cp-1.bg-secondary
       img.user-img(src= requestedUser.profilePic)
       //- add user image property to user objects
-      //- img.user-img(src= requestedUser.image)
     .col.ml-4.align-self-center
       h4#username #{requestedUser.username}
     .col-xs.ml-5.justify-content-end.align-self-center
-      //- a(href="/users/"+requestedUser.id+"/followers") 
-      //- label#followerList Followers
       a#followerList(href="") Followers
     .col-xs.ml-5.justify-content-end.align-self-center
       a#followingList(href="") Following

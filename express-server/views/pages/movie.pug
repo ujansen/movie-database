@@ -16,7 +16,6 @@ body
       h4 #{movie.title}
       if(movie.releaseYear)
         | (#{movie.releaseYear})
-        //-small(style="font-size: 16px; font-style:italic;" class="text-secondary ml-2") PG-13
     if(movie.poster)
       div(class="row flex-wrap poster container")
         div(class="col-xs-4 cp-1 mr-5")
@@ -105,7 +104,6 @@ body
               br
               p #{review.content}
     br
-    //-if(user)
     a(href="/movies/"+movie.id+"/edit")
       button#editMovie.btn.btn-outline-primary.mt-2.mr-0.ml-auto(type='submit') Edit Movie
 script(src='/js/scriptMovie.js')

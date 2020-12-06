@@ -20,25 +20,16 @@ body
             .d-flex.flex-row
                 label.ml-2 Search by Title:
                 textarea#movieTitle.ml-2.mr-2(name='movieTitle' type='text' rows='1' cols='25')
-                //-button#submitTitle.btn.btn-outline-primary(type='submit') Search title
                 label.ml-2 Search by Genre:
                 textarea#movieGenre.ml-2(name='movieGenre' type='text' rows='1' cols='15')
-                //-button#submitGenre.btn.btn-outline-primary(type='submit') Search genre
             br
             .d-flex.flex-row
-                //-.col.mr-4
                 label.ml-2 Search by Minimum Rating:
                 input#movieMinRating.ml-2.mr-2(name='movieMinRating' type='number' min='1' max='10')
-                //-button#submitMinRating.btn.btn-outline-primary(type='submit') Search by minimum rating
-                //-.col.mr-4
                 label.ml-2 Search by Year of Release:
                 input#movieYear.ml-2(name='movieYear' type='number' min='1600' max='2030')
-                //-button#submitYear.btn.btn-outline-primary(type='submit') Search by year
             .d-flex.flex-row.mt-3
-                //-.col.mr-2
                 button#submitSearch.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search in Database
-                //-.col.mr-2
-                //-button#searchIMDB.btn.btn-outline-primary.ml-4(type='submit') Search title in IMDB
                 a(href="./searchIMDB" target="_blank")
                     button.btn.btn-outline-primary.ml-4.mr-4(type='submit') Search title in IMDB
                 a(href="./addMovie")
@@ -62,8 +53,6 @@ body
                                     h4 #{movie.title}
                                     br
                                     p #{movie.plot}
-                    //- list item (link /movie/movieID): poster, title, synopsis
-            //- make buttons <prev , next> for pagination x- first 10 results
             .d-flex.flex-row.mt-3
                 .col
                     if(prev)

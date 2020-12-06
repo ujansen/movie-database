@@ -1,7 +1,6 @@
 let checkbox = document.getElementById("toggleContributing");
 let urlArray = window.location.href.split("/");
 let userID = urlArray[urlArray.length -1];
-//console.log("User trying to toggle is " +userID);
 checkbox.addEventListener("click", changeUserType);
 
 function changeUserType() {

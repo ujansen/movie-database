@@ -15,14 +15,19 @@ body
         div
             h4.text-center #{person.name}
         div
-            .actorImage.text-center
+            .actorImage.text-center(style="font-size: 18px;")
                 div
                     if(person.image)
                         img.rounded(src=person.image)
                 if(userFollowsPerson)
-                    button#followPerson.btn.btn-outline-primary(type='submit') Unfollow
+                    button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Unfollow
                 else
-                    button#followPerson.btn.btn-outline-primary(type='submit') Follow
+                    button#followPerson.btn.btn-outline-primary.mt-2(type='submit') Follow
+                div
+                    p
+                    | #{person.about}
+        br
+        hr(style='border-width: 2px;')
         .container.scrolling.personMovies
             h4(style='padding-top: 2; padding-left: 4px;') Works
             .row.flex-nowrap

@@ -13,12 +13,10 @@ if(url.lastIndexOf("page=") == -1) {
 else {
   pageNum = Number(url.slice(url.lastIndexOf("page=") + 5, url.length));
 }
-console.log(pageNum);
 let remainingQuery = url.slice(url.lastIndexOf("?"), url.lastIndexOf("page="));
 if(remainingQuery == "") {
   remainingQuery = "?";
 }
-console.log(remainingQuery);
 let prev = document.getElementById("previous");
 let next = document.getElementById("next");
 
@@ -91,22 +89,3 @@ function nextPage() {
  };
   req.send();
 }
-
-/*
-function searchIMDBRequest() {
-  let searchQuery = "";
-  if(movieTitle.value) {
-    movieTitle = movieTitle.value.toString();
-    searchQuery = movieTitle.trim().split(" ").join("+");
-  }
-  let req = new XMLHttpRequest();
-  req.open("GET", "http://localhost:3000/searchIMDB/"+searchQuery);
-  req.onreadystatechange = function (){
-    if(req.readyState == 4 && req.status == 200){
-      console.log(req.responseText);
-      window.location.href = req.responseText;
-   }
- };
-  req.send();
-}
-*/

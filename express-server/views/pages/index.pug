@@ -1,9 +1,3 @@
-//- let content = {
-//-     resultUpcoming: x,
-//-     resultYourList: y,
-//-     resultFanPicks: z
-//- }
-//- no script required
 doctype html
 head
     meta(charset='utf-8')
@@ -26,7 +20,6 @@ body
                             .card.card-block
                                 img(src=movie.poster class = "slider-img")
         if !(resultYourList == undefined || resultYourList.length == 0)
-            //- resultYourList === []
             br
             br
             .container.scrolling.your_list
