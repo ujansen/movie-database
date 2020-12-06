@@ -60,6 +60,11 @@ app.get("/register", function(req, res, next){
   }
 });
 
+app.get("/tos", function(req, res, next){
+  res.render('pages/tos');
+  res.status(200);
+});
+
 // tested
 app.post("/login", function(req, res, next){
   if (model.login(req.body)){
